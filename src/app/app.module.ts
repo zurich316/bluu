@@ -12,13 +12,17 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 //Maps
 import { AgmCoreModule } from '@agm/core';
+import { SchoolIndexComponent } from './pages/school-index/school-index.component';
+import { CategoryCardComponent } from './pages/category-card/category-card.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent
+    HomeComponent,
+    SchoolIndexComponent,
+    CategoryCardComponent
   ],
   imports: [
     BrowserModule,

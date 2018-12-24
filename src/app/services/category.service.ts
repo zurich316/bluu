@@ -11,7 +11,7 @@ export class CategoryService {
   }
   cargarFire(){
     console.log("escuelas");
-    this._angularFire.collection('/escuelas')
+    this._angularFire.collection('/categorias')
                      .valueChanges()
                     .subscribe((escuelas:any)=>{
                       this.escuelas=escuelas;
