@@ -14,6 +14,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AgmCoreModule } from '@agm/core';
 import { SchoolIndexComponent } from './pages/school-index/school-index.component';
 import { CategoryCardComponent } from './pages/category-card/category-card.component';
+import { AboutComponent } from './pages/about/about.component';
+import { SchoolCardComponent } from './pages/school-card/school-card.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { CategoryCardComponent } from './pages/category-card/category-card.compo
     HeaderComponent,
     HomeComponent,
     SchoolIndexComponent,
-    CategoryCardComponent
+    CategoryCardComponent,
+    AboutComponent,
+    SchoolCardComponent
   ],
   imports: [
     BrowserModule,

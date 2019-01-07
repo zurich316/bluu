@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SchoolsService } from '../../services/schools.service';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-school-index',
@@ -6,10 +9,19 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class SchoolIndexComponent implements OnInit {
-
-  constructor() { }
+  id: string;
+  constructor(public _schoolService:SchoolsService,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    this.route.params
+              .subscribe(params=>{
+        this.id = params['name'];
+        this._schoolService.chargeSchools(this.id)
+
+    })
+
   }
 
 }

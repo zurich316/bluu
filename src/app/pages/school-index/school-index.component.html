@@ -1,3 +1,40 @@
-<p>
-  school-index works!
-</p>
+<div class="card-body">
+  <div class="card" *ngFor="let school of _schoolService.schoolList | async">
+      <h5 class="card-title">{{school.titulo}}</h5>
+      <b>Frases</b>
+      <div *ngFor="let frase of school.frases">
+        <em>{{frase}}</em>
+      </div>
+      <h5 class="card-title">Instructor: {{school.instructor}}</h5>
+      <b>Direcciones</b>
+      <div *ngFor="let direccion of school.direcciones">
+          <p>{{direccion.descripcion}}</p>
+          <agm-map [zoom]="17" [latitude]="direccion.coordenadas.latitude" [longitude]="direccion.coordenadas.longitude">
+            <agm-marker [latitude]="direccion.coordenadas.latitude" [longitude]="direccion.coordenadas.longitude"></agm-marker>
+          </agm-map>
+      </div>
+      <b>Descripciones</b>
+      <div *ngFor="let descripcion of school.descripciones">
+          <p>{{descripcion}}</p>
+      </div>
+      <b>Precios</b>
+      <div *ngFor="let precio of school.precios">
+          <p>{{precio.nota}} = {{precio.precio}}. Con descuento ({{school.descuento}}%) = {{precio.precio* (100-school.descuento)/100}} </p>
+      </div>
+      <b>Horarios</b>
+      <div *ngFor="let Horario of school.horarios">
+          <p>{{Horario.hora_inicio}} - {{Horario.hora_fin}}  </p>
+          <p>DIAS:</p>
+          <div *ngFor="let dia of Horario.dias">
+              <p>{{dia}}  </p>
+              
+          </div>
+      </div>
+      <b>Contactos</b>
+      <p>Whtasapp: {{school.contactos.whatsapp}}</p>
+
+      <button  type="button" class="btn btn-outline-primary btn-block">
+              Entrar
+      </button>
+  </div>
+</div>

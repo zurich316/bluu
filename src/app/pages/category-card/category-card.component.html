@@ -1,9 +1,9 @@
 
 <div class="card">
-    <img class="card-img-top" [src]="category.url" [alt]="category.nombre">
+    <img class="card-img-top" [src]="Category.url" [alt]="Category.name">
     <div class="card-body">
-        <h5 class="card-title">{{category.nombre}}</h5>
-        <button (click)="getSchools(category.nombre)" type="button" class="btn btn-outline-primary btn-block">
+        <h5 class="card-title">{{Category.name}}</h5>
+        <button (click)="getSchools(Category.id)" type="button" class="btn btn-outline-primary btn-block">
                 Entrar
         </button>
     </div>
