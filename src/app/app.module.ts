@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { FormsModule, ReactiveFormsModule} from '@angular/forms'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './_nav/header/header.component';
@@ -16,6 +17,8 @@ import { SchoolIndexComponent } from './pages/school-index/school-index.componen
 import { CategoryCardComponent } from './pages/category-card/category-card.component';
 import { AboutComponent } from './pages/about/about.component';
 import { SchoolCardComponent } from './pages/school-card/school-card.component';
+import { SchoolViewComponent } from './pages/school-view/school-view.component';
+import { SchoolNewComponent } from './pages/school-new/school-new.component';
 
 
 @NgModule({
@@ -26,11 +29,15 @@ import { SchoolCardComponent } from './pages/school-card/school-card.component';
     SchoolIndexComponent,
     CategoryCardComponent,
     AboutComponent,
-    SchoolCardComponent
+    SchoolCardComponent,
+    SchoolViewComponent,
+    SchoolNewComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AgmCoreModule.forRoot({

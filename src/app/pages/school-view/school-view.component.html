@@ -1,0 +1,37 @@
+
+<h5 class="card-title">{{(_schoolService.school|async)?.titulo}}</h5>
+<b>Frases</b>
+<div *ngFor="let frase of (_schoolService.school|async)?.frases">
+  <em>{{frase}}</em>
+</div>
+<b class="card-title">Instructor: </b>
+<p>{{(_schoolService.school|async)?.instructor}}</p>
+  <b>Direcciones</b>
+  <div *ngFor="let direccion of (_schoolService.school|async)?.direcciones">
+      <p>{{direccion.descripcion}}</p>
+      <agm-map [zoom]="17" [latitude]="direccion.coordenadas.latitude" [longitude]="direccion.coordenadas.longitude">
+        <agm-marker [latitude]="direccion.coordenadas.latitude" [longitude]="direccion.coordenadas.longitude"></agm-marker>
+      </agm-map>
+  </div>
+  <b>Descripciones</b>
+  <div *ngFor="let descripcion of (_schoolService.school|async)?.descripciones">
+      <p>{{descripcion}}</p>
+  </div>
+  <b>Precios</b>
+  <p>Descuento: {{(_schoolService.school|async)?.descuento + 24}}</p>
+  <div *ngFor="let precio of (_schoolService.school|async)?.precios">
+      <p>{{precio.nota}} = {{precio.precio}}. </p>
+  </div>
+  <b>Horarios</b>
+  <div *ngFor="let Horario of (_schoolService.school|async)?.horarios">
+      <p>{{Horario.hora_inicio}} - {{Horario.hora_fin}}  </p>
+      <p>DIAS:</p>
+      <div *ngFor="let dia of Horario.dias">
+          <p>{{dia}}  </p>
+          
+      </div>
+  </div>
+  <b>Contactos</b>
+  <div *ngFor="let Horario of (_schoolService.school|async)?.contactos">
+    <p>{{Horario.tipo}} - {{Horario.numero}}  </p>
+</div>

@@ -3,8 +3,6 @@ import { AngularFirestore,  AngularFirestoreCollection  } from '@angular/fire/fi
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export interface Category { name: string; url: string; }
-export interface CategoryID extends Category { id: string; }
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +13,7 @@ export class CategoryService {
   categoryList:Observable<CategoryID[]>;
 
   constructor(private _angularFire:AngularFirestore) { 
-    this.categoryCollection = _angularFire.collection<any>('/categorias');
+    this.categoryCollection = _angularFire.collection<Category>('/categorias');
     this.cargarFire();
   }
   cargarFire(){
@@ -31,4 +29,6 @@ export class CategoryService {
   }
 }
 
+export interface Category { titulo: string; url: string; }
+export interface CategoryID extends Category { id: string; }
 

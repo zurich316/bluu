@@ -1,3 +1,10 @@
-<p>
-  school-card works!
-</p>
+<div class="card">
+    <img [src]="school.imageURL" class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">{{school.titulo}}</h5>
+        <p class="card-text">{{school.instructor}}</p>
+        <button  (click)="getSchool(school.id)" type="button" class="btn btn-outline-primary btn-block">
+                Entrar
+        </button>
+    </div>
+</div>

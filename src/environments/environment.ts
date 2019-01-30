@@ -5,12 +5,12 @@
 export const environment = {
   production: false,
   firebaseConfig : {
-    apiKey: "AIzaSyD-ZSXpNF-rc5uh_wjeLQF0IUWjBvJI8Vg",
-    authDomain: "crec-16e7c.firebaseapp.com",
-    databaseURL: "https://crec-16e7c.firebaseio.com",
-    projectId: "crec-16e7c",
-    storageBucket: "crec-16e7c.appspot.com",
-    messagingSenderId: "202935874626"
+    apiKey: "AIzaSyBE6Qylv73_sEhaH98AkkUCy5htRUjILNk",
+    authDomain: "bluu-up.firebaseapp.com",
+    databaseURL: "https://bluu-up.firebaseio.com",
+    projectId: "bluu-up",
+    storageBucket: "bluu-up.appspot.com",
+    messagingSenderId: "155133606060"
   }
 };
 
