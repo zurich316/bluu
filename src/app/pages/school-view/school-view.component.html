@@ -18,7 +18,7 @@
       <p>{{descripcion}}</p>
   </div>
   <b>Precios</b>
-  <p>Descuento: {{(_schoolService.school|async)?.descuento + 24}}</p>
+  <p>Descuento: {{(_schoolService.school|async)?.descuento}}</p>
   <div *ngFor="let precio of (_schoolService.school|async)?.precios">
       <p>{{precio.nota}} = {{precio.precio}}. </p>
   </div>
