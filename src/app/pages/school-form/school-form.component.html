@@ -1,0 +1,394 @@
+<form [formGroup]='forma' (ngSubmit)="enviarFormulario()"  novalidate='novalidate'>
+  <h3>Datos de la escuela</h3>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <label for="inputEmail4">Nombre  <span class="text-muted">(Minimo 3 caracteres)</span></label>
+      <input type="name"
+             [ngClass]="{'is-invalid': forma.controls['titulo'].errors && ( forma.controls['titulo'].touched ||  forma.controls['titulo'].dirty ) }" 
+             class="form-control" 
+             placeholder="Nombre de la escuela" 
+             formControlName="titulo">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState">Categoria</label>
+      <select  formControlName="schoolCategory" 
+               class="form-control"
+               [ngClass]="{'is-invalid': forma.controls['schoolCategory'].errors && ( forma.controls['schoolCategory'].touched ||  forma.controls['schoolCategory'].dirty ) }">
+        <option value ="" selected>Seleccione</option>
+        <option *ngFor="let categoria of categories" 
+                [value]="categoria.id">
+                  {{categoria.titulo}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <div formArrayName='categoria' *ngFor="let item of forma['controls'].categoria['controls']; let i = index">
+        <div class="input-group" >
+          <div class="input-group-prepend">
+            <span class="input-group-text" id=""> Tags {{i+1}}</span>
+          </div>
+          <input type="text" 
+                 class="form-control" 
+                 placeholder="Nombre" 
+                 [ngClass]="{'is-invalid': item.errors && (item.touched || item.dirty ) }"  
+                 formControlName="{{i}}" >
+          <div class="input-group-append">
+            <button class="btn btn-danger" 
+                    (click)="removeItem(i,'categoria')" 
+                    [disabled]='i==0' 
+                    type="button">
+                    Quitar
+            </button>
+          </div>   
+        </div>
+      </div>
+      <button class="col btn btn-success"
+                (click)="addCategoria()"
+                type="button">
+                  Agregar Tag
+      </button> 
+    </div>
+    <div class="form-group col-md-8">
+      <div formArrayName='precios'  *ngFor="let item of forma['controls'].precios['controls']; let i = index">
+        <div class="input-group" [formGroupName]="i">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="">Precios {{i+1}}</span>
+          </div>
+          <input type="number" 
+                  class="form-control"
+                  placeholder="Bs."
+                  [ngClass]="{'is-invalid': item['controls'].precio.errors && (item['controls'].precio.touched || item['controls'].precio.dirty ) }"   
+                  formControlName="precio">
+          <input type="text" 
+                  class="form-control"
+                  [ngClass]="{'is-invalid': item['controls'].nota.errors && (item['controls'].nota.touched || item['controls'].nota.dirty ) }"   
+                  placeholder="Nota sobre el precio" 
+                  formControlName="nota">
+          <div class="input-group-append">
+              <button class="btn btn-danger" 
+                      type="button"
+                      (click)="removeItem(i,'precios')"
+                      [disabled]='i==0'>
+                      Quitar
+              </button>
+          </div>
+        </div>
+      </div>
+      <button class="col btn btn-success"
+                (click)="addPrecio()"
+                type="button">
+                  Agregar Precio
+      </button> 
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="input-group" formArrayName='descripciones' *ngFor="let item of forma['controls'].descripciones['controls']; let i = index">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Descripción {{i+1}}</span>
+      </div>
+      <textarea class="form-control" 
+                aria-label="With textarea"
+                formControlName="{{i}}" 
+                placeholder="Descripcion {{i+1}}"
+                class="form-control col-11"
+                [ngClass]="{'is-invalid': item.errors && (item.touched || item.dirty ) }" 
+                type="textbox">
+      </textarea>
+      <div class="input-group-append">
+        <button class="btn btn-danger" 
+                (click)="removeItem(i,'descripciones')" 
+                [disabled]='i==0' 
+                type="button">
+                Quitar
+        </button>
+      </div>  
+    </div>
+    <button class="col btn btn-success"
+            (click)="addDescripcion()"
+            type="button">
+              Agregar descripcion
+    </button>                  
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-7" >
+      <label for="inputEmail4">Contacto</label>
+      <div formArrayName='contactos'>
+          <div *ngFor="let item of forma['controls'].contactos['controls']; let i = index">
+            <div  [formGroupName]="i">
+                <select class="form-control"  
+                        formControlName="tipo"                       
+                        [ngClass]="{'is-invalid': item['controls'].tipo.errors && (item['controls'].tipo.touched || item['controls'].tipo.dirty ) }"  >
+                  <option value ="" selected>Seleccione</option>
+                  <option *ngFor="let contacto of contactosTipos" [ngValue]="contacto">
+                    {{contacto}}
+                  </option>
+                </select>
+            </div> 
+            
+          </div>
+      </div>    
+    </div>
+    <div class="form-group col-4" >
+      <label for="inputEmail4">Numero/Enlace</label>
+      <div formArrayName='contactos'>
+          <div *ngFor="let item of forma['controls'].contactos['controls']; let i = index">
+            <div  [formGroupName]="i">
+                <input  type="name"             
+                        class="form-control" 
+                        placeholder="Numero/Enlace"
+                        [ngClass]="{'is-invalid': item['controls'].numero.errors && (item['controls'].numero.touched || item['controls'].numero.dirty ) }"  
+                        formControlName="numero"> 
+            </div>          
+          </div>
+      </div>    
+    </div>
+    <div class="form-group col-1" >
+    <label for="inputEmail4">.</label>
+      <div formArrayName='contactos'>
+        <div *ngFor="let item of forma['controls'].contactos['controls']; let i = index">
+          <div  [formGroupName]="i">
+              <button class="btn btn-danger"
+                (click)="removeItem(i,'contactos')"
+                [disabled]='i==0'
+                type="button">
+                  X
+              </button>
+          </div> 
+        </div>
+      </div>
+    </div>
+    <button class="col btn btn-success"
+              (click)="addContactos()"
+              type="button">
+                Agregar Contacto
+    </button>     
+  </div>
+  <hr>
+
+  <div class="form-row">
+    <div class="form-group col-2" >
+      <label for="inputEmail4">Hora inicio</label>
+      <div formArrayName='horarios'>
+          <div *ngFor="let item of forma['controls'].horarios['controls']; let i = index">
+            <div  [formGroupName]="i">
+                <input formControlName="horario_inicio"
+                        [ngClass]="{'is-invalid': item['controls'].horario_inicio.errors && (item['controls'].horario_inicio.touched || item['controls'].horario_inicio.dirty ) }" 
+                        class="form-control"
+                        type="time">                 
+            </div> 
+            
+          </div>
+      </div>    
+    </div>
+    <div class="form-group col-2" >
+      <label for="inputEmail4">Hora final</label>
+      <div formArrayName='horarios'>
+          <div *ngFor="let item of forma['controls'].horarios['controls']; let i = index">
+            <div  [formGroupName]="i">
+                <input  formControlName="horario_fin" 
+                        class="form-control"
+                        [ngClass]="{'is-invalid': item['controls'].horario_fin.errors && (item['controls'].horario_fin.touched || item['controls'].horario_fin.dirty ) }"
+                        type="time"> 
+            </div>          
+          </div>
+      </div>    
+    </div>
+    <div class="form-group col-7" >
+          
+      <div formArrayName='horarios'>
+          <div *ngFor="let item of forma['controls'].horarios['controls']; let i = index">
+              <label for="inputAddress" >Dias </label> 
+              <label for="inputAddress" *ngIf="item['controls'].dias.errors" > (Seleccione minimo un dia) </label> 
+            <div  [formGroupName]="i">
+                <div class="form-check form-check-inline" formArrayName="dias" *ngFor="let order of item['controls'].dias['controls']; let i = index">
+                    <input type="checkbox" 
+                          class="form-check-input"
+                          (click)="salida(order)"
+                          [formControlName]="i">
+                    <label class="form-check-label" for="exampleCheck1">{{diasLista [i]}}</label>
+                  </div> 
+            </div>          
+          </div>
+      </div>
+    
+    </div>
+    <div class="form-group col-1" >
+    <label for="inputEmail4">.</label>
+      <div formArrayName='horarios'>
+        <div *ngFor="let item of forma['controls'].horarios['controls']; let i = index">
+          <div  [formGroupName]="i">
+              <button class="btn btn-danger"
+                (click)="removeItem(i,'horarios')"
+                [disabled]='i==0'
+                type="button">
+                  X
+              </button>
+          </div> 
+        </div>
+      </div>
+    </div>
+    <button class="col btn btn-success"
+              (click)="addHorario()"
+              type="button">
+                Agregar nuevo horario
+    </button>     
+  </div>
+  <hr>
+  <h3>Frases inspiradoras  <span class="text-muted">(Opcional)</span></h3>
+  <div class="form-group">
+    <div formArrayName='frases' *ngFor="let item of forma['controls'].frases['controls']; let i = index">
+      <div class="input-group" [formGroupName]="i">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="">Frase {{i+1}}</span>
+        </div>
+        <textarea type="text" 
+               class="form-control" 
+               placeholder="Frase" 
+               [ngClass]="{'is-invalid': item['controls'].contenido.errors && (item['controls'].contenido.touched || item['controls'].contenido.dirty ) }"  
+               formControlName="contenido">
+        </textarea>
+        <input type="text" 
+               class="form-control" 
+               [ngClass]="{'is-invalid': item['controls'].autor.errors && (item['controls'].autor.touched || item['controls'].autor.dirty ) }"  
+               formControlName="autor">
+        <div class="input-group-append">
+          <button class="btn btn-danger"
+                  placeholder="Autor"  
+                  (click)="removeItem(i,'frases')" 
+                  [disabled]='i==0' 
+                  type="button">
+                  Quitar
+          </button>
+        </div>   
+      </div>
+    </div>
+    <button class="col btn btn-success"
+              (click)="addFrases()"
+              type="button">
+                Agregar frase
+    </button>       
+  </div>
+  <hr>
+  <h3>Datos de los entrenadores</h3>
+  <div class="form-group" formGroupName='datosInstructor'>
+    <div class="input-group">
+      <input type="text" 
+             class="form-control"
+             placeholder="Nombre" 
+             [ngClass]="{'is-invalid': forma['controls'].datosInstructor['controls'].nombre.errors && (forma['controls'].datosInstructor['controls'].nombre.touched || forma['controls'].datosInstructor['controls'].nombre.dirty ) }"  
+             formControlName="nombre">
+      <input type="text" 
+             class="form-control"
+             placeholder="Apellido" 
+             [ngClass]="{'is-invalid': forma['controls'].datosInstructor['controls'].apellido.errors && (forma['controls'].datosInstructor['controls'].apellido.touched || forma['controls'].datosInstructor['controls'].apellido.dirty ) }"  
+             formControlName="apellido">
+      <input type="email" 
+             class="form-control"
+             placeholder="correo@gmail.com" 
+             [ngClass]="{'is-invalid': forma['controls'].datosInstructor['controls'].email.errors && (forma['controls'].datosInstructor['controls'].email.touched || forma['controls'].datosInstructor['controls'].email.dirty ) }"  
+             formControlName="email">
+    </div>
+  </div>
+  <hr>
+  <h3>Datos de los entrenadores</h3>
+  <div class="form-group" >
+    <div formArrayName='entrenadores' *ngFor="let item of forma['controls'].entrenadores['controls']; let i = index">
+      <div class="input-group" [formGroupName]="i">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="">Entrenador {{i+1}}</span>
+        </div>
+        <input type="text" class="form-control" 
+               placeholder="Nombre" 
+               [ngClass]="{'is-invalid': item['controls'].nombre.errors && (item['controls'].nombre.touched || item['controls'].nombre.dirty ) }"  
+               formControlName="nombre">
+        <input type="text" 
+               class="form-control" 
+               placeholder="Apellido"
+               [ngClass]="{'is-invalid': item['controls'].apellido.errors && (item['controls'].apellido.touched || item['controls'].apellido.dirty ) }"  
+               formControlName="apellido">
+        <div class="input-group-append">
+          <button class="btn btn-danger" 
+                  (click)="removeItem(i,'entrenadores')" 
+                  [disabled]='i==0' 
+                  type="button">
+                  Quitar
+          </button>
+        </div>   
+      </div>
+    </div>
+    <button class="col btn btn-success"
+              (click)="addEntrenador()"
+              type="button">
+                Agregar entrenador
+    </button>     
+  </div>
+  <hr>
+  <h3>Direcciones (seleccione en el mapa)</h3>
+  <hr>
+  <div class="container">
+  <agm-map 
+  [latitude]=-17.385018 
+  [longitude]=-66.157990
+  [zoom]=15
+  [disableDefaultUI]="false"
+  [zoomControl]="false"
+  (mapClick)="agregarDireccion($event)">
+
+    <agm-marker 
+        *ngFor="let m of this.forma.value.direcciones; let i = index"
+        (markerClick)="clickedMarker(m.label, i)"
+        [latitude]="m.coordenadas.lat"
+        [longitude]="m.coordenadas.lng"
+        [label]="m.coordenadas.label"
+        [markerDraggable]="m.coordenadas.draggable"
+        (dragEnd)="markerDragEnd(m.coordenadas, $event)">
+        
+      <agm-info-window>
+        <strong>Direccion {{i+1}}</strong>
+      </agm-info-window>
+      
+    </agm-marker>
+
+  </agm-map>
+  </div>
+  <hr>
+  <div class="form-group">
+    <div formArrayName='direcciones'>
+      <div *ngFor="let horario of forma['controls'].direcciones['controls']; let i = index">          
+        <div class="input-group mb-3" [formGroupName]="i" >
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Direccion {{i+1}}</label>
+          </div>
+          <input  type="text" class="form-control"                 
+                  placeholder="Descripcion de la direccion" 
+                  aria-label="Recipient's username" 
+                  aria-describedby="basic-addon2"
+                  formControlName="descripcion" >
+          <div class="input-group-append">         
+            <button class="btn btn-danger" 
+                    (click)="removeItem(i,'direcciones')" 
+                    type="button">
+               Quitar
+            </button>
+          </div>
+        </div>          
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-group row">
+    <label class="col-2 col-form-label">&nbsp;</label>
+    <div class="input-group col-md-8">
+      <button class="btn btn-primary btn-lg btn-block" 
+              type="submit"
+              [disabled]="!forma.valid">
+        Guardar Escuela
+      </button>
+    </div>
+  </div>
+
+</form>

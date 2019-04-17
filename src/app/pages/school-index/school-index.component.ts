@@ -7,26 +7,34 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './school-index.component.html',
   styles: []
 })
-export class SchoolIndexComponent implements OnInit {
+export class SchoolIndexComponent{
   name: string;
+  schoolList:[]=[];
+
+  loading:boolean = true;
+
   constructor(public _schoolService:SchoolsService,
               private route: ActivatedRoute,
-              private router:Router) { }
+              private router:Router) { 
+                this.route.params
+                        .subscribe(params=>{
+                  this.name = params['name'];
+                  this.getListSchool(this.name);        
+                })
+              }
 
-  ngOnInit() {
-
-    this.route.params
-              .subscribe(params=>{
-        this.name = params['name'];
-        this._schoolService.chargeAllSchools(this.name)
-
-    })
-
-  }
+  
 
   getSchool(id){
-
     this.router.navigate(['/escuela',this.name,id]);
+  }
+
+  getListSchool(category:string){
+    this._schoolService.getListShool(category)
+                       .subscribe((data:any)=>{
+                        this.schoolList=data;
+                        this.loading = false;
+                       });
   }
 
 }

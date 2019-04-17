@@ -1,10 +1,23 @@
-<div class="card">
-    <img [src]="school.imageURL" class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">{{school.titulo}}</h5>
-        <p class="card-text">{{school.instructor}}</p>
-        <button  (click)="getSchool(school.id)" type="button" class="btn btn-outline-primary btn-block">
-                Entrar
-        </button>
+<main role="main">
+    <div class="album py-5 bg-light">
+        <div class="container">
+        <div class="row">
+            <div class="col-md-4" *ngFor="let school of schoolList">
+            <div class="card mb-4 box-shadow">
+                <img class="card-img-top img-thumbnail" [src]="school.imageURL" alt="Card image cap">
+                <div class="card-body">
+                <p class="card-text">{{school.titulo}}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                    <button type="button" (click)="getSchool(school.id)" class="btn btn-sm btn-outline-secondary">Ver</button>
+                   
+                    </div>
+                    <small class="text-muted">9 mins</small>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
     </div>
-</div>
+</main>

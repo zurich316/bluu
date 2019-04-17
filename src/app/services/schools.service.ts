@@ -2,9 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument  } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -13,36 +10,55 @@ export class SchoolsService {
   private schoolCollection: AngularFirestoreCollection<School>;
   schoolList:Observable<SchoolID[]>;
   
-  private schoolDoc: AngularFirestoreDocument<School>;
-  school: Observable<School>;
+  private schoolDoc: AngularFirestoreDocument<any>;
+  school: Observable<any>;
 
   constructor(private _angularFire:AngularFirestore) { 
   }
 
-
-
-
-  chargeAllSchools(word){
-
-    this.schoolCollection = this._angularFire.collection<School>(`/categorias/${word}/escuelas`);
-     this.schoolList = this.schoolCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as School;
+  getListShool(word){
+      return this.schoolList =this._angularFire.collection<School>(`/categorias/${word}/escuelas`)
+      .snapshotChanges()
+      .pipe( map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
         const id = a.payload.doc.id;
-        console.log(data);
         return { id, ...data };
-      }))
-    );
+        })
+      ));
 
   }
 
-  chargeSingleSchool(categoryName:string, schoolID:string){ 
-    
-    this.schoolDoc = this._angularFire.doc<School>(`categorias/${categoryName}/escuelas/${schoolID}`);
-    this.school = this.schoolDoc.valueChanges();
-    this.school.subscribe((obj:any)=>{
-      console.log(obj);
-    });
+  getSchool(categoryName:string, schoolID:string){
+    this.schoolDoc =  this._angularFire.doc<School>(`categorias/${categoryName}/escuelas/${schoolID}`);
+    return this.school = this.schoolDoc.snapshotChanges()
+                                       .pipe(map(actions=>{
+                                         if (!actions.payload.exists) {
+                                           return null;
+                                         } else {
+                                           let data = actions.payload.data() as any;
+                                           data.id = actions.payload.id;
+                                           console.log(data);
+                                           return data;
+                                         }
+                                       }))
+  }
+
+
+  createSchool(newSchool:any,category:any){
+    console.log(newSchool);
+    this._angularFire.collection(`categorias/${category}/escuelas/`)
+                     .add(newSchool);
+  }
+
+  updateSchool(school:any){
+    this.schoolDoc.update(school);
+  }
+
+  submitReview(category:string,schoolID:string|number,review:any){
+    let id = new Date().valueOf().toString();
+    let dateCreate = new Date().toLocaleString();
+
+
   }
 
 

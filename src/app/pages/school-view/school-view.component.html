@@ -1,37 +1,146 @@
-
-<h5 class="card-title">{{(_schoolService.school|async)?.titulo}}</h5>
-<b>Frases</b>
-<div *ngFor="let frase of (_schoolService.school|async)?.frases">
-  <em>{{frase}}</em>
+<br>
+<br>
+<br>
+<div class="container mt-40" *ngIf="loading">
+  <app-loading></app-loading>
 </div>
-<b class="card-title">Instructor: </b>
-<p>{{(_schoolService.school|async)?.instructor}}</p>
+<div class="container mt-40"  *ngIf="!loading">
+<h5 class="card-title">{{school.titulo}}</h5>
+
+<div *ngFor="let descripcion of school.descripciones">
+    <p>{{descripcion}}</p>
+</div>
+<b>Frases</b>
+<div *ngFor="let frase of school.frases">
+  <p>
+    {{frase.contenido}}-<em>{{frase.autor}}</em>
+  </p>
+</div>
+<p> <b class="card-title">Encargado: </b> {{school.datosInstructor.nombre}} {{school.datosInstructor.apellido}}</p>
+<p> <b class="card-title">Correo: </b> {{school.datosInstructor.email}}</p>
+
+<p>{{school.instructor}}</p>
   <b>Direcciones</b>
-  <div *ngFor="let direccion of (_schoolService.school|async)?.direcciones">
-      <p>{{direccion.descripcion}}</p>
-      <agm-map [zoom]="17" [latitude]="direccion.coordenadas.latitude" [longitude]="direccion.coordenadas.longitude">
-        <agm-marker [latitude]="direccion.coordenadas.latitude" [longitude]="direccion.coordenadas.longitude"></agm-marker>
+  <div *ngFor="let direccion of school.direcciones;let i=index">
+      <p>Direccion {{i+1}}: {{direccion.descripcion}}</p>
+  </div>    
+      <agm-map [zoom]="17" [latitude]=-17.3673413 [longitude]=-66.1756479>
+        <agm-marker *ngFor="let direccion of school.direcciones" [latitude]="direccion.coordenadas.lat" [longitude]="direccion.coordenadas.lng"></agm-marker>
       </agm-map>
-  </div>
-  <b>Descripciones</b>
-  <div *ngFor="let descripcion of (_schoolService.school|async)?.descripciones">
-      <p>{{descripcion}}</p>
-  </div>
+  
+
   <b>Precios</b>
-  <p>Descuento: {{(_schoolService.school|async)?.descuento}}</p>
-  <div *ngFor="let precio of (_schoolService.school|async)?.precios">
+  <div *ngFor="let precio of school.precios">
       <p>{{precio.nota}} = {{precio.precio}}. </p>
   </div>
   <b>Horarios</b>
-  <div *ngFor="let Horario of (_schoolService.school|async)?.horarios">
-      <p>{{Horario.hora_inicio}} - {{Horario.hora_fin}}  </p>
-      <p>DIAS:</p>
-      <div *ngFor="let dia of Horario.dias">
-          <p>{{dia}}  </p>
-          
-      </div>
+  <div class="table-responsive" *ngFor="let Horario of school.horarios">
+      <table class="table table-dark">
+          <thead>
+            <tr>
+              <th scope="col">Hora</th>
+              <th scope="col">Lunes</th>
+              <th scope="col">Martes</th>
+              <th scope="col">Miercoles</th>
+              <th scope="col">Jueves</th>
+              <th scope="col">Viernes</th>
+              <th scope="col">Sabado</th>
+              <th scope="col">Domingo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td> {{Horario.horario_inicio}} - {{Horario.horario_fin}}</td>
+              <td *ngFor="let dia of Horario.dias"><p *ngIf="dia">O</p> <p *ngIf="!dia">X</p> </td>
+            </tr>
+          </tbody>
+        </table>
   </div>
   <b>Contactos</b>
-  <div *ngFor="let Horario of (_schoolService.school|async)?.contactos">
+  <div *ngFor="let Horario of school.contactos">
     <p>{{Horario.tipo}} - {{Horario.numero}}  </p>
+</div>
+
+<hr>
+<div class="my-3 p-3 bg-white rounded box-shadow">
+  <div class="form-row border-bottom border-gray pb-2 mb-0">
+    <div class="col">
+        <h6 class="">Reseñas </h6>
+    </div>
+    <div class="col">
+        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal">Nueva reseña</button>
+    </div>
+  </div>
+  <div  class="media text-muted pt-3" *ngIf="  !school.reviews || school.reviews.length ===0"  >
+    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+      <strong class="d-block text-gray-dark">Ninguna reseña por el momento</strong>
+    </p>
+  </div>
+  <div class="media text-muted pt-3" *ngFor="let review of school.reviews; let i=index">
+    <img src="assets/imgs/star{{review.estrellas}}.jpg" alt="" width="50" height="50" class="mr-2 rounded img-thumbnail">
+    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+      <strong class="d-block text-gray-dark">{{review.email}}</strong>
+      <small class="d-block text-gray-dark">{{review.dia}} - {{review.hora}}  </small>
+      {{review.contenido}}
+    </p>
+    <small> </small>
+  </div>
+  
+</div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nueva reseña</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]='reveiwForma' (ngSubmit)="submitReview()">
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Reseña:</label>
+            <textarea class="form-control" 
+                      id="message-text"
+                      formControlName="contenido" 
+                      [ngClass]="{'is-invalid': reveiwForma.controls['contenido'].errors && ( reveiwForma.controls['contenido'].touched ||  reveiwForma.controls['contenido'].dirty )}" 
+                      placeholder="contenido">
+            </textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputCity">City</label>
+              <input type="text" 
+                     class="form-control" 
+                     id="inputCity"
+                     formControlName="email" 
+                     placeholder="ejemplo@dominio.com"
+                     [ngClass]="{'is-invalid': reveiwForma.controls['email'].errors && ( reveiwForma.controls['email'].touched ||  reveiwForma.controls['email'].dirty )}">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputState">State</label>
+              <select formControlName="estrellas" 
+                      class="custom-select mr-sm-2"
+                      [ngClass]="{'is-invalid': reveiwForma.controls['estrellas'].errors && ( reveiwForma.controls['estrellas'].touched ||  reveiwForma.controls['estrellas'].dirty )}"  >
+                <option selected>--</option>
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+                <option value=5>5</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="submit" [disabled]="!reveiwForma.valid" class="btn btn-primary">Publicar</button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
 </div>

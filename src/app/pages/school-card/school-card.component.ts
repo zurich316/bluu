@@ -7,7 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styles: []
 })
 export class SchoolCardComponent implements OnInit {
-  @Input () school:any={};
+  @Input () schoolList:any=[];
   @Output() schoolSelected:EventEmitter<number> = new EventEmitter();
   constructor() { 
 
@@ -18,8 +18,9 @@ export class SchoolCardComponent implements OnInit {
   ngOnInit() {
   }
 
-  getSchool(){
-    this.schoolSelected.emit(this.school.id);
+  getSchool(id:number){
+    console.log(id);
+    this.schoolSelected.emit(id);
   }
 
 }
