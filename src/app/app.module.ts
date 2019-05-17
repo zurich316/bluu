@@ -1,30 +1,38 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
+import { NgModule, LOCALE_ID } from '@angular/core';
+import { DropZoneDirective } from './directives/drop-zone.directive';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './_nav/header/header.component';
-import { HomeComponent } from './pages/home/home.component';
+
+// Lenguaje
+import localeEs from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeEs)
+
+//Maps
+import { AgmCoreModule } from '@agm/core';
+
 //Firebase
 import { AngularFireModule } from '@angular/fire';
-//import { environment } from '../environments/environment';
 import { firebaseConfig } from './config/firebase.config'
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
-//Maps
-import { AgmCoreModule } from '@agm/core';
-import { SchoolIndexComponent } from './pages/school-index/school-index.component';
-import { CategoryCardComponent } from './pages/category-card/category-card.component';
+
+// Header y Home
+import { HeaderComponent } from './_nav/header/header.component';
+import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
+import { LoadingComponent } from './pages/loading/loading.component';
+// Schools
+import { SchoolIndexComponent } from './pages/school-index/school-index.component';
 import { SchoolCardComponent } from './pages/school-card/school-card.component';
 import { SchoolViewComponent } from './pages/school-view/school-view.component';
 import { SchoolNewComponent } from './pages/school-new/school-new.component';
 import { SchoolFormComponent } from './pages/school-form/school-form.component';
 import { SchoolEditComponent } from './pages/school-edit/school-edit.component';
-import { LoadingComponent } from './pages/loading/loading.component';
 import { SchoolModalReviewComponent } from './pages/school-modal-review/school-modal-review.component';
-import { DropZoneDirective } from './directives/drop-zone.directive';
+
 
 
 @NgModule({
@@ -33,7 +41,6 @@ import { DropZoneDirective } from './directives/drop-zone.directive';
     HeaderComponent,
     HomeComponent,
     SchoolIndexComponent,
-    CategoryCardComponent,
     AboutComponent,
     SchoolCardComponent,
     SchoolViewComponent,
@@ -56,7 +63,7 @@ import { DropZoneDirective } from './directives/drop-zone.directive';
       apiKey: 'AIzaSyD4aBvDar3-MR2o1Ywjx8hWM5w7H3Dmh9c'
     })
   ],
-  providers: [],
+  providers: [ { provide: LOCALE_ID, useValue:'es-Es' } ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
