@@ -2,7 +2,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn,FormArray} from '@angular/forms'
 import { Observable } from 'rxjs';
 import { MouseEvent } from '@agm/core';
-import { SchoolsService } from "../../services/schools.service";
+import { SchoolsService } from "../../../services/schools.service";
 
 @Component({
   selector: 'app-school-form',

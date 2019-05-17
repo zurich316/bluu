@@ -25,13 +25,13 @@ import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
 import { LoadingComponent } from './pages/loading/loading.component';
 // Schools
-import { SchoolIndexComponent } from './pages/school-index/school-index.component';
-import { SchoolCardComponent } from './pages/school-card/school-card.component';
-import { SchoolViewComponent } from './pages/school-view/school-view.component';
-import { SchoolNewComponent } from './pages/school-new/school-new.component';
-import { SchoolFormComponent } from './pages/school-form/school-form.component';
-import { SchoolEditComponent } from './pages/school-edit/school-edit.component';
-import { SchoolModalReviewComponent } from './pages/school-modal-review/school-modal-review.component';
+import { SchoolIndexComponent } from './pages/schools/school-index/school-index.component';
+import { SchoolCardComponent } from './pages/schools/school-card/school-card.component';
+import { SchoolViewComponent } from './pages/schools/school-view/school-view.component';
+import { SchoolNewComponent } from './pages/schools/school-new/school-new.component';
+import { SchoolFormComponent } from './pages/schools/school-form/school-form.component';
+import { SchoolEditComponent } from './pages/schools/school-edit/school-edit.component';
+import { SchoolModalReviewComponent } from './pages/schools/school-modal-review/school-modal-review.component';
 
 
 

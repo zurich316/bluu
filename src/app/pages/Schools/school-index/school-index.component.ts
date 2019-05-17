@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { SchoolsService } from '../../services/schools.service';
+import { Component } from '@angular/core';
+import { SchoolsService } from '../../../services/schools.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-school-index',
   templateUrl: './school-index.component.html',
-  styles: []
+  styleUrls: ['./school-index.component.css']
 })
 export class SchoolIndexComponent{
   name: string;
