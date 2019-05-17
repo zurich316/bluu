@@ -2,29 +2,14 @@ agm-map {
     height: 300px;
 }
 
-body, html {
-    height: 100%;
-  }
+body {
+  height: 100%
+}
 
-.bg {
-    /* The image used */
-    background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(11).jpg");
-  
-    /* Half height */
-    height: 100%;
-  
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-
-  .carousel-item {
-    height: 100vh;
-    min-height: 350px;
-    background: no-repeat center center scroll;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-  }
+body {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background: linear-gradient(rgb(7, 11, 34), rgb(25, 168, 228));
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+}

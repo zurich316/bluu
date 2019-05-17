@@ -1,27 +1,97 @@
-<app-loading *ngIf="categoryList.length===0" class="text-center"></app-loading>
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-      <!-- Slide  - Set the background image for this slide in the line below -->
-      <div *ngFor="let category of categoryList; let i=index" class="carousel-item" [ngClass]="{'active': i===0  }"  [ngStyle]="{'background-image': 'url(' + category.url + ')'}">
-        <div class="carousel-caption d-none d-md-block">
-          <h1>Somos <span class="badge badge-secondary">{{category.titulo}}</span></h1>
-          <button type="button" [routerLink]="[ '/escuela',category.id  ]" class="btn btn-warning">Contactar</button>
+<section class="categories">
+    <div class="container">
+        <div class="box">
+            <div class="thumb">
+                <img src="assets/portadas/arte500.jpg" alt="arte">
+            </div>
+            <div class="details">
+                <div class="content">
+                    <i class="fas fa-palette"></i>
+                    <h3>ARTE</h3>
+                    <a class="dropdown-item" [routerLink]="['artes']">Ver mas</a>
+                </div>
+            </div>
         </div>
-      </div>
-
+        <div class="box">
+            <div class="thumb">
+                <img src="assets/portadas/deportes500.jpg" alt="arte">
+            </div>
+            <div class="details">
+                <div class="content">
+                    <i class="fas fa-football-ball"></i>
+                    <h3>DEPORTE</h3>
+                    <a class="dropdown-item" [routerLink]="['deportes']">Ver mas</a>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="thumb">
+                <img src="assets/portadas/apoyo500.jpg" alt="arte">
+            </div>
+            <div class="details">
+                <div class="content">
+                    <i class="fas fa-brain"></i>
+                    <h3>Apoyo Escolar</h3>
+                    <a class="dropdown-item" [routerLink]="['apoyo-escolar']">Ver mas</a>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="thumb">
+                <img src="assets/portadas/danza500.jpg" alt="arte">
+            </div>
+            <div class="details">
+                <div class="content">
+                    <i class="fas fa-shoe-prints"></i>
+                    <h3>DANZA</h3>
+                    <a class="dropdown-item" [routerLink]="['artes']">Ver mas</a>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="thumb">
+                <img src="assets/portadas/otros500.jpg" alt="arte">
+            </div>
+            <div class="details">
+                <div class="content">
+                    <i class="fas fa-flushed"></i>
+                    <h3>OTROS</h3>
+                    <a class="dropdown-item" [routerLink]="['otros']">Ver mas</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-  </div>
+</section>
+
+<!-- Seccion noticias -->
+
+<hr>
+<section class="events">
+    <div class="leftBox">
+        <div class="content">
+            <h1>Eventos</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis tempora expedita ad corporis, quisquam aperiam veritatis optio tenetur, aut placeat magnam.
+            </p>
+        </div>
+    </div>
+    <div class="eventsRight">
+        <ul *ngIf="eventList.length > 0">
+            <li *ngFor="let event of eventList">
+                <div class="time">
+                    <h2> {{event.dia | date:'d' }}<br>
+                        <span>{{event.dia | date:'MMMM'| titlecase}}</span><br>
+                        <span>{{event.dia | date:'y'| titlecase}}</span>
+                    </h2>
+                </div>
+                <div class="details">
+                    <h3>{{event.titulo}}</h3>
+                    <p>{{event.contenido}}</p>
+                    <!-- <a href="#">Ver detalles</a> -->
+                </div>
+                <div style="clear:both;">
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</section>

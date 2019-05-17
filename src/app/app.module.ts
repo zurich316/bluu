@@ -11,7 +11,7 @@ import { AngularFireModule } from '@angular/fire';
 //import { environment } from '../environments/environment';
 import { firebaseConfig } from './config/firebase.config'
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-
+import { AngularFireStorageModule } from '@angular/fire/storage';
 //Maps
 import { AgmCoreModule } from '@agm/core';
 import { SchoolIndexComponent } from './pages/school-index/school-index.component';
@@ -24,6 +24,7 @@ import { SchoolFormComponent } from './pages/school-form/school-form.component';
 import { SchoolEditComponent } from './pages/school-edit/school-edit.component';
 import { LoadingComponent } from './pages/loading/loading.component';
 import { SchoolModalReviewComponent } from './pages/school-modal-review/school-modal-review.component';
+import { DropZoneDirective } from './directives/drop-zone.directive';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { SchoolModalReviewComponent } from './pages/school-modal-review/school-m
     SchoolFormComponent,
     SchoolEditComponent,
     LoadingComponent,
-    SchoolModalReviewComponent
+    SchoolModalReviewComponent,
+    DropZoneDirective
   ],
   imports: [
     BrowserModule,
@@ -49,6 +51,7 @@ import { SchoolModalReviewComponent } from './pages/school-modal-review/school-m
     ReactiveFormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+    AngularFireStorageModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyD4aBvDar3-MR2o1Ywjx8hWM5w7H3Dmh9c'
     })
