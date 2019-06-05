@@ -7,7 +7,7 @@ import { SchoolsService } from "../../../services/schools.service";
 @Component({
   selector: 'app-school-form',
   templateUrl: './school-form.component.html',
-  styles: []
+  styleUrls: ['./school-form.component.css']
 })
 export class SchoolFormComponent implements OnInit {
   @Input () schoolForm:any={};

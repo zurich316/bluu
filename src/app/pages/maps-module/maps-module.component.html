@@ -1,0 +1,25 @@
+
+<div class="list-group"*ngIf="direcctionList" >
+    <button type="button"
+            [ngClass]="{'active': direccion == marcador }" 
+            *ngFor="let direccion of direcctionList;let i=index" 
+            class="list-group-item list-group-item-action"
+            (click)="marcador=direccion">
+                Direccion {{i+1}}: {{direccion.descripcion}}
+    </button>
+</div>
+<agm-map [zoom]="15" 
+         [mapDraggable] = false
+         [streetViewControl]=false
+         [latitude]="marcador.coordenadas.lat"      
+         [longitude]="marcador.coordenadas.lng"
+         *ngIf="direcctionList" >
+    <agm-marker *ngFor="let direccion of direcctionList; let i = index" 
+                [latitude]="direccion.coordenadas.lat" 
+                [longitude]="direccion.coordenadas.lng"
+                iconUrl='assets/imgs/client.png'>
+                <agm-info-window [isOpen]=true>
+                    <strong>Direccion {{i+1}}</strong>
+                </agm-info-window>         
+    </agm-marker>
+</agm-map>

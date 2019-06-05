@@ -20,7 +20,7 @@ export class SchoolsService {
       return this.schoolList =this._angularFire.collection<School>(`/categorias/${word}/escuelas`)
       .snapshotChanges()
       .pipe( map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as any;
+        const data = a.payload.doc.data() as SchoolID;
         const id = a.payload.doc.id;
         return { id, ...data };
         })
@@ -35,9 +35,8 @@ export class SchoolsService {
                                          if (!actions.payload.exists) {
                                            return null;
                                          } else {
-                                           let data = actions.payload.data() as any;
+                                           let data = actions.payload.data() as SchoolID;
                                            data.id = actions.payload.id;
-                                           console.log(data);
                                            return data;
                                          }
                                        }))
@@ -68,17 +67,18 @@ export class SchoolsService {
 export interface School { 
   titulo: string; 
   categoria: [string]; 
-  contactos: {any}; 
+  contactos: {any};
+  datosInstructor:any, 
   descripciones: [string]; 
-  direcciones: {any}; 
+  direcciones: {any};
+  entrenadores:[any]; 
   frases: [string]; 
   horarios: {any}; 
   imageURL: string;
   instructor: string;
   precios: {any},
-  descuento: number;
-   
-
+  schoolCategory:any;
+  reviews:any;
 
 }
 

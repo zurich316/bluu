@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { SchoolsService } from '../../../services/schools.service';
+import { SchoolsService, School} from '../../../services/schools.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, Validators, ValidatorFn,FormArray} from '@angular/forms'
+import { FormGroup, FormControl, Validators} from '@angular/forms'
+
 
 
 @Component({
   selector: 'app-school-view',
   templateUrl: './school-view.component.html',
-  styles: []
+  styleUrls: ['./school-view.component.css']
 })
 export class SchoolViewComponent implements OnInit {
 
   categoryName:string="";
   schoolID:string="";
 
-  school:any=null;
+  school:School;
   
   reveiwForma:FormGroup;
   loading:boolean=true;
@@ -26,7 +27,6 @@ export class SchoolViewComponent implements OnInit {
             
     this.startReviewForm();
   }
-
   ngOnInit() {
 
     this.categoryName = this.route.snapshot.params['name']
@@ -37,9 +37,16 @@ export class SchoolViewComponent implements OnInit {
   }
 
   getSchoolDetail(){
-    this._schoolService.getSchool(this.categoryName,this.schoolID).subscribe((data:any)=>{
-      this.loading = false;
-      this.school=data;
+    this._schoolService.getSchool(this.categoryName,this.schoolID).subscribe((data:School)=>{
+          
+      this.school = data;
+      
+      if(this.school){
+        this.loading = false; 
+        //console.log(this.school)
+      }
+      
+      
     })
   }
 
@@ -52,7 +59,6 @@ export class SchoolViewComponent implements OnInit {
   }
 
   submitReview(){
-    //$('#exampleModal').modal('hide');
     const today = new Date();
     
     let newReview = this.reveiwForma.value;
@@ -68,7 +74,18 @@ export class SchoolViewComponent implements OnInit {
     this.school.reviews.push(newReview);
     this._schoolService.updateSchool(this.school);
     this.reveiwForma.reset();
-    console.log(this.school);
     
+  }
+
+  cambiarHoja(id:string){
+
+    let hojaActiva:any = document.getElementById(id);
+    let selectores:any = document.getElementsByClassName('collapse');
+
+    for(let ref of selectores){
+      ref.classList.remove('show');
+    }
+
+    hojaActiva.classList.add('show');
   }
 }

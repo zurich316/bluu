@@ -1,11 +1,7 @@
-<br>
-<br>
-
-<div class='container'>
+<div class='container bg-light' >
     <div class="py-5 text-center">
         <h2>Formulario nueva escuela </h2>
         <p class="lead">Ingresar los datos de la escuela y de quienes la conforman.</p>
     </div>
-        
     <app-school-form (sendFormSchool)="formResult($event)" [schoolForm]="newSchool"></app-school-form>
 </div>

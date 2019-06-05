@@ -4,7 +4,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-school-card',
   templateUrl: './school-card.component.html',
-  styles: []
+  styleUrls: ['./school-card.component.css']
 })
 export class SchoolCardComponent implements OnInit {
   @Input () schoolList:any=[];

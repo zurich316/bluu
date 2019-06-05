@@ -1,146 +1,275 @@
-<br>
-<br>
-<br>
-<div class="container mt-40" *ngIf="loading">
-  <app-loading></app-loading>
-</div>
-<div class="container mt-40"  *ngIf="!loading">
-<h5 class="card-title">{{school.titulo}}</h5>
 
-<div *ngFor="let descripcion of school.descripciones">
-    <p>{{descripcion}}</p>
-</div>
-<b>Frases</b>
-<div *ngFor="let frase of school.frases">
-  <p>
-    {{frase.contenido}}-<em>{{frase.autor}}</em>
-  </p>
-</div>
-<p> <b class="card-title">Encargado: </b> {{school.datosInstructor.nombre}} {{school.datosInstructor.apellido}}</p>
-<p> <b class="card-title">Correo: </b> {{school.datosInstructor.email}}</p>
-
-<p>{{school.instructor}}</p>
-  <b>Direcciones</b>
-  <div *ngFor="let direccion of school.direcciones;let i=index">
-      <p>Direccion {{i+1}}: {{direccion.descripcion}}</p>
-  </div>    
-      <agm-map [zoom]="17" [latitude]=-17.3673413 [longitude]=-66.1756479>
-        <agm-marker *ngFor="let direccion of school.direcciones" [latitude]="direccion.coordenadas.lat" [longitude]="direccion.coordenadas.lng"></agm-marker>
-      </agm-map>
-  
-
-  <b>Precios</b>
-  <div *ngFor="let precio of school.precios">
-      <p>{{precio.nota}} = {{precio.precio}}. </p>
-  </div>
-  <b>Horarios</b>
-  <div class="table-responsive" *ngFor="let Horario of school.horarios">
-      <table class="table table-dark">
-          <thead>
-            <tr>
-              <th scope="col">Hora</th>
-              <th scope="col">Lunes</th>
-              <th scope="col">Martes</th>
-              <th scope="col">Miercoles</th>
-              <th scope="col">Jueves</th>
-              <th scope="col">Viernes</th>
-              <th scope="col">Sabado</th>
-              <th scope="col">Domingo</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td> {{Horario.horario_inicio}} - {{Horario.horario_fin}}</td>
-              <td *ngFor="let dia of Horario.dias"><p *ngIf="dia">O</p> <p *ngIf="!dia">X</p> </td>
-            </tr>
-          </tbody>
-        </table>
-  </div>
-  <b>Contactos</b>
-  <div *ngFor="let Horario of school.contactos">
-    <p>{{Horario.tipo}} - {{Horario.numero}}  </p>
-</div>
-
-<hr>
-<div class="my-3 p-3 bg-white rounded box-shadow">
-  <div class="form-row border-bottom border-gray pb-2 mb-0">
-    <div class="col">
-        <h6 class="">Reseñas </h6>
-    </div>
-    <div class="col">
-        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal">Nueva reseña</button>
-    </div>
-  </div>
-  <div  class="media text-muted pt-3" *ngIf="  !school.reviews || school.reviews.length ===0"  >
-    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-      <strong class="d-block text-gray-dark">Ninguna reseña por el momento</strong>
-    </p>
-  </div>
-  <div class="media text-muted pt-3" *ngFor="let review of school.reviews; let i=index">
-    <img src="assets/imgs/star{{review.estrellas}}.jpg" alt="" width="50" height="50" class="mr-2 rounded img-thumbnail">
-    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-      <strong class="d-block text-gray-dark">{{review.email}}</strong>
-      <small class="d-block text-gray-dark">{{review.dia}} - {{review.hora}}  </small>
-      {{review.contenido}}
-    </p>
-    <small> </small>
-  </div>
-  
-</div>
-</div>
-
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Nueva reseña</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]='reveiwForma' (ngSubmit)="submitReview()">
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Reseña:</label>
-            <textarea class="form-control" 
-                      id="message-text"
-                      formControlName="contenido" 
-                      [ngClass]="{'is-invalid': reveiwForma.controls['contenido'].errors && ( reveiwForma.controls['contenido'].touched ||  reveiwForma.controls['contenido'].dirty )}" 
-                      placeholder="contenido">
-            </textarea>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="inputCity">City</label>
-              <input type="text" 
-                     class="form-control" 
-                     id="inputCity"
-                     formControlName="email" 
-                     placeholder="ejemplo@dominio.com"
-                     [ngClass]="{'is-invalid': reveiwForma.controls['email'].errors && ( reveiwForma.controls['email'].touched ||  reveiwForma.controls['email'].dirty )}">
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading" class="container">
+    <header id="main-header">
+        <div class="row no-gutters">
+            <div class="col-lg-4 col-md-5">
+                <img [src]="school.imageURL" [alt]="school.titulo">
             </div>
-            <div class="form-group col-md-6">
-              <label for="inputState">State</label>
-              <select formControlName="estrellas" 
-                      class="custom-select mr-sm-2"
-                      [ngClass]="{'is-invalid': reveiwForma.controls['estrellas'].errors && ( reveiwForma.controls['estrellas'].touched ||  reveiwForma.controls['estrellas'].dirty )}"  >
-                <option selected>--</option>
-                <option value=1>1</option>
-                <option value=2>2</option>
-                <option value=3>3</option>
-                <option value=4>4</option>
-                <option value=5>5</option>
-              </select>
+            <div class="col-lg-8 col-md-7">
+                <div class="d-flex flex-column">
+                    <div class="p-5 bg-dark text-white">
+                        <div class="d-flex flex-row justify-content-between aling-items-center">
+                            <h1 class="display-4">
+                              {{school.titulo}}
+                            </h1>
+                            <!-- <div class="d-none d-md-block">
+                                <a href="#" class="text-white">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="https://www.facebook.com/MuroCbba/" class="text-white">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#" class="text-white">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#" class="text-white">
+                                    <i class="fab fa-google"></i>
+                                </a>
+                            </div> -->
+                      </div>
+                  </div>
+                  <div class="p-4 bg-black">
+                      {{school.schoolCategory | titlecase}}
+                  </div>
+
+                  <div class="d-flex flex-row text-white  text-center">
+                        <div (click)="cambiarHoja('home')" class="port-item  bg-primary" data-toggle="collapse" >
+                            <i class="fas fa-home fa-2x d-block"></i>
+                            <span class="d-none d-sm-block">Descripcion</span>
+                        </div>
+                        <div   (click)="cambiarHoja('informacion')" class="port-item p-4 bg-success" data-toggle="collapse" >
+                            <i class="fas fa-map fa-2x d-block"></i>
+                            <span class="d-none d-sm-block">Informacion</span>
+                        </div>
+                        <div (click)="cambiarHoja('fotos')" class="port-item p-4 bg-warning" data-toggle="collapse">
+                            <i class="fas fa-address-book fa-2x d-block"></i>
+                            <span class="d-none d-sm-block">Fotos</span>
+                        </div>
+                        <div (click)="cambiarHoja('resena')" class="port-item p-4 bg-danger" data-toggle="collapse">
+                            <i class="fas fa-feather-alt fa-2x d-block"></i>
+                            <span class="d-none d-sm-block">Reseñas</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <button type="submit" [disabled]="!reveiwForma.valid" class="btn btn-primary">Publicar</button>
-          </div>
-        </form>
+        </div>
+    </header>
+
+  <div id="home" class="collapse show">
+      <div class="card card-body bg-primary text-white py-5">
+          <h2>Bienvenido {{school.titulo}}</h2>
       </div>
+      <div class="card card-body py-5">
+            <div *ngFor="let description of school.descripciones" >
+                <p>{{description}}</p>
+                <hr>
+            </div>
+            <div *ngIf="school.frases.length>0">
+                <div *ngFor="let frase of school.frases" >
+                    <p>"<i>{{frase.contenido}}</i>" - {{frase.autor}}</p>
+                    <hr>
+                </div>
+            </div>
+            
+
+      </div>
+  </div>
+
+  <div id="informacion" class="collapse">
       
-    </div>
+      <div class="card card-body bg-success text-white py-5">
+          <h2>Informacion</h2>
+      </div>
+      <div class="card card-body py-5">
+            <h3>Responsable del curso</h3>
+            <p>Nombre: {{school.datosInstructor.nombre}} {{school.datosInstructor.apellido}}</p>
+            <p>Correo: {{school.datosInstructor.email}}</p>
+            <hr>
+            <h3>Horarios</h3>
+            <div class="table-responsive" *ngFor="let Horario of school.horarios">
+                <table class="table table-dark">
+                    <thead>
+                    <tr>
+                        <th scope="col">Hora</th>
+                        <th scope="col">Lunes</th>
+                        <th scope="col">Martes</th>
+                        <th scope="col">Miercoles</th>
+                        <th scope="col">Jueves</th>
+                        <th scope="col">Viernes</th>
+                        <th scope="col">Sabado</th>
+                        <th scope="col">Domingo</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td> {{Horario.horario_inicio}} - {{Horario.horario_fin}}</td>
+                        <td *ngFor="let dia of Horario.dias">
+                            <ng-container *ngIf="dia; else elseTemplate">
+                                <td bgcolor="#00FF00"></td>
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                                <td bgcolor="#FF0000"></td>
+                            </ng-template>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <h3>Precios</h3>
+            <p *ngFor="let precio of school.precios">
+                {{precio.nota}} - {{precio.precio}} Bs.
+            </p>
+            <hr>
+            <h3>Ubicacion</h3>
+            <p>Puede seleccionar la ubicacion de la escuela</p>
+            <app-maps-module [direcctionList]="school.direcciones"></app-maps-module>
+            
+      </div>
   </div>
+
+  <div id="fotos" class="collapse">
+      <div class="card card-body bg-warning text-white py-5">
+          <h2>Fotos</h2>
+      </div>
+      <div class="card card-body py-5">
+          <!-- <h3>Fotos</h3> -->
+          <h1 class="text-center">Proximamente</h1>
+          <!-- <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, pariatur dolorem dolor blanditiis voluptatum ab.</p> -->
+          <!-- <div class="row no-gutters">
+              <div class="col-md-3">
+                  <a href="images/vistaEscuela/1.jpg" data-toggle="lightbox"><img src="images/vistaEscuela/1.jpg" alt="" class="img-fluid"></a>
+              </div>
+              <div class="col-md-3">
+                  <a href="images/vistaEscuela/2.jpg" data-toggle="lightbox"><img src="images/vistaEscuela/2.jpg" alt="" class="img-fluid"></a>
+              </div>
+              <div class="col-md-3">
+                  <a href="images/vistaEscuela/3.jpg" data-toggle="lightbox"><img src="images/vistaEscuela/3.jpg" alt="" class="img-fluid"></a>
+              </div>
+              <div class="col-md-3">
+                  <a href="images/vistaEscuela/4.jpg" data-toggle="lightbox"><img src="images/vistaEscuela/4.jpg" alt="" class="img-fluid"></a>
+              </div>
+              <div class="col-md-3">
+                  <a href="images/vistaEscuela/5.jpg" data-toggle="lightbox"><img src="images/vistaEscuela/5.jpg" alt="" class="img-fluid"></a>
+              </div>
+              <div class="col-md-3">
+                  <a href="images/vistaEscuela/6.jpg" data-toggle="lightbox"><img src="images/vistaEscuela/6.jpg" alt="" class="img-fluid"></a>
+              </div>
+          </div> -->
+          <hr>
+            
+            
+            
+
+      </div>
+  </div>
+  <div id="resena" class="collapse">
+      <div class="card card-body bg-danger text-white py-5">
+          <h2>Reseña</h2>
+      </div>
+      <div class="card card-body py-5">
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                    <div class="form-row border-bottom border-gray pb-2 mb-0">
+                      <div class="col">
+                          <h6 class="">Reseñas </h6>
+                      </div>
+                      <div class="col">
+                          <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal">Nueva reseña</button>
+                      </div>
+                    </div>
+                    <div  class="media text-muted pt-3" *ngIf="  !school.reviews || school.reviews.length ===0"  >
+                      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark">Ninguna reseña por el momento</strong>
+                      </p>
+                    </div>
+                    <div class="media text-muted pt-3" *ngFor="let review of school.reviews; let i=index">
+                      <img src="assets/imgs/star{{review.estrellas}}.jpg" alt="" width="50" height="50" class="mr-2 rounded img-thumbnail">
+                      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark">{{review.email}}</strong>
+                        <small class="d-block text-gray-dark">{{review.dia}} - {{review.hora}}  </small>
+                        {{review.contenido}}
+                      </p>
+                      <small> </small>
+                    </div>
+                    
+                  </div>
+      </div>
+  </div>
+
+  <footer id=footer class="p-5 bg-dark text-white">
+      <div class="row">
+          <div class="col-md-6">
+              <!-- <a href="#" class="btn btn-outline-light">
+                  <i class="fas fa-cloud"></i> inscribirse
+              </a> -->
+          </div>
+
+      </div>
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nueva reseña</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]='reveiwForma' (ngSubmit)="submitReview()">
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Reseña:</label>
+              <textarea class="form-control" 
+                        id="message-text"
+                        formControlName="contenido" 
+                        [ngClass]="{'is-invalid': reveiwForma.controls['contenido'].errors && ( reveiwForma.controls['contenido'].touched ||  reveiwForma.controls['contenido'].dirty )}" 
+                        placeholder="contenido">
+              </textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputCity">Correo</label>
+                <input type="text" 
+                      class="form-control" 
+                      id="inputCity"
+                      formControlName="email" 
+                      placeholder="ejemplo@dominio.com"
+                      [ngClass]="{'is-invalid': reveiwForma.controls['email'].errors && ( reveiwForma.controls['email'].touched ||  reveiwForma.controls['email'].dirty )}">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputState">Calificacion</label>
+                <select formControlName="estrellas" 
+                        class="custom-select mr-sm-2"
+                        [ngClass]="{'is-invalid': reveiwForma.controls['estrellas'].errors && ( reveiwForma.controls['estrellas'].touched ||  reveiwForma.controls['estrellas'].dirty )}"  >
+                  <option selected>--</option>
+                  <option value=1>1</option>
+                  <option value=2>2</option>
+                  <option value=3>3</option>
+                  <option value=4>4</option>
+                  <option value=5>5</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="submit" [disabled]="!reveiwForma.valid" class="btn btn-primary">Publicar</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div> 
+
+
+
 </div>
