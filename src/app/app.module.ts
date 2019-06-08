@@ -32,7 +32,7 @@ import { SchoolNewComponent } from './pages/schools/school-new/school-new.compon
 import { SchoolFormComponent } from './pages/schools/school-form/school-form.component';
 import { SchoolEditComponent } from './pages/schools/school-edit/school-edit.component';
 import { SchoolModalReviewComponent } from './pages/schools/school-modal-review/school-modal-review.component';
-import { MapsModuleComponent } from './pages/maps-module/maps-module.component';
+import { MapsModuleComponent } from './components/maps-module/maps-module.component';
 
 @NgModule({
   declarations: [
