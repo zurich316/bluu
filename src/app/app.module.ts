@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { DropZoneDirective } from './directives/drop-zone.directive';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -48,7 +47,6 @@ import { MapsModuleComponent } from './components/maps-module/maps-module.compon
     SchoolEditComponent,
     LoadingComponent,
     SchoolModalReviewComponent,
-    DropZoneDirective,
     MapsModuleComponent
   ],
   imports: [
