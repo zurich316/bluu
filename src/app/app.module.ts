@@ -4,6 +4,9 @@ import { FormsModule, ReactiveFormsModule} from '@angular/forms'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 // Lenguaje
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
@@ -32,6 +35,7 @@ import { SchoolFormComponent } from './pages/schools/school-form/school-form.com
 import { SchoolEditComponent } from './pages/schools/school-edit/school-edit.component';
 import { SchoolModalReviewComponent } from './pages/schools/school-modal-review/school-modal-review.component';
 import { MapsModuleComponent } from './components/maps-module/maps-module.component';
+import { SendMessagesComponent } from './components/send-messages/send-messages.component';
 
 @NgModule({
   declarations: [
@@ -47,12 +51,15 @@ import { MapsModuleComponent } from './components/maps-module/maps-module.compon
     SchoolEditComponent,
     LoadingComponent,
     SchoolModalReviewComponent,
-    MapsModuleComponent
+    MapsModuleComponent,
+    SendMessagesComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(), // ToastrModule added
     ReactiveFormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
