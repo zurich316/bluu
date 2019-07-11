@@ -68,7 +68,7 @@ export interface School {
   titulo: string; 
   categoria: [string]; 
   contactos: {any};
-  datosInstructor:any, 
+  datosInstructor:any; 
   descripciones: [string]; 
   direcciones: {any};
   entrenadores:[any]; 
@@ -76,7 +76,7 @@ export interface School {
   horarios: {any}; 
   imageURL: string;
   instructor: string;
-  precios: {any},
+  precios: {any};
   schoolCategory:any;
   reviews:any;
 

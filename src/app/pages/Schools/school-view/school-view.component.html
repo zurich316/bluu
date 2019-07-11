@@ -13,6 +13,7 @@
                             <h1 class="display-4">
                               {{school.titulo}}
                             </h1>
+                            
                             <!-- <div class="d-none d-md-block">
                                 <a href="#" class="text-white">
                                     <i class="fab fa-twitter"></i>
@@ -40,7 +41,7 @@
                   </div>
 
                   <div class="d-flex flex-row text-white  text-center">
-                        <div (click)="cambiarHoja('home')" class="port-item  bg-primary" data-toggle="collapse" >
+                        <div (click)="cambiarHoja('home')" class="port-item p-4 bg-primary" data-toggle="collapse" >
                             <i class="fas fa-home fa-2x d-block"></i>
                             <span class="d-none d-sm-block">Descripcion</span>
                         </div>
@@ -53,8 +54,8 @@
                             <span class="d-none d-sm-block">Fotos</span>
                         </div>
                         <div (click)="cambiarHoja('resena')" class="port-item p-4 bg-danger" data-toggle="collapse">
-                            <i class="fas fa-feather-alt fa-2x d-block"></i>
-                            <span class="d-none d-sm-block">Reseñas</span>
+                            <i class="fas fa-envelope fa-2x d-block"></i>
+                            <span class="d-none d-sm-block">Contactanos</span>
                         </div>
                     </div>
                 </div>
@@ -76,6 +77,31 @@
                     <p>"<i>{{frase.contenido}}</i>" - {{frase.autor}}</p>
                     <hr>
                 </div>
+            </div>
+            <hr>
+            <div class="form-row border-bottom border-gray pb-2 mb-0">
+                <div class="col">
+                    <h6 class="">Reseñas </h6>
+                </div>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal">
+                        Nueva reseña
+                    </button>
+                </div>
+            </div>
+            <div  class="media text-muted pt-3" *ngIf="  !school.reviews || school.reviews.length ===0"  >
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                <strong class="d-block text-gray-dark">Ninguna reseña por el momento</strong>
+                </p>
+            </div>
+            <div class="media text-muted pt-3" *ngFor="let review of school.reviews; let i=index">
+                <img src="assets/imgs/star{{review.estrellas}}.jpg" alt="" width="50" height="50" class="mr-2 rounded img-thumbnail">
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                <strong class="d-block text-gray-dark">{{review.email}}</strong>
+                <small class="d-block text-gray-dark">{{review.dia}} - {{review.hora}}  </small>
+                {{review.contenido}}
+                </p>
+                <small> </small>
             </div>
             
 
@@ -170,38 +196,14 @@
 
       </div>
   </div>
-  <div id="resena" class="collapse">
-      <div class="card card-body bg-danger text-white py-5">
-          <h2>Reseña</h2>
-      </div>
-      <div class="card card-body py-5">
-            <div class="my-3 p-3 bg-white rounded box-shadow">
-                    <div class="form-row border-bottom border-gray pb-2 mb-0">
-                      <div class="col">
-                          <h6 class="">Reseñas </h6>
-                      </div>
-                      <div class="col">
-                          <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal">Nueva reseña</button>
-                      </div>
-                    </div>
-                    <div  class="media text-muted pt-3" *ngIf="  !school.reviews || school.reviews.length ===0"  >
-                      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                        <strong class="d-block text-gray-dark">Ninguna reseña por el momento</strong>
-                      </p>
-                    </div>
-                    <div class="media text-muted pt-3" *ngFor="let review of school.reviews; let i=index">
-                      <img src="assets/imgs/star{{review.estrellas}}.jpg" alt="" width="50" height="50" class="mr-2 rounded img-thumbnail">
-                      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                        <strong class="d-block text-gray-dark">{{review.email}}</strong>
-                        <small class="d-block text-gray-dark">{{review.dia}} - {{review.hora}}  </small>
-                        {{review.contenido}}
-                      </p>
-                      <small> </small>
-                    </div>
-                    
-                  </div>
-      </div>
-  </div>
+    <div id="resena" class="collapse">
+        <div class="card card-body bg-danger text-white py-5">
+            <h2>Contactanos</h2>
+        </div>
+        <div class="card card-body py-5">
+            <app-send-messages></app-send-messages>
+        </div>
+    </div>
 
   <footer id=footer class="p-5 bg-dark text-white">
       <div class="row">
@@ -229,7 +231,6 @@
             <div class="form-group">
               <label for="message-text" class="col-form-label">Reseña:</label>
               <textarea class="form-control" 
-                        id="message-text"
                         formControlName="contenido" 
                         [ngClass]="{'is-invalid': reveiwForma.controls['contenido'].errors && ( reveiwForma.controls['contenido'].touched ||  reveiwForma.controls['contenido'].dirty )}" 
                         placeholder="contenido">
@@ -240,7 +241,6 @@
                 <label for="inputCity">Correo</label>
                 <input type="text" 
                       class="form-control" 
-                      id="inputCity"
                       formControlName="email" 
                       placeholder="ejemplo@dominio.com"
                       [ngClass]="{'is-invalid': reveiwForma.controls['email'].errors && ( reveiwForma.controls['email'].touched ||  reveiwForma.controls['email'].dirty )}">
