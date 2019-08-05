@@ -1,24 +1,8 @@
-<!-- <main role="main">
-    <div class="album py-5 bg-light">
-        <div class="container">
-        <div class="row">
-            <div class="col-md-4" *ngFor="let school of schoolList">
-                <div class="card mb-4 box-shadow">
-                    <img class="card-img-top" [src]="school.imageURL" alt="Card image cap">
-                    <div class="card-body text-center">
-                        <b class="card-text ">{{school.titulo}}</b>
-                        <button type="button" (click)="getSchool(school.id)" class="btn btn-primary btn-lg btn-block">Ver</button>            
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-    </div>
-</main> -->
+
 
 <ul id="rig">
     <li *ngFor="let school of schoolList">
-        <a class="rig-cell"(click)="getSchool(school.id)">
+        <a class="rig-cell" [routerLink]="[ 'detalles', school.id ]">
             <img class="rig-img" [src]="school.imageURL">
             <span class="rig-overlay"></span>
             <span class="rig-text">{{school.titulo}}</span>

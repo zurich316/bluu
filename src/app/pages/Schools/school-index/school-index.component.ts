@@ -8,9 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./school-index.component.css']
 })
 export class SchoolIndexComponent{
-  name: string;
-  schoolList:[]=[];
-
+  disciplina: string;
+  schoolList:any =[];
+  newList:any=[];
   loading:boolean = true;
 
   constructor(public _schoolService:SchoolsService,
@@ -18,15 +18,16 @@ export class SchoolIndexComponent{
               private router:Router) { 
                 this.route.params
                         .subscribe(params=>{
-                  this.name = params['name'];
-                  this.getListSchool(this.name);        
+                  this.disciplina = params['name'];
+                  this.getListSchool(this.disciplina);
+                        
                 })
               }
 
   
 
   getSchool(id){
-    this.router.navigate(['/escuela',this.name,id]);
+    this.router.navigate(['/escuela',this.disciplina,id]);
   }
 
   getListSchool(category:string){
@@ -34,7 +35,60 @@ export class SchoolIndexComponent{
                        .subscribe((data:any)=>{
                         this.schoolList=data;
                         this.loading = false;
+                        this.chose(this.disciplina); 
                        });
+  }
+
+
+  chose(disciplina:string){
+    switch (disciplina) {
+      case 'artes':
+        
+        let artes = [this.schoolList[0]];
+        let musica = [this.schoolList[1]];
+        let danza = [this.schoolList[2]];
+        
+        this.newList = [
+          {
+            'tipo':"artes",
+            lista:artes
+          },
+          {
+            'tipo':"musica",
+            lista:musica
+          },
+          {
+            'tipo':"danza",
+            lista:danza
+          },
+        ]
+
+        console.log(this.newList);
+        break;
+      
+      case 'deportes': 
+      let otros=this.schoolList.splice(6,1)
+      this.newList = [
+        {
+          'tipo':"artes marciales",
+          lista:this.schoolList
+        },
+        {'tipo':"otros",
+          lista:otros
+        }
+      ]
+
+      break; 
+    
+      default:
+        this.newList = [{
+          'tipo':"otros",
+           lista:this.schoolList
+        }]
+
+        console.log(this.newList);
+        break;
+    }
   }
 
 }

@@ -10,12 +10,12 @@ import { SchoolNewComponent } from './pages/schools/school-new/school-new.compon
 
 
 const routes: Routes = [
-  {path: 'escuela', component: HomeComponent },
-  {path: 'escuela/nuevo', component: SchoolNewComponent },
-  {path: 'escuela/:name', component: SchoolIndexComponent },
-  {path: 'escuela/:name/:id', component: SchoolViewComponent },
-  {path: 'escuela/:name/:id/editar', component: SchoolEditComponent},
-  {path: '**', pathMatch: 'full', redirectTo:'escuela'}
+  {path: 'escuelas', component: HomeComponent },
+  {path: 'escuelas/nuevo', component: SchoolNewComponent },
+  {path: 'escuelas/disciplina/:name', component: SchoolIndexComponent },
+  {path: 'escuelas/disciplina/:name/detalles/:id', component: SchoolViewComponent },
+  {path: 'escuelas/disciplina/:name/detalles/:id/editar', component: SchoolEditComponent},
+  {path: '**', pathMatch: 'full', redirectTo:'escuelas'}
 ];
 
 @NgModule({
