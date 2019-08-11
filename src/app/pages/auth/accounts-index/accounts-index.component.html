@@ -1,0 +1,35 @@
+<div class="container">
+  
+  <h1 class="text-white text-center">Administracion de cuentas</h1>
+  <div class="col text-right">
+    <button [routerLink]="'nuevo'"
+            class="btn btn-primary">
+      <i class="fa fa-plus"></i>
+      Agregar
+    </button>
+  </div>
+  <hr>
+  <table class="table table-light">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Correo</th>
+        <th scope="col">Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let accont of accontsList; let i =index">
+        <th scope="row">{{i+1}}</th>
+        <td>{{accont.name}}</td>
+        <td>{{accont.email}}</td>
+        <ng-container *ngIf="accont.active; else deactive">
+          <td>Activado</td>
+        </ng-container>
+        <ng-template #deactive>
+          <td>Desactivado</td>
+        </ng-template>
+      </tr>
+    </tbody>
+  </table>
+</div>
