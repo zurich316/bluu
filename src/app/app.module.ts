@@ -10,6 +10,12 @@ import { APP_ROUTES_SCHOOLS,
          APP_MODULE_DECLARATIONS, 
          APP_ROUTES_COMPONENTS, 
          APP_MODULE_IMPORTS } from './app.module.dependecies';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// Materials module
+import { MaterialModule, providerMaterials } from './materials.module';
+import { InformationComponent } from './shared/information/information.component';
+import { PagesComponent } from './pages/pages/pages.component';
 
 
 @NgModule({
@@ -17,12 +23,18 @@ import { APP_ROUTES_SCHOOLS,
     AppComponent,
     APP_ROUTES_SCHOOLS,
     APP_MODULE_DECLARATIONS,
-    APP_ROUTES_COMPONENTS
+    APP_ROUTES_COMPONENTS,
+    InformationComponent,
+    PagesComponent
   ],
   imports: [
-    APP_MODULE_IMPORTS
+    APP_MODULE_IMPORTS,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
-  providers: [ { provide: LOCALE_ID, useValue:'es-Es' } ],
+  providers: [  
+    { provide: LOCALE_ID, useValue:'es-Es' },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

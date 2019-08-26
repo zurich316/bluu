@@ -1,13 +1,12 @@
-
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 body {
   height: 100%
 }
 
 body {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  background: linear-gradient(rgb(7, 11, 34), rgb(25, 168, 228)) no-repeat center center fixed;
+  background: linear-gradient( rgb(35, 72, 108),rgb(25, 165, 228)) no-repeat center center fixed;
   margin: 0;
   padding: 0;
   width: 100vw;
 }
-

@@ -1,0 +1,42 @@
+
+<div class="container text-center mt-5">
+    <div class="flex-w flex-c cd100 wsize1 bor1">
+        <img src="assets/imgs/logo2.png" alt="Bluu">
+    </div>
+    <div class="flex-col-c w-full p-t-50 p-b-250">
+        <h3 class="title-Bold p-b-10 title-Bold">
+            Próximamente
+        </h3>   
+        
+        <p class="p-b-43 body-calibri">
+            Nuestra página todavía se encuentra en construcción. <br>Por favor ingrese sus datos para mantenerse al tanto.
+        </p>
+        
+        <form (ngSubmit)="createSubscription(usuarioForm)" #usuarioForm="ngForm">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input type="email" 
+                           [(ngModel)]="usuario.email" 
+                           name="email"
+                           class="form-control form-rounded" 
+                           placeholder="Correo electronico"
+                           email
+                           required>  
+                </div>
+                <div class="form-group col-md-4">
+                     <input type="text" 
+                            [(ngModel)]="usuario.nombre" 
+                            name="nombre"
+                            class="form-control form-rounded" 
+                            placeholder="Nombre compleato"
+                            required
+                            minlength="4">
+                </div>
+                <div class="form-group col-md-4">
+                    <button  type="submit" class="btn btn-info btn-block">¡Mantenerme al tanto!</button>
+                </div>
+                
+            </div>
+        </form>      
+    </div>
+</div>
