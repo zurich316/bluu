@@ -8,6 +8,7 @@ import { SchoolViewComponent } from './pages/schools/school-view/school-view.com
 import { SchoolEditComponent } from './pages/schools/school-edit/school-edit.component';
 import { SchoolNewComponent } from './pages/schools/school-new/school-new.component';
 import { LoginComponent } from './pages/auth/login/login.component';
+import { SignInComponent } from './pages/auth/sign-in/sign-in.component';
 import { AccountsIndexComponent } from './pages/auth/accounts-index/accounts-index.component';
 import { AccountsNewComponent } from './pages/auth/accounts-new/accounts-new.component';
 import { InformationComponent } from './shared/information/information.component';
@@ -15,6 +16,7 @@ import { InformationComponent } from './shared/information/information.component
 const routes: Routes = [
   //{path: 'proximamente', component: InformationComponent},
   {path: 'login', component: LoginComponent },
+  {path: 'sign-in', component: SignInComponent },
   {path: 'cuentas', component: AccountsIndexComponent },
   {path: 'cuentas/nuevo', component: AccountsNewComponent },
   {path: 'escuelas', component: HomeComponent },

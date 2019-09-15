@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule, providerMaterials } from './materials.module';
 import { InformationComponent } from './shared/information/information.component';
 import { PagesComponent } from './pages/pages/pages.component';
+import { SignInComponent } from './pages/auth/sign-in/sign-in.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { PagesComponent } from './pages/pages/pages.component';
     APP_MODULE_DECLARATIONS,
     APP_ROUTES_COMPONENTS,
     InformationComponent,
-    PagesComponent
+    PagesComponent,
+    SignInComponent
   ],
   imports: [
     APP_MODULE_IMPORTS,

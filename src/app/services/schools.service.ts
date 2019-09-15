@@ -60,6 +60,18 @@ export class SchoolsService {
 
   }
 
+  subcribe(studentID,schoolID){
+    console.log(studentID)
+    console.log(schoolID)
+    
+    this._angularFire.collection('schoolSubscribe')
+                     .doc(`${studentID}${schoolID}`)
+                     .set({
+                       studentID:studentID,
+                       schoolID:schoolID
+                     })
+  }
+
 
 }
 

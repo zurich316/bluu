@@ -18,7 +18,7 @@ import { SchoolEditComponent } from './pages/schools/school-edit/school-edit.com
 import { SchoolModalReviewComponent } from './pages/schools/school-modal-review/school-modal-review.component';
 import { MapsModuleComponent } from './components/maps-module/maps-module.component';
 import { SendMessagesComponent } from './components/send-messages/send-messages.component';
-import { HeaderComponent } from './_nav/header/header.component';
+import { HeaderComponent } from './shared/header/header.component';
 import { LoadingComponent } from './components/loading/loading.component';
 
 // Imports

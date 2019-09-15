@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SchoolsService, School} from '../../../services/schools.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators} from '@angular/forms'
-
-
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-school-view',
@@ -23,7 +22,7 @@ export class SchoolViewComponent implements OnInit {
   emailValidator:string="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$";
   constructor(public _schoolService:SchoolsService,
               private route: ActivatedRoute,
-              private router:Router) {
+              public _auth:AuthService) {
             
     this.startReviewForm();
   }
@@ -88,4 +87,14 @@ export class SchoolViewComponent implements OnInit {
 
     hojaActiva.classList.add('show');
   }
+
+  subscribeToSchool(){
+    if(!this._auth.isUserLoggedIn()){
+      return;
+    }
+
+    this._schoolService.subcribe(this._auth.user.uid,this.schoolID);
+  }
+
+
 }

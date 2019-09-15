@@ -1,3 +1,58 @@
-<div class="containre bg-white">
+<div class="container mt-4">
+  <mat-card>
+    <mat-card-content>
+      <h2 class="example-h2">Nuevo administrador</h2>
 
-</div>
+      <form  [formGroup]="userForm" (ngSubmit)="createUser()" class="example-form">
+        <div class="example-container">
+          <mat-form-field>
+            <input matInput 
+                   type="text" 
+                   placeholder="Nombre completo"
+                   formControlName="name">   
+            <mat-error *ngIf="name.hasError('required') && name.touched">
+              Nombre es <strong>obligatorio</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput 
+                   type="email" 
+                   placeholder="Correo electronico"
+                   formControlName="email">   
+            <mat-error *ngIf="email.hasError('email') && email.touched">
+              Ingresar correo valida
+            </mat-error>
+            <mat-error *ngIf="email.hasError('required') && email.touched">
+              Correo es <strong>obligatorio</strong>
+            </mat-error>
+            <mat-error *ngIf="email.hasError('invalidUsername') && email.touched">
+              El correo <strong>{{email.value}}</strong> ya esta registrado
+            </mat-error>
+          </mat-form-field>
+           <mat-form-field>
+            <input matInput
+                   type="password" 
+                   placeholder="Contraseña"
+                   formControlName="password">
+            <mat-error *ngIf="password.hasError('required') && password.touched">
+              Contraseña es <strong>obligatorio</strong>
+            </mat-error>
+            <mat-error *ngIf="password.hasError('minlength') && password.touched">
+                Minimo <strong>{{password.errors['minlength'].requiredLength}}</strong> caracteres
+            </mat-error>       
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="password"
+                   placeholder="Contraseña verificar"
+                   formControlName="passwordConfirm">   
+            <mat-error *ngIf="passwordConfirm.hasError('NoPassswordMatch') && passwordConfirm.touched">
+              No coincide con la contraseña
+            </mat-error>           
+          </mat-form-field>
+        </div>
+        <button mat-raised-button class="btn-block" color="primary" type="submit" >Crear usuario</button>
+      </form>
+    </mat-card-content>
+  </mat-card>  
+</div> 
+

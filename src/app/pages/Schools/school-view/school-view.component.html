@@ -1,6 +1,6 @@
 
 <app-loading *ngIf="loading"></app-loading>
-<div *ngIf="!loading" class="container">
+<div *ngIf="!loading">
     <header id="main-header">
         <div class="row no-gutters">
             <div class="col-lg-4 col-md-5">
@@ -13,7 +13,11 @@
                             <h1 class="display-4">
                               {{school.titulo}}
                             </h1>
-                            
+                            <div class="d-none d-md-block" *ngIf="_auth.isUserLoggedIn()">
+                                <button type="button" (click)="subscribeToSchool()" class="btn btn-outline-info btn-sm">
+                                    Inscriirse
+                                </button>
+                            </div>
                             <!-- <div class="d-none d-md-block">
                                 <a href="#" class="text-white">
                                     <i class="fab fa-twitter"></i>

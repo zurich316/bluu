@@ -1,87 +1,82 @@
-import { Injectable } from '@angular/core';
-import Swal from 'sweetalert2'
-
-import { Router } from  "@angular/router";
+import { Injectable, NgZone } from '@angular/core';
+// Firebase
+import { User } from  'firebase';
 import { auth } from  'firebase/app';
 import { AngularFireAuth } from  "@angular/fire/auth";
-import { User } from  'firebase';
-import { ToastrService } from 'ngx-toastr';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  
   user:  User;
 
-  constructor(public  afAuth:  AngularFireAuth, 
-              public  router:  Router,
-              private toastr: ToastrService) { 
+  constructor(public  afAuth:AngularFireAuth,
+              public _angularFire:AngularFirestore,
+              public ngZone: NgZone) { 
     this.afAuth.authState.subscribe(user => {
       if (user){
         this.user = user;
         localStorage.setItem('user', JSON.stringify(this.user));
+        
       } else {
+        this.user = null;
         localStorage.setItem('user', null);
       }
     })
-
-    this.afAuth.auth.signInWithPopup
   }
-
-  async register(email: string, password: string) {
-    var result = await this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-    this.sendEmailVerification();
-  }
-
   async login(email: string, password: string) {
-    Swal.fire({
-      allowOutsideClick:false,
-      type:'info',
-      text:"Iniciando loggin"
-    });
-    Swal.showLoading();
-    
-    var result = await this.afAuth.auth.signInWithEmailAndPassword(email, password).then(value => {
-      console.log(value);
-      Swal.close();
-      console.log('Nice, it worked!');
-      this.router.navigate(['/escuelas']);
-    })
-    .catch(err => {
-      Swal.fire({
-        type:'error',
-        title:'Error',
-        text: err.message
-      });
-      console.log('Something went wrong:',err.message);
-    });
-    //
+    return await this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
-  
+ 
+  register(email: string, password: string) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+  }
+ 
   async sendEmailVerification() {
-    await this.afAuth.auth.currentUser.sendEmailVerification()
-    this.router.navigate(['admin/verify-email']);
+    return await this.afAuth.auth.currentUser.sendEmailVerification();
   }
-
+ 
   async sendPasswordResetEmail(passwordResetEmail: string) {
     return await this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail);
   }
-
-  async logout(){
-    await this.afAuth.auth.signOut();
-    localStorage.removeItem('user');
-    this.router.navigate(['login']);
+ 
+  async logout() {
+     return await this.afAuth.auth.signOut();
+  }
+ 
+ 
+  isUserLoggedIn() {
+    return JSON.parse(localStorage.getItem('user'));
+  }
+ 
+  async  loginWithGoogle() {
+    return await this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
   }
 
-  get isLoggedIn(): boolean {
-    const  user  =  JSON.parse(localStorage.getItem('user'));
-    return  user  !==  null;
-  } 
-
-  async  loginWithGoogle(){
-    await  this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
-    this.router.navigate(['admin/list']);
+  studentControl(user: User): boolean {
+    const allowed = ['admin', 'estudiante', 'profesor']
+    return this.checkAuthorization(user, allowed)
   }
+  profesorControl(user: User): boolean {
+    const allowed = ['admin', 'profesor']
+    return this.checkAuthorization(user, allowed)
+  }
+  adminControl(user: User): boolean {
+    const allowed = ['admin']
+    return this.checkAuthorization(user, allowed)
+  }
+
+  private checkAuthorization(user: any, allowedRoles: string[]): boolean {
+    if (!user) return false
+    for (const role of allowedRoles) {
+      if ( user.roles[role] ) {
+        return true
+      }
+    }
+    return false
+  }
+
+
 }
