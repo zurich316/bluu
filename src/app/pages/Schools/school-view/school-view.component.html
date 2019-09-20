@@ -14,8 +14,8 @@
                               {{school.titulo}}
                             </h1>
                             <div class="d-none d-md-block" *ngIf="_auth.isUserLoggedIn()">
-                                <button type="button" (click)="subscribeToSchool()" class="btn btn-outline-info btn-sm">
-                                    Inscriirse
+                                <button type="button" (click)="generarNuevoCodigo()"  data-toggle="modal" data-target="#inscribirseModal" class="btn btn-outline-info btn-sm">
+                                    Inscribirse
                                 </button>
                             </div>
                             <!-- <div class="d-none d-md-block">
@@ -88,7 +88,7 @@
                     <h6 class="">Reseñas </h6>
                 </div>
                 <div class="col text-right">
-                    <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#ratingModal">
                         Nueva reseña
                     </button>
                 </div>
@@ -219,13 +219,59 @@
 
       </div>
   </footer>
-
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- Modal inscribirse-->
+  <div [hidden]="IsmodelShow" class="modal fade" id="inscribirseModal" tabindex="-1" role="dialog" aria-labelledby="inscribirseModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Nueva reseña</h5>
+          <h5 class="modal-title" id="inscribirseModalLabel">{{school.titulo}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>Precios:</p>
+            <div class="form-check" *ngFor="let precio of school.precios">
+                <input class="form-check-input" name="pricesRadios" type="radio"[value]="precio.precio" checked>
+                <label class="form-check-label">
+                    {{precio.precio}} Bs.
+                </label>
+            </div>
+            <P>Elija forma de pago:</P>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" name="purchaseRadios" type="radio" value="option1" checked>
+                <label class="form-check-label" for="inlineCheckbox1">Bisa</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" name="purchaseRadios" type="radio" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">MSC</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" name="purchaseRadios" type="radio" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Banco Union</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" name="purchaseRadios" type="radio" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">BNB</label>
+            </div>
+            <p>Codigo: {{codigo}}</p>
+        </div>
+
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" (click)="cerrar()" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal raiting -->
+  <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ratingModalLabel">Nueva reseña</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

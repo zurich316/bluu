@@ -1,7 +1,8 @@
 // Header y Home
 import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/auth/login/login.component';
-import { AboutComponent } from './pages/about/about.component';
+import { LoginComponent } from './pages/login/login.component';
+import { InformationComponent } from './components/information/information.component';
+
 //Auth
 import { AccountsIndexComponent } from './pages/auth/accounts-index/accounts-index.component';
 import { AccountsNewComponent } from './pages/auth/accounts-new/accounts-new.component';
@@ -15,11 +16,14 @@ import { SchoolFormComponent } from './pages/schools/school-form/school-form.com
 import { SchoolEditComponent } from './pages/schools/school-edit/school-edit.component';
 
 //Components
-import { SchoolModalReviewComponent } from './pages/schools/school-modal-review/school-modal-review.component';
+import { PagesComponent } from './pages/pages.component';
 import { MapsModuleComponent } from './components/maps-module/maps-module.component';
 import { SendMessagesComponent } from './components/send-messages/send-messages.component';
-import { HeaderComponent } from './shared/header/header.component';
-import { LoadingComponent } from './components/loading/loading.component';
+import { HeaderComponent } from './components/header/header.component';import { LoadingComponent } from './components/loading/loading.component';
+import { SignInComponent } from './pages/login/sign-in.component';
+import { PurchaseComponent } from './components/modals/purchase/purchase.component';
+import { PurchaseDoneComponent } from './components/modals/purchase-done/purchase-done.component';
+
 
 // Imports
 import { BrowserModule } from '@angular/platform-browser';
@@ -45,15 +49,18 @@ export const APP_ROUTES_SCHOOLS = [
     SchoolNewComponent,
     SchoolFormComponent,
     SchoolEditComponent,
-    SchoolModalReviewComponent,
 ];
 
 export const APP_MODULE_DECLARATIONS = [   
     HomeComponent,
-    AboutComponent,
     LoginComponent,
     AccountsIndexComponent,
-    AccountsNewComponent
+    AccountsNewComponent,
+    InformationComponent,
+    PagesComponent,
+    SignInComponent,
+    PurchaseComponent,
+    PurchaseDoneComponent
 ];
 
 export const APP_ROUTES_COMPONENTS = [

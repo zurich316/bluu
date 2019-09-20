@@ -55,7 +55,8 @@ export class SchoolFormComponent implements OnInit {
 
     console.log(this.forma.value);
     console.log(this.forma.controls);
-    //this.sendFormSchool.emit(this.forma.value);
+    this.sendFormSchool.emit(this.forma.value);
+    this.forma.reset();
     //this._schoolService.createSchool(this.forma.value,this.forma.value.schoolCategory);
     //this.forma.reset();
     

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styles: []
+  styleUrls:['./login.component.css']
 })
 export class LoginComponent implements OnInit {
   loginForm:FormGroup;
@@ -18,19 +18,37 @@ export class LoginComponent implements OnInit {
               public  router:  Router,
               private authService: AuthService) {
     
+    
+   }
+
+  ngOnInit() {
+    this.initLoginForm();
+    const recordar = localStorage.getItem('recordar');
+    if(recordar){
+      this.loginForm.patchValue({email:recordar})
+      this.recordar=true;
+    }
+    
+  }
+
+  initLoginForm(){
     this.loginForm = new FormGroup({
       'email' : new FormControl('',[Validators.required]),
       'password' : new FormControl('',[Validators.required])
     })
-   }
-
-  ngOnInit() {
   }
 
   login(){
     if(!this.loginForm.valid){
       this.toastr.error("Error: completar campos");
       return;
+    }
+
+    if(this.recordar){
+      console.log('recordar')
+      localStorage.setItem('recordar',this.loginForm.value.email);
+    }else{
+      localStorage.removeItem('recordar');
     }
 
     Swal.fire({

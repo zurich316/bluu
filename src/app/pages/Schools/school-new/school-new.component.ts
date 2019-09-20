@@ -1,5 +1,6 @@
 import { Component, OnInit,  } from '@angular/core';
 import { SchoolsService } from "../../../services/schools.service";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-school-new',
@@ -18,6 +19,11 @@ export class SchoolNewComponent implements OnInit {
     console.log('Recivido')
     console.log(form)
     this._schoolService.createSchool(form,form.schoolCategory);
+    Swal.fire({
+      type:'success',
+      title:'Exito',
+      text: "Escuela creada"
+    });
   }
 
 }

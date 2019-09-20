@@ -11,6 +11,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class SchoolViewComponent implements OnInit {
 
+  codigo:string = Math.random().toString(36).substring(7);
+  IsmodelShow:boolean=false;
   categoryName:string="";
   schoolID:string="";
 
@@ -33,6 +35,10 @@ export class SchoolViewComponent implements OnInit {
     this.getSchoolDetail();
 
 
+  }
+
+  generarNuevoCodigo(){
+    this.codigo=Math.random().toString(36).substring(7);
   }
 
   getSchoolDetail(){
@@ -94,6 +100,13 @@ export class SchoolViewComponent implements OnInit {
     }
 
     this._schoolService.subcribe(this._auth.user.uid,this.schoolID);
+  }
+
+  cerrar(){
+    //this.IsmodelShow=true;
+    let modal:any = document.getElementById('inscribirseModal');
+    console.log(modal)
+    
   }
 
 

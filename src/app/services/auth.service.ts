@@ -3,7 +3,8 @@ import { Injectable, NgZone } from '@angular/core';
 import { User } from  'firebase';
 import { auth } from  'firebase/app';
 import { AngularFireAuth } from  "@angular/fire/auth";
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class AuthService {
 
   constructor(public  afAuth:AngularFireAuth,
               public _angularFire:AngularFirestore,
+              public router: Router,
               public ngZone: NgZone) { 
     this.afAuth.authState.subscribe(user => {
       if (user){
@@ -43,6 +45,7 @@ export class AuthService {
   }
  
   async logout() {
+    this.router.navigate(['login']);
      return await this.afAuth.auth.signOut();
   }
  

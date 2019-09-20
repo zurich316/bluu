@@ -1,0 +1,24 @@
+<div class="form-body text-center ">
+  <form [formGroup]='loginForm' (ngSubmit)="login()" class="form-signin">
+    <img class="mb-4" src="assets/imgs/logo2.png" alt="" width="100" height="100">
+    <h1 class="h3 mb-3 font-weight-normal">Iniciar sesión</h1>
+    <label for="inputEmail" class="sr-only">Correo</label>
+    <input type="email" 
+           id="inputEmail" 
+           class="form-control" 
+           placeholder="Correo electronico" 
+           formControlName="email">
+    <label for="inputPassword" class="sr-only">Contraseña</label>
+    <input type="password" 
+           id="inputPassword" 
+           class="form-control" 
+           placeholder="Contraseña"
+           formControlName="password">
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" [(ngModel)]="recordar"  [ngModelOptions]="{standalone: true}"value="remember-me"> Recuerdame
+      </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+  </form>
+</div>
