@@ -15,6 +15,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Materials module
 import { MaterialModule, providerMaterials } from './materials.module';
 import { SchoolHomeComponent } from './pages/schools/school-home.component';
+import { SchoolsControlComponent } from './pages/auth/schools-control/schools-control.component';
+import { AuthComponent } from './pages/auth/auth.component';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { SchoolHomeComponent } from './pages/schools/school-home.component';
     APP_ROUTES_SCHOOLS,
     APP_MODULE_DECLARATIONS,
     APP_ROUTES_COMPONENTS,
-    SchoolHomeComponent
+    SchoolHomeComponent,
+    SchoolsControlComponent,
+    AuthComponent
   ],
   imports: [
     APP_MODULE_IMPORTS,

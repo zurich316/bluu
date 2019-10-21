@@ -1,7 +1,470 @@
 <div class='container bg-light' >
-    <div class="py-5 text-center">
-        <h2>Formulario nueva escuela </h2>
-        <p class="lead">Ingresar los datos de la escuela y de quienes la conforman.</p>
+    <h1>Escuela <small>formulario</small></h1>
+    <hr>
+    <div class="row text-right">
+    <div class="col">
+        <button class="btn btn-danger"
+                routerLink="/escuelas">
+        <i class="fa fa-arrow-left"></i>
+        Regresar
+        </button>
     </div>
-    <app-school-form (sendFormSchool)="formResult($event)" [schoolForm]="newSchool"></app-school-form>
+    </div>
+    
+<div class="row animated fadein slower">
+  <div class="col">
+    <form [formGroup]="schoolForm"  (ngSubmit)="sendSchool()" #formDir="ngForm">
+      <!-- ID -->
+      <div class="form-group">
+        <label><h5>ID</h5></label>
+        <input type="text"
+                class="form-control"
+                placeholder="Firebase ID"
+                name="id"
+                disabled="disabled">
+        <small class="form-text text-muted">Este campo es autogenerado</small>
+      </div>
+      <hr>
+      <!-- Nombre -->
+      <div class="form-group">
+          <label><h5>Nombre de la escuela</h5></label>
+          <input type="text"
+                  class="form-control"
+                  placeholder="Nombre del héroe"
+                  formControlName="name"
+                  [ngClass]="{
+                    'is-valid': !name.errors,
+                    'is-invalid': name.errors && ( name.touched ||  name.dirty )
+                  }">
+          <small class="form-text text-muted">
+             El campo es obligatorio 
+          </small>     
+      </div>
+      <hr>
+      <!-- Categoria sub y tags -->
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label><h5>Categorias</h5></label>
+          <select  formControlName="category" 
+                    class="form-control"
+                    (change)="selectSub()"
+                    [ngClass]="{'
+                      is-valid': !category.errors,
+                      'is-invalid': category.errors && ( category.touched ||  category.dirty )
+                    }">                   
+          <option  *ngFor="let cat of categories" [ngValue]="cat"> {{cat | titlecase}}</option>
+          <option [ngValue]="null" disabled>Escoger categoria</option>
+        </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label><h5>Sub categorias</h5></label>
+          <select  formControlName="sub_cat" 
+                    class="form-control"                   
+                    [ngClass]="{'
+                      is-valid': !sub_cat.errors,
+                      'is-invalid': sub_cat.errors && ( sub_cat.touched ||  sub_cat.dirty )
+                    }">                   
+          <option  *ngFor="let sub of sub_category" [ngValue]="sub"> {{sub | titlecase}}</option>
+          <option [ngValue]="null" disabled>Escoger sub-categoria</option>
+        </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label><h5>Etiquetas</h5></label>
+          <div formArrayName="tags" *ngFor="let tag of tags['controls']; let i=index">
+            <div class="input-group mb-3">
+              <input type="text" 
+                     class="form-control"
+                     [ngClass]="{'
+                      is-valid': !tag.errors,
+                      'is-invalid': tag.errors && ( tag.touched ||  tag.dirty )
+                     }"
+                     [formControlName]=i 
+                     placeholder="Etiqueta {{i+1}}" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-outline-danger"
+                        type="button"
+                        (click)="removeItem(i,tags)" 
+                        [disabled]="tags['controls'].length==1" 
+                        id="button-addon2">
+                  Borrar
+                </button>
+              </div>
+            </div>      
+          </div>         
+          <button  class="col btn btn-success btn-circle" 
+                   (click)="addTag()" 
+                   type="button">
+            Agregar etiqueta
+          </button>
+        </div>
+      </div>
+      <hr> 
+      <!-- Descripccion -->
+      <div class="form-group">
+        <label><h5>Descripcciones de la escuela</h5></label>
+        <div formArrayName="bodies" *ngFor="let body of bodies['controls']; let i=index">
+            <div class="input-group mb-3">
+              <textarea type="textbox" 
+              class="form-control"
+                     [ngClass]="{'
+                      is-valid': !body.errors,
+                      'is-invalid': body.errors && ( body.touched ||  body.dirty )
+                     }"
+                     [formControlName]=i 
+                     placeholder="Parrafo {{i+1}}">
+              </textarea>
+              <div class="input-group-append">
+                <button class="btn btn-outline-danger"
+                        type="button"
+                        (click)="removeItem(i,bodies)" 
+                        [disabled]="bodies['controls'].length==1">
+                  Borrar
+                </button>
+              </div>
+            </div> 
+          </div>
+          <button  class="col btn btn-success btn-circle" 
+          (click)="addBody()" 
+          type="button">
+          Agregar parrafo
+        </button>
+      </div>
+      <hr>
+      <!-- Frases -->
+      <div class="form-group">
+        <label><h5>Frases <span class="text-muted">(Opcional)</span></h5> </label>
+        <div formArrayName='phrases'  *ngFor="let phrase of phrases['controls']; let i = index">
+            <div class="input-group" [formGroupName]="i">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id=""> N# {{i+1}}</span>
+              </div>
+              <textarea type="text" 
+                      class="form-control"
+                      placeholder="Frase"
+                      [ngClass]="{
+                        'is-invalid': phrase['controls'].body.errors && (phrase['controls'].body.touched || phrase['controls'].body.dirty ),
+                        'is-valid': !phrase['controls'].body.errors
+                      }"   
+                      formControlName="body">
+              </textarea>
+              <input type="text" 
+                      class="form-control"
+                      placeholder="Autor"
+                      [ngClass]="{
+                        'is-invalid': phrase['controls'].auth.errors && (phrase['controls'].auth.touched || phrase['controls'].auth.dirty ),
+                        'is-valid': !phrase['controls'].auth.errors
+                       }" 
+                      formControlName="auth">
+              <div class="input-group-append">
+                  <button class="btn btn-danger" 
+                          type="button"
+                          (click)="removeItem(i,phrases)">
+                    Borrar
+                  </button>
+              </div>
+            </div>
+          </div>
+          <button class="col btn btn-success"
+                    (click)="addPhrases()"
+                    type="button">
+                      Agregar frase
+          </button>     
+      </div>
+      <hr>
+      <!-- Pago -->
+      <div class="form-group">
+        <label><h5>Precios</h5> </label>
+        <div formArrayName='pay'  *ngFor="let p of pay['controls']; let i = index">
+            <div class="input-group" [formGroupName]="i">
+              <div class="input-group-prepend">
+                <span class="input-group-text">N#{{i+1}}</span>
+              </div>
+              <div class="input-group-prepend">
+                <span class="input-group-text">BS.</span>
+              </div>
+              <input type="number" 
+                      class="form-control"
+                      placeholder="Costo"
+                      min="0"
+                      max="1000"
+                      step="0.50"
+                      [ngClass]="{
+                        'is-invalid': p['controls'].cost.errors && (p['controls'].cost.touched || p['controls'].cost.dirty ),
+                        'is-valid': !p['controls'].cost.errors
+                      }"   
+                      formControlName="cost">
+              <input type="text" 
+                      class="form-control"
+                      placeholder="Nota"
+                      [ngClass]="{
+                        'is-invalid': p['controls'].body.errors && (p['controls'].body.touched || p['controls'].body.dirty ),
+                        'is-valid': !p['controls'].body.errors
+                       }" 
+                      formControlName="body">
+              <div class="input-group-append">
+                  <button class="btn btn-danger" 
+                          type="button"
+                          [disabled]="pay['controls'].length==1"
+                          (click)="removeItem(i,pay)">
+                    Borrar
+                  </button>
+              </div>
+            </div>
+          </div>
+          <button class="col btn btn-success"
+                    (click)="addPay()"
+                    type="button">
+                      Agregar metodo de pago
+          </button>     
+      </div>
+      <hr>
+      <!-- Horarios -->
+      <div class="form-group">
+        <div  formArrayName='sche' *ngFor="let s of sche['controls']; let i = index">
+          <label><h5>Horario {{i+1}} </h5></label>
+          <div class="form-group row text-center" [formGroupName]="i">
+            <label class="col-sm-2 col-form-label">Inicia</label>
+            <div class="col-sm-4">
+              <input type="time" 
+                     class="form-control"
+                     [ngClass]="{
+                      'is-invalid': s['controls'].start.errors && (s['controls'].start.touched || s['controls'].start.dirty ),
+                      'is-valid': !s['controls'].start.errors
+                     }" 
+                     formControlName="start" >
+            </div>
+            <label class="col-sm-2 col-form-label">Termina</label>
+            <div class="col-sm-4">
+              <input type="time" 
+                     class="form-control"
+                     [ngClass]="{
+                      'is-invalid': s['controls'].end.errors && (s['controls'].end.touched || s['controls'].end.dirty ),
+                      'is-valid': !s['controls'].end.errors
+                     }" 
+                     formControlName="end">
+            </div>
+          </div>
+          <div class="form-group row text-center" [formGroupName]="i">
+            <label class="col-sm-2 col-form-label">Dias: <span *ngIf="s['controls'].days.errors" class="text-danger">(Minimo uno)</span> </label>
+            <div class="col-sm-10">
+              <div class="form-check form-check-inline" formArrayName="days" *ngFor="let order of s['controls'].days['controls']; let i = index">
+                <input type="checkbox" 
+                       class="form-check-input"
+                       [formControlName]="i">
+                <label class="form-check-label">{{daysList [i]}}</label>
+              </div>             
+            </div>
+          </div>
+          <div class="form-group row text-center" [formGroupName]="i">
+            <label class="col-sm-2 col-form-label">Nota <span class="text-muted">(Opcional)</span></label>
+            <div class="col-sm-8">
+              <input type="text" 
+                     class="form-control"
+                     formControlName="note" >
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-danger" 
+                      type="button"
+                      [disabled]="sche['controls'].length==1"
+                      (click)="removeItem(i,sche)">
+                Borrar
+              </button>
+            </div>
+          </div>          
+          
+        </div>
+        <button class="col btn btn-success"
+                (click)="addSchedule()"
+                type="button">
+                    Agregar horario
+        </button> 
+      </div>
+      <hr>
+      <!-- Ubicacion -->
+      <div class="form-group">
+        <label><h5>Direcciones (seleccione en el mapa) </h5></label>
+        <agm-map 
+        [latitude]= coords.lat
+        [longitude]= coords.lng
+        [zoom]=15
+        [streetViewControl]=false
+        [zoomControl]="true"
+        [clickableIcons]=false
+        [disableDoubleClickZoom]=true
+        [scrollwheel]=false
+        (mapClick)="addDirecction($event)">    
+          <agm-marker 
+              *ngFor="let m of dir.value; let i = index"
+              [latitude]="m.coor.lat"
+              [longitude]="m.coor.lng">
+              <!-- [markerDraggable]=true
+              (dragStart)=dstart($event)
+              (drag)=drag($event)
+              (dragEnd)=dend($event) -->
+            <agm-info-window [isOpen]="true">
+              <strong>Direccion {{i+1}}</strong>
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+        <div formArrayName='dir' *ngFor="let direction of dir['controls']; let i = index">          
+          <div class="input-group mb-3" [formGroupName]="i" >
+            <div class="input-group-prepend">
+              <label class="input-group-text">Direccion {{i+1}}</label>
+            </div>
+            <input type="text" class="form-control"                 
+                    placeholder="Descripcion de la direccion"
+                    [ngClass]="{
+                      'is-invalid': direction['controls'].body.errors && (direction['controls'].body.touched || direction['controls'].body.dirty ),
+                      'is-valid': !direction['controls'].body.errors
+                    }"  
+                    formControlName="body">
+            <div class="input-group-append">         
+              <button class="btn btn-danger" 
+                      (click)="removeItem(i,dir)" 
+                      type="button">
+                  Quitar
+              </button>
+            </div>
+          </div>          
+        </div>
+      </div>
+      <hr>
+      <!-- Responsable -->
+      <div class="form-group">
+        <label><h5>Datos del responsable</h5></label>
+        <div class="form-row text-center" formGroupName="coach">
+          <div class="form-group col-md-4">
+            <label>Nombre</label>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Nombre del héroe"
+                   [ngClass]="{
+                      'is-valid': !coach['controls'].name.errors,
+                      'is-invalid': coach['controls'].name.errors && ( coach['controls'].name.touched ||  coach['controls'].name.dirty )
+                   }"
+                   formControlName="name">
+          </div>
+          <div class="form-group col-md-4">
+            <label>Correo</label>
+            <input type="email"
+                   class="form-control"
+                   placeholder="Nombre del héroe"
+                   [ngClass]="{
+                        'is-valid': !coach['controls'].email.errors,
+                        'is-invalid': coach['controls'].email.errors && ( coach['controls'].email.touched ||  coach['controls'].email.dirty )
+                   }"          
+                   formControlName="email">
+          </div>
+          <div class="form-group col-md-4">
+            <label>Telefono</label>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Nombre del héroe"                
+                   [ngClass]="{
+                    'is-valid': !coach['controls'].phone.errors,
+                        'is-invalid': coach['controls'].phone.errors && ( coach['controls'].phone.touched ||  coach['controls'].phone.dirty )
+                   }"
+                   formControlName="phone">
+          </div>
+        </div>
+      </div>
+      <hr>
+      <!-- Ayudantes -->
+      <div class="form-group">
+        <label><h5>Ayudantes <span class="text-muted">(Opcional)</span></h5> </label>
+        <div formArrayName='helps'  *ngFor="let help of helps['controls']; let i = index">
+            <div class="input-group" [formGroupName]="i">
+              <div class="input-group-prepend">
+                <span class="input-group-text">N# {{i+1}}</span>
+              </div>
+              <input type="text" 
+                      class="form-control"
+                      placeholder="Nombre completo"
+                      [ngClass]="{
+                        'is-invalid': help['controls'].name.errors && (help['controls'].name.touched || help['controls'].name.dirty ),
+                        'is-valid': !help['controls'].name.errors
+                      }"   
+                      formControlName="name">
+              <input type="text" 
+                      class="form-control"
+                      placeholder="Numero/Correo"
+                      [ngClass]="{
+                        'is-invalid': help['controls'].num.errors && (help['controls'].num.touched || help['controls'].num.dirty ),
+                        'is-valid': !help['controls'].num.errors
+                       }" 
+                      formControlName="num">
+              <div class="input-group-append">
+                  <button class="btn btn-danger" 
+                          type="button"
+                          (click)="removeItem(i,helps)">
+                    Borrar
+                  </button>
+              </div>
+            </div>
+          </div>
+          <button class="col btn btn-success"
+                    (click)="addHelps()"
+                    type="button">
+                      Agregar Ayudante
+          </button>     
+      </div>
+      <hr>
+      <!-- Redes sociales -->
+      <div class="form-group">
+        <label><h5>Redes sociales <span class="text-muted">(Opcional)</span></h5> </label>
+        <div formArrayName='social'  *ngFor="let socialNet of social['controls']; let i = index">
+            <div class="input-group" [formGroupName]="i">
+              <select  formControlName="type" 
+                       class="form-control"
+                       [ngClass]="{'
+                         is-valid': !socialNet['controls'].type.errors,
+                         'is-invalid': socialNet['controls'].type.errors && ( socialNet['controls'].type.touched ||  socialNet['controls'].type.dirty )
+                       }">                   
+                <option  *ngFor="let socialElem of socialLst" [ngValue]="socialElem"> {{socialElem | titlecase}}</option>
+                <option [ngValue]="null" disabled>Escoger categoria</option>
+              </select>
+              <input type="text" 
+                      class="form-control"
+                      placeholder="Nombre completo"
+                      [ngClass]="{
+                        'is-invalid': socialNet['controls'].body.errors && (socialNet['controls'].body.touched || socialNet['controls'].body.dirty ),
+                        'is-valid': !socialNet['controls'].body.errors
+                      }"   
+                      formControlName="body">
+              <div class="input-group-append">
+                  <button class="btn btn-danger" 
+                          type="button"
+                          (click)="removeItem(i,social)">
+                    Borrar
+                  </button>
+              </div>
+            </div>
+          </div>
+          <button class="col btn btn-success"
+                    (click)="addSocial()"
+                    type="button">
+                      Agregar red social
+          </button>     
+      </div>
+      <hr>
+      <div class="form-group text-center">
+        <button type="submit"
+                class="btn btn-primary w-25">
+          <i class="fa fa-save"></i>
+          Guardar
+        </button>
+      </div>
+
+
+    </form>
+
+
+  </div>
+</div>
+
+      
+
+    <!-- <app-school-form (sendFormSchool)="formResult($event)" [schoolForm]="newSchool"></app-school-form> -->
+
+
 </div>

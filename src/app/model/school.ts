@@ -1,32 +1,48 @@
-export class School {
-
-  titulo: string; 
-  categoria: [string]; 
-  contactos: {any};
-  social:{
-    facebook:string;
-    twitter:string;
-    instagram:string;
-  };
-  Responsable:{
-    nombre:string;
-    apllido:string;
-    correo:string;
-  }; 
-  descripciones: [string]; 
-  direcciones: {any};
-  entrenadores:[any]; 
-  frases: [string]; 
-  horarios: {any}; 
-  imageURL: string;
-  instructor: string;
-  precios: {any};
-  schoolCategory:any;
-  reviews:any;
-
-    constructor(file:File){
-    
+export interface School{
+  name:string
+  category:string
+  sub_cat:string
+  coach:{
+    name:string;
+    email:string;
+    phone:string;
+  }
+  tags:[string]
+  bodies:[string]
+  phrases:[{
+    body:string;
+    auth:string;
+  }]
+  pay:[{
+    cost:number
+    body:string
+  }]
+  sche:[{
+    start:string
+    end:string
+    days:[boolean]
+    note:string
+  }]
+  dir:[{
+    coor:{
+      lat:number
+      lng:number
     }
+    body:string
+  }]
+  helps:[{
+    name:string
+    num:string
+  }]
+  social:[{
+    type:string
+    body:string
+  }]
+  active:boolean
+  block:boolean
+  img:string
+  revs:any
+  createAt:string
+  updateAt:Date
+    
 }
-
-

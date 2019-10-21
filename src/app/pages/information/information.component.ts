@@ -11,7 +11,7 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 export class InformationComponent implements OnInit {
 
   usuario = {
-    nombre:"",
+    name:"",
     email:""
   }
 
@@ -34,7 +34,10 @@ export class InformationComponent implements OnInit {
     if(this.blockButton()){
       console.log("bloqueado")
       return}
-
+    
+    // this._subsService.sendEmail(this.usuario).subscribe((resp)=>{
+    //   console.log(resp);  
+    // });
     this._subsService.createSubscription(this.usuario);
     usuarioForm.reset();
   }

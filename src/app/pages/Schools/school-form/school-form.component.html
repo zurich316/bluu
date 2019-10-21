@@ -2,6 +2,30 @@
   <h3>Datos de la escuela</h3>
   <hr>
   <div class="form-row">
+    <div class="form-group col-md-6">
+      <label> Nombre  <span class="text-muted">(Minimo 4 caracteres)</span></label>
+      <input  type="name"
+              [ngClass]="{'is-invalid': forma.controls['titulo'].errors && ( forma.controls['titulo'].touched ||  forma.controls['titulo'].dirty ) }" 
+              class="form-control" 
+              placeholder="Nombre de la escuela" 
+              formControlName="titulo">              
+    </div>
+    <div class="form-group col-md-6">
+        <input type="text"
+                     class="form-control-plaintext"
+                     [value]="forma.controls['imageURL'].value"
+                     formControlName="imageURL"
+                     name="id">
+        <div class="custom-file">
+            <input type="file" 
+                   formControlName="imageURL"
+                   class="custom-file-input" 
+                   lang="es">
+            <label class="custom-file-label">Seleccionar Archivo</label>
+        </div>          
+     </div>
+  </div>
+  <div class="form-row">
     <div class="form-group col-md-8">
       <label for="inputEmail4">Nombre  <span class="text-muted">(Minimo 3 caracteres)</span></label>
       <input type="name"
@@ -207,7 +231,6 @@
                 <div class="form-check form-check-inline" formArrayName="dias" *ngFor="let order of item['controls'].dias['controls']; let i = index">
                     <input type="checkbox" 
                           class="form-check-input"
-                          (click)="salida(order)"
                           [formControlName]="i">
                     <label class="form-check-label" for="exampleCheck1">{{diasLista [i]}}</label>
                   </div> 
@@ -344,8 +367,7 @@
         [latitude]="m.coordenadas.lat"
         [longitude]="m.coordenadas.lng"
         [label]="m.coordenadas.label"
-        [markerDraggable]="m.coordenadas.draggable"
-        (dragEnd)="markerDragEnd(m.coordenadas, $event)">
+        [markerDraggable]="m.coordenadas.draggable">
         
       <agm-info-window>
         <strong>Direccion {{i+1}}</strong>
@@ -384,8 +406,7 @@
     <label class="col-2 col-form-label">&nbsp;</label>
     <div class="input-group col-md-8">
       <button class="btn btn-primary btn-lg btn-block" 
-              type="submit"
-              [disabled]="!forma.valid">
+              type="submit">
         Guardar Escuela
       </button>
     </div>

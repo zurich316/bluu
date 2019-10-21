@@ -44,12 +44,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    if(this.recordar){
-      console.log('recordar')
-      localStorage.setItem('recordar',this.loginForm.value.email);
-    }else{
-      localStorage.removeItem('recordar');
-    }
+   
 
     Swal.fire({
           allowOutsideClick:false,
@@ -59,6 +54,7 @@ export class LoginComponent implements OnInit {
         Swal.showLoading();
     
         this.authService.login(this.loginForm.value.email,this.loginForm.value.password).then(value => {
+          this.saveEmail();
           console.log(value);
           Swal.close();
           console.log('Nice, it worked!');
@@ -74,6 +70,15 @@ export class LoginComponent implements OnInit {
         });
 
     
+  }
+
+  saveEmail(){
+    if(this.recordar){
+      console.log('recordar')
+      localStorage.setItem('recordar',this.loginForm.value.email);
+    }else{
+      localStorage.removeItem('recordar');
+    }
   }
 
 }

@@ -1,8 +1,11 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn,FormArray} from '@angular/forms'
-import { Observable } from 'rxjs';
 import { MouseEvent } from '@agm/core';
 import { SchoolsService } from "../../../services/schools.service";
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { categories } from 'src/app/config/school.categories';
+import { CustomValidators } from 'src/app/class/custom-validators';
 
 @Component({
   selector: 'app-school-form',
@@ -13,34 +16,13 @@ export class SchoolFormComponent implements OnInit {
   @Input () schoolForm:any={};
   @Output() sendFormSchool:EventEmitter<any> = new EventEmitter();
   
-  selectedCategory="";
-  categories:any=[
-    {
-      id:"deportes",
-      titulo:"Deportes"
-    },
-    {
-      id:"artes",
-      titulo:"Artes"
-    },
-    {
-      id:"apoyo-escolar",
-      titulo:"Apoyo escolar"
-    },
-    {
-      id:"otros",
-      titulo:"Otros"
-    },
-  ]
-
+  categories:any= categories;
   forma:FormGroup;
   emailValidator:string="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$";
-  contactosTipos:string[]=['Whatsapp','Facebook','Twitter','Celular','Correo','Otro'];
-  diasLista:string[]=['Lunes','Martes','Miercoles','Jueves',"Viernes",'Sabado','Domingo']; 
-  diasSemana = this.diasLista.map(c => new FormControl(false));
-   
-  
-  constructor(public _schoolService:SchoolsService) { 
+  contactosTipos:string[]=['Whatsapp','Facebook','Twitter','Celular','Correo','Otro']
+  diasLista:string[]=['Lunes','Martes','Miercoles','Jueves',"Viernes",'Sabado','Domingo'];  
+  constructor(public _schoolService:SchoolsService,
+              public router: Router) { 
    this.sendFormSchool = new EventEmitter();
    this.defineForm(); 
 
@@ -53,20 +35,25 @@ export class SchoolFormComponent implements OnInit {
 
   enviarFormulario(){
 
+    if(!this.forma.valid){
+      console.log(this.forma);
+      Swal.fire({
+        type:'error',
+        title:'Error',
+        text: "Formulario no completo"
+      });
+      return;
+    }
+
     console.log(this.forma.value);
     console.log(this.forma.controls);
     this.sendFormSchool.emit(this.forma.value);
     this.forma.reset();
+    this.router.navigate(['escuelas']);
     //this._schoolService.createSchool(this.forma.value,this.forma.value.schoolCategory);
     //this.forma.reset();
     
   }
-
-  salida(tiem){ 
-    console.log(tiem['controls'])
-
-  }
-
 
   // CATEGORIA----------------------------
 
@@ -130,11 +117,13 @@ export class SchoolFormComponent implements OnInit {
   }
 
   addHorario(){
+    const diasLista:string[]=['Lunes','Martes','Miercoles','Jueves',"Viernes",'Sabado','Domingo']; 
+    const diasSemana = diasLista.map(c => new FormControl(false));
     (<FormArray>this.forma.controls['horarios']).push(
       new FormGroup({                                    
         'horario_fin': new FormControl('',Validators.required),
         'horario_inicio': new FormControl('',Validators.required),
-        'dias': new FormArray(this.diasSemana,this.verifyDaysCheck(1))
+        'dias': new FormArray(diasSemana,CustomValidators.verifyDaysCheck())
         
       })
     )
@@ -146,7 +135,7 @@ export class SchoolFormComponent implements OnInit {
     let coordenadas = {
       lat: $event.coords.lat,
       lng: $event.coords.lng,
-      draggable: true
+      //draggable: false
     };
 
     (<FormArray>this.forma.controls['direcciones']).push(
@@ -163,24 +152,8 @@ export class SchoolFormComponent implements OnInit {
     (<FormArray>this.forma.controls['contactos']).removeAt(index);
   }
 
-// VALIDACIONES-----------------------------
-
-verifyDaysCheck(min=1):ValidatorFn{
-  let validatorVar: ValidatorFn = (formArray: FormArray) => {
-    let totalSelected = formArray.controls
-      // get a list of checkbox values (boolean)
-      .map(control => control.value)
-      // total up the number of checked checkboxes
-      .reduce((prev, next) => next ? prev + next : prev, 0);
-
-    // if the total is not greater than the minimum, return the error message
-    return totalSelected >= min ? null : { required: true };
-  };
-
-  return validatorVar;
-}
-
   defineForm(){
+
     this.forma = new FormGroup({
       'titulo' : new FormControl('',[
           Validators.required,
@@ -199,14 +172,7 @@ verifyDaysCheck(min=1):ValidatorFn{
           'numero': new FormControl('',Validators.required)
         })
       ]),
-      'horarios' : new FormArray([ 
-        new FormGroup({                                    
-          'horario_fin': new FormControl('',Validators.required),
-          'horario_inicio': new FormControl('',Validators.required),
-          'dias': new FormArray(this.diasSemana,this.verifyDaysCheck(1))
-          
-        })
-      ]),
+      'horarios' : new FormArray([]),
       
       'frases' : new FormArray([
         
@@ -244,6 +210,8 @@ verifyDaysCheck(min=1):ValidatorFn{
         ]), 
 
     });
+
+    this.addHorario();
   }
 
   removeItem(index:any,type:string){
@@ -264,7 +232,7 @@ verifyDaysCheck(min=1):ValidatorFn{
       }],
       'frases':[{'contenido':'texto','autor':'pepito'}],
       'horarios':[{'horario_fin':'09:00','horario_inicio':'20:00','dias':[true,null,null,null,null,null,null]}],
-      'imageURL':'www',
+      'imageURL':'',
       'precios':[{'nota':'Lunes a viernes','precio':200}],   
       'titulo':'Titulo',
       'entrenadores':[{'apellido':'zurita','nombre':'jorge'}]
@@ -274,55 +242,11 @@ verifyDaysCheck(min=1):ValidatorFn{
 
   }
 
-
-
-
-  markerDragEnd(m: any, $event: MouseEvent) {
-    console.log('dragEnd', m, $event);
-  }
-
   clickedMarker(label: string, index: number) {
     console.log(`clicked the marker: ${label || index}`)
   }
 
-  
+  get titulo() {
+    return this.forma.get('titulo');
+  }
 }
- /*
-
-  noHerrera(control:FormControl):{[s:string]:boolean}{
-    if(control.value ==='herrera'){
-      return {
-        noherrera:true
-      }
-    }
-    return null;
-  }
-
-  verifySchool(control:FormControl):Promise<any>|Observable<any>{
-    
-    let promesa = new Promise((resolve,reject)=>{
-      setTimeout(()=>{
-        if(control.value ==='herrera'){
-          resolve({exist:true})
-        }else{
-          resolve(null)
-        }
-      },3000);
-    });
-
-    return promesa;
-  }
-
-  noIguales(control:FormControl):{[s:string]:boolean}{
-    
-    let forma:any=this;
-    //console.log(this)
-    if(control.value !==forma.controls['password1'].value){
-      return {
-        noIguales:true
-      }
-    }
-    return null;
-  }
-
-  */

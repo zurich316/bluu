@@ -42,47 +42,47 @@ export class SchoolIndexComponent{
 
   chose(disciplina:string){
     switch (disciplina) {
-      case 'artes':
+      // case 'artes':
         
-        let artes = [this.schoolList[0]];
-        let musica = [this.schoolList[1]];
-        let danza = [this.schoolList[2]];
+      //   let artes = [this.schoolList[0]];
+      //   let musica = [this.schoolList[1]];
+      //   let danza = [this.schoolList[2]];
         
-        this.newList = [
-          {
-            'tipo':"artes",
-            lista:artes
-          },
-          {
-            'tipo':"musica",
-            lista:musica
-          },
-          {
-            'tipo':"danza",
-            lista:danza
-          },
-        ]
+      //   this.newList = [
+      //     {
+      //       'tipo':"artes",
+      //       lista:artes
+      //     },
+      //     {
+      //       'tipo':"musica",
+      //       lista:musica
+      //     },
+      //     {
+      //       'tipo':"danza",
+      //       lista:danza
+      //     },
+      //   ]
 
-        console.log(this.newList);
-        break;
+      //   console.log(this.newList);
+      //   break;
       
-      case 'deportes': 
-      let otros=this.schoolList.splice(6,1)
-      this.newList = [
-        {
-          'tipo':"artes marciales",
-          lista:this.schoolList
-        },
-        {'tipo':"otros",
-          lista:otros
-        }
-      ]
+      // case 'deportes': 
+      // let otros=this.schoolList.splice(6,1)
+      // this.newList = [
+      //   {
+      //     'tipo':"artes marciales",
+      //     lista:this.schoolList
+      //   },
+      //   {'tipo':"otros",
+      //     lista:otros
+      //   }
+      // ]
 
-      break; 
+      // break; 
     
       default:
         this.newList = [{
-          'tipo':"otros",
+          'tipo':"Todo",
            lista:this.schoolList
         }]
 

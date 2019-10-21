@@ -1,7 +1,7 @@
 // Header y Home
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
-import { InformationComponent } from './components/information/information.component';
+import { InformationComponent } from './pages/information/information.component';
 
 //Auth
 import { AccountsIndexComponent } from './pages/auth/accounts-index/accounts-index.component';
@@ -31,6 +31,7 @@ import { FormsModule, ReactiveFormsModule} from '@angular/forms'
 import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from "@angular/common/http";
 
 //Maps
 import { AgmCoreModule } from '@agm/core';
@@ -74,6 +75,7 @@ export const APP_MODULE_IMPORTS = [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
     ReactiveFormsModule,

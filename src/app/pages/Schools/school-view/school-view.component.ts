@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SchoolsService, School} from '../../../services/schools.service';
+import { SchoolsService} from '../../../services/schools.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators} from '@angular/forms'
 import { AuthService } from 'src/app/services/auth.service';
+import { School } from 'src/app/model/school';
 
 @Component({
   selector: 'app-school-view',
@@ -69,14 +70,14 @@ export class SchoolViewComponent implements OnInit {
     let newReview = this.reveiwForma.value;
     this._schoolService.submitReview(this.categoryName,this.schoolID,this.reveiwForma.value)
     
-    if(this.school.reviews==null){
-      this.school.reviews = [];
+    if(this.school.revs==null){
+      this.school.revs = [];
     }
 
     newReview.dia = today.getDate()+'-'+(today.getMonth()+1)+'-'+ today.getFullYear();
     newReview.hora = today.getHours() + ":" + today.getMinutes();
     
-    this.school.reviews.push(newReview);
+    this.school.revs.push(newReview);
     this._schoolService.updateSchool(this.school);
     this.reveiwForma.reset();
     
