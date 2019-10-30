@@ -12,11 +12,20 @@ import { CustomValidators } from 'src/app/class/custom-validators';
 @Component({
   selector: 'app-school-new',
   templateUrl: './school-new.component.html',
-  styles: ['agm-map {height: 300px;}']
+  styles: [`
+      agm-map {height: 300px;}
+      .image-size {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        width: 200px;
+      }
+  `]
 })
 export class SchoolNewComponent implements OnInit {
   newSchool:any;
   schoolForm:FormGroup;
+  id:string
 
   categories:any= categories;
   sub_category:any = [];
@@ -39,10 +48,10 @@ export class SchoolNewComponent implements OnInit {
 
     this.defineForm();
 
-    const id = this.route.snapshot.paramMap.get('id');
+    this.id = this.route.snapshot.paramMap.get('id');
 
-    if( id !== 'nuevo'){
-      this.initEditForm(id);
+    if( this.id !== 'nuevo'){
+      this.initEditForm(this.id);
     }else{
       this.initNewForm();
     }
@@ -108,6 +117,10 @@ export class SchoolNewComponent implements OnInit {
   }
   get helps() {
     return this.schoolForm.get('helps') as FormArray;
+  }
+
+  get img() {
+    return this.schoolForm.get('img') as FormControl;
   }
 
   selectSub(){
@@ -246,13 +259,13 @@ export class SchoolNewComponent implements OnInit {
       phrases: this.formBuilder.array([]),
       pay: this.formBuilder.array([]),
       sche: this.formBuilder.array([]),
-      dir: this.formBuilder.array([]),
+      dir: this.formBuilder.array([],[Validators.required]),
       helps: this.formBuilder.array([]),
       social: this.formBuilder.array([]),
 
       active:false,
       block:false,
-      img:"assets/portadas/default.jpg",
+      img:"assets/imgs/default.jpg",
       createAt:new Date(),
       updateAt:null,
       revs:[]
@@ -301,6 +314,53 @@ export class SchoolNewComponent implements OnInit {
     this.addBody();
     this.addSchedule();
     this.addPay();
+  }
+
+  preview($event){
+
+    if ($event.target.files.length === 0){
+      Swal.fire({
+        type:'error',
+        title:'Error Imagen',
+        text: "Solo puedes seleccionar una imagen"
+      });
+      return;
+    }
+
+    let newFile:File = $event.target.files[0];
+
+    if (newFile.type.match(/image\/*/) == null) {
+      Swal.fire({
+        type:'error',
+        title:'Error',
+        text: "Archivo tiene que ser imagen"
+      });
+      return;
+    }
+    
+    let mbSize = parseFloat((newFile.size / 1048576).toFixed(3))
+    if (mbSize>2) {
+      Swal.fire({
+        type:'error',
+        title:'Error',
+        text: "La imagen no puede ser mayor a 2 mB"
+      });
+      return;
+    }
+    
+
+    this._schoolService.updatePhoto($event.target.files[0],{
+      id:this.id,
+      name:"escuelas/" +this.id + "/titulo",
+      url:this.schoolForm.value.img
+    }).then((resp:string)=>{
+      this.img.setValue(resp)
+    });
+  }
+
+  formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+    return (bytes / 1048576).toFixed(3)
   }
 
   // dend(event){

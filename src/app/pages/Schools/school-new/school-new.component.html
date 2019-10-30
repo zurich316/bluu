@@ -1,36 +1,40 @@
 <div class='container bg-light' >
-    <h1>Escuela <small>formulario</small></h1>
-    <hr>
-    <div class="row text-right">
-    <div class="col">
-        <button class="btn btn-danger"
-                routerLink="/escuelas">
-        <i class="fa fa-arrow-left"></i>
-        Regresar
-        </button>
-    </div>
-    </div>
-    
+<h1>Escuela <small>formulario</small></h1>
+<hr>
+<div class="row text-right">
+  <div class="col">
+      <button class="btn btn-danger"
+              [routerLink]="[ '../' ]">
+      <i class="fa fa-arrow-left"></i>
+      Regresar
+      </button>
+  </div>
+</div>
 <div class="row animated fadein slower">
   <div class="col">
-    <form [formGroup]="schoolForm"  (ngSubmit)="sendSchool()" #formDir="ngForm">
-      <!-- ID -->
-      <div class="form-group">
-        <label><h5>ID</h5></label>
-        <input type="text"
-                class="form-control"
-                placeholder="Firebase ID"
-                name="id"
-                disabled="disabled">
-        <small class="form-text text-muted">Este campo es autogenerado</small>
+    <div class="form-group" *ngIf="id!=='nuevo'">
+      <label><h5>Cambiar imagen</h5></label>
+      <div class="text-center">
+          <img [src]="img.value" class="rounded image-size" alt="..."><br>
+          <input
+            style="display: none"
+            type="file"
+             (change)="preview($event)"
+            appNgDropFiles
+            #fileInput>
+          <button class="btn btn-primary" (click)="fileInput.click()">
+            <i class="fa fa-save"></i>
+            Cambiar imagen
+          </button>
       </div>
-      <hr>
+    </div>
+    <form [formGroup]="schoolForm"  (ngSubmit)="sendSchool()" #formDir="ngForm">
       <!-- Nombre -->
       <div class="form-group">
           <label><h5>Nombre de la escuela</h5></label>
           <input type="text"
                   class="form-control"
-                  placeholder="Nombre del héroe"
+                  placeholder="Nombre de la escuela"
                   formControlName="name"
                   [ngClass]="{
                     'is-valid': !name.errors,
@@ -282,7 +286,7 @@
       <hr>
       <!-- Ubicacion -->
       <div class="form-group">
-        <label><h5>Direcciones (seleccione en el mapa) </h5></label>
+        <label><h5>Direcciones (seleccione en el mapa)  </h5></label>
         <agm-map 
         [latitude]= coords.lat
         [longitude]= coords.lng
@@ -306,7 +310,11 @@
             </agm-info-window>
           </agm-marker>
         </agm-map>
+        <h3 class="text-center text-danger" *ngIf="dir.errors">
+          Minimo una direccion
+        </h3>
         <div formArrayName='dir' *ngFor="let direction of dir['controls']; let i = index">          
+          
           <div class="input-group mb-3" [formGroupName]="i" >
             <div class="input-group-prepend">
               <label class="input-group-text">Direccion {{i+1}}</label>
@@ -337,7 +345,7 @@
             <label>Nombre</label>
             <input type="text"
                    class="form-control"
-                   placeholder="Nombre del héroe"
+                   placeholder="Nombre"
                    [ngClass]="{
                       'is-valid': !coach['controls'].name.errors,
                       'is-invalid': coach['controls'].name.errors && ( coach['controls'].name.touched ||  coach['controls'].name.dirty )
@@ -348,7 +356,7 @@
             <label>Correo</label>
             <input type="email"
                    class="form-control"
-                   placeholder="Nombre del héroe"
+                   placeholder="ejemplo@gmail.com"
                    [ngClass]="{
                         'is-valid': !coach['controls'].email.errors,
                         'is-invalid': coach['controls'].email.errors && ( coach['controls'].email.touched ||  coach['controls'].email.dirty )
@@ -359,7 +367,7 @@
             <label>Telefono</label>
             <input type="text"
                    class="form-control"
-                   placeholder="Nombre del héroe"                
+                   placeholder="Fijo/Celular"                
                    [ngClass]="{
                     'is-valid': !coach['controls'].phone.errors,
                         'is-invalid': coach['controls'].phone.errors && ( coach['controls'].phone.touched ||  coach['controls'].phone.dirty )
@@ -425,7 +433,7 @@
               </select>
               <input type="text" 
                       class="form-control"
-                      placeholder="Nombre completo"
+                      placeholder="Referencia"
                       [ngClass]="{
                         'is-invalid': socialNet['controls'].body.errors && (socialNet['controls'].body.touched || socialNet['controls'].body.dirty ),
                         'is-valid': !socialNet['controls'].body.errors

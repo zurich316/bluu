@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators} from '@angular/forms'
 import { AuthService } from 'src/app/services/auth.service';
 import { School } from 'src/app/model/school';
+import { dayList } from 'src/app/config/school.categories';
 
 @Component({
   selector: 'app-school-view',
@@ -16,6 +17,8 @@ export class SchoolViewComponent implements OnInit {
   IsmodelShow:boolean=false;
   categoryName:string="";
   schoolID:string="";
+  daysList:string[]=dayList;
+
 
   school:School;
   
@@ -33,6 +36,7 @@ export class SchoolViewComponent implements OnInit {
 
     this.categoryName = this.route.snapshot.params['name']
     this.schoolID = this.route.snapshot.params['id']
+    console.log(this.categoryName,this.schoolID)
     this.getSchoolDetail();
 
 
@@ -43,10 +47,10 @@ export class SchoolViewComponent implements OnInit {
   }
 
   getSchoolDetail(){
-    this._schoolService.getSchool(this.categoryName,this.schoolID).subscribe((data:School)=>{
+    this._schoolService.getSchoolInfo(this.schoolID).then((data:School)=>{
           
       this.school = data;
-      
+      console.log(this.school)
       if(this.school){
         this.loading = false; 
         //console.log(this.school)

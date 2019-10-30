@@ -1,1 +1,50 @@
-<p>schools-control works!</p>
+<div class="container">
+  
+    <h1 class="text-white text-center">Administracion de escuelas</h1>
+    <div class="col text-right">
+      <button [routerLink]="[ 'nuevo' ]"
+              class="btn btn-primary">
+        <i class="fa fa-plus"></i>
+        Agregar
+      </button>
+    </div>
+    <hr>
+    <table class="table table-light">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Categoria</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let accont of schoolList; let i =index">
+          <th scope="row">{{i+1}}</th>
+          <td>{{accont.name}}</td>
+          <td>{{accont.category | titlecase}}</td>
+          <ng-container *ngIf="accont.active; else deactive">
+            <td>Activado</td>
+          </ng-container>
+          <ng-template #deactive>
+            <td>Desactivado</td>
+          </ng-template>
+          <td>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <a [routerLink]="[ './', accont.id ]"
+                      class="btn btn-success">
+                Editar
+              </a>
+              <a [routerLink]="[ './', accont.id,'ver' ]"
+                      class="btn btn-info">
+                Ver
+              </a>
+            </div>            
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

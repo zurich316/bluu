@@ -4,20 +4,20 @@
     <header id="main-header">
         <div class="row no-gutters">
             <div class="col-lg-4 col-md-5">
-                <img [src]="school.imageURL" [alt]="school.titulo">
+                <img [src]="school.img" [alt]="school.name">
             </div>
             <div class="col-lg-8 col-md-7">
                 <div class="d-flex flex-column">
                     <div class="p-5 bg-dark text-white">
                         <div class="d-flex flex-row justify-content-between aling-items-center">
                             <h1 class="display-4">
-                              {{school.titulo}}
+                              {{school.name}}
                             </h1>
-                            <div class="d-none d-md-block" *ngIf="_auth.isUserLoggedIn()">
+                            <!-- <div class="d-none d-md-block" *ngIf="_auth.isUserLoggedIn()">
                                 <button type="button" (click)="generarNuevoCodigo()"  data-toggle="modal" data-target="#inscribirseModal" class="btn btn-outline-info btn-sm">
                                     Inscribirse
                                 </button>
-                            </div>
+                            </div> -->
                             <!-- <div class="d-none d-md-block">
                                 <a href="#" class="text-white">
                                     <i class="fab fa-twitter"></i>
@@ -41,7 +41,7 @@
                       </div>
                   </div>
                   <div class="p-4 bg-black">
-                      {{school.schoolCategory | titlecase}}
+                      {{school.category | titlecase}}
                   </div>
 
                   <div class="d-flex flex-row text-white  text-center">
@@ -69,16 +69,16 @@
 
   <div id="home" class="collapse show">
       <div class="card card-body bg-primary text-white py-5">
-          <h2>Bienvenido {{school.titulo}}</h2>
+          <h2>Bienvenido {{school.name}}</h2>
       </div>
       <div class="card card-body py-5">
-            <div *ngFor="let description of school.descripciones" >
+            <div *ngFor="let description of school.bodies" >
                 <p>{{description}}</p>
                 <hr>
             </div>
-            <div *ngIf="school.frases.length>0">
-                <div *ngFor="let frase of school.frases" >
-                    <p>"<i>{{frase.contenido}}</i>" - {{frase.autor}}</p>
+            <div *ngIf="school.phrases.length>0">
+                <div *ngFor="let frase of school.phrases" >
+                    <p>"<i>{{frase.body}}</i>" - {{frase.auth}}</p>
                     <hr>
                 </div>
             </div>
@@ -93,12 +93,12 @@
                     </button>
                 </div>
             </div>
-            <div  class="media text-muted pt-3" *ngIf="  !school.reviews || school.reviews.length ===0"  >
+            <div  class="media text-muted pt-3" *ngIf="  !school.reviews || school.revs.length ===0"  >
                 <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                 <strong class="d-block text-gray-dark">Ninguna reseña por el momento</strong>
                 </p>
             </div>
-            <div class="media text-muted pt-3" *ngFor="let review of school.reviews; let i=index">
+            <div class="media text-muted pt-3" *ngFor="let review of school.revs; let i=index">
                 <img src="assets/imgs/star{{review.estrellas}}.jpg" alt="" width="50" height="50" class="mr-2 rounded img-thumbnail">
                 <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                 <strong class="d-block text-gray-dark">{{review.email}}</strong>
@@ -112,65 +112,128 @@
       </div>
   </div>
 
-  <div id="informacion" class="collapse">
-      
-      <div class="card card-body bg-success text-white py-5">
-          <h2>Informacion</h2>
-      </div>
-      <div class="card card-body py-5">
+  <div id="informacion" class="collapse">   
+    <div class="card card-body bg-success text-white py-5">
+        <h2>Informacion</h2>
+    </div>
+    <div class="card card-body py-5">
+        <div *ngFor="let sch of school.sche; let i=index">
+            <h3>Horario {{i+1}}</h3>
+            <label>{{sch.start}} - {{sch.end}}: &nbsp;</label>
+            <label *ngFor="let day of sch.days; let i = index">
+                <label *ngIf="day">
+                   {{daysList[i]}}  &nbsp; 
+                </label>
+            </label>
+            <p *ngIf="sch.note">Nota: {{sch.note}}</p>
+        </div>
+        <hr>
+        <h3>Precios</h3>
+        <div class="table-responsive-sm">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Descripccion</th>
+                        <th scope="col">Precio (BS.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let precio of school.pay;let i=index">
+                        <th scope="row">{{i+1}}</th>
+                        <td> {{precio.body}}</td>
+                        <td> {{precio.cost}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+        <hr>
+        <h3>Ubicacion</h3>
+        <p>Puede seleccionar la ubicacion de la escuela</p>
+        <app-maps-module [direcctionList]="school.dir"></app-maps-module>
+        <hr>
+        <div *ngIf="school.coach.name !='-' ">
             <h3>Responsable del curso</h3>
-            <p>Nombre: {{school.datosInstructor.nombre}} {{school.datosInstructor.apellido}}</p>
-            <p>Correo: {{school.datosInstructor.email}}</p>
+            <p>Nombre: {{school.coach.name}}</p>
+            <p *ngIf="school.coach.email !='ninguno@gmail.com'">Correo: {{school.coach.email}}</p>
+            <p *ngIf="school.coach.phone !='-'">Telefono: {{school.coach.phone}}</p>
             <hr>
-            <h3>Horarios</h3>
-            <div class="table-responsive" *ngFor="let Horario of school.horarios">
-                <table class="table table-dark">
-                    <thead>
-                    <tr>
-                        <th scope="col">Hora</th>
-                        <th scope="col">Lunes</th>
-                        <th scope="col">Martes</th>
-                        <th scope="col">Miercoles</th>
-                        <th scope="col">Jueves</th>
-                        <th scope="col">Viernes</th>
-                        <th scope="col">Sabado</th>
-                        <th scope="col">Domingo</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td> {{Horario.horario_inicio}} - {{Horario.horario_fin}}</td>
-                        <td *ngFor="let dia of Horario.dias">
-                            <ng-container *ngIf="dia; else elseTemplate">
-                                <td bgcolor="#00FF00"></td>
-                            </ng-container>
-                            <ng-template #elseTemplate>
-                                <td bgcolor="#FF0000"></td>
-                            </ng-template>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+        </div>
+        <div *ngIf="school.helps.length!=0" >
+            <h3>Ayudantes</h3>
+            <div *ngFor="let help of school.helps">
+                {{help.name}}  <label *ngIf="help.num!='-'"> &nbsp; - {{help.num}}</label> 
             </div>
-            <hr>
-            <h3>Precios</h3>
-            <p *ngFor="let precio of school.precios">
-                {{precio.nota}} - {{precio.precio}} Bs.
-            </p>
-            <hr>
-            <h3>Ubicacion</h3>
-            <p>Puede seleccionar la ubicacion de la escuela</p>
-            <app-maps-module [direcctionList]="school.direcciones"></app-maps-module>
-            
-      </div>
-  </div>
+            <hr>    
+        </div>
+        
+        <div *ngIf="school.social.length!=0">
+            <h3>Redes sociales</h3>
+            <div class="d-flex flex-row justify-content-between aling-items-center">
+                <div *ngFor="let so of school.social">
+                    <div class="d-none d-md-block" *ngIf="so.type == 'Whatsapp'">
+                        <p class="">
+                            <i  class="fab fa-whatsapp" ></i>
+                            {{so.body}}
+                        </p>
+                    </div>
+                    <div class="d-none d-md-block" *ngIf="so.type == 'Instagram'">
+                        <a [href]="so.body" class="">
+                            <i  class="fab fa-instagram"></i>
+                            {{school.name}}
+                        </a>
+                    </div>
+                    <div class="d-none d-md-block" *ngIf="so.type == 'Facebook'">
+                        <a [href]="so.body" class="">
+                            <i *ngIf="so.type == 'Facebook'" class="fab fa-facebook"></i>
+                            {{school.name}}
+                        </a>
+                    </div>
+                    <div class="d-none d-md-block" *ngIf="so.type == 'Twitter'">
+                        <a [href]="so.body" class="">
+                            <i *ngIf="so.type == 'Twitter'" class="fab fa-twitter"></i> 
+                            {{school.name}}
+                        </a>
+                    </div>     
+                    <div class="d-none d-md-block" *ngIf="so.type == 'Correo'">
+                        <p class="">
+                            <i *ngIf="so.type == 'Correo'" class="fa fa-envelope" ></i>
+                            {{so.body}}
+                        </p>
+                    </div>     
+                    <div class="d-none d-md-block" *ngIf="so.type == 'Otro'">
+                        <p class="">
+                            <i *ngIf="so.type == 'Otro'" class="fa fa-globe"></i>
+                            {{so.body}}
+                        </p>
+                    </div>                                                 
+                </div>
+                <!-- <div>
+                    <a href="https://www.facebook.com/MuroCbba/" class="">
+                        <i class="fab fa-facebook"></i>  {{school.name}}
+                    </a>
+                </div>
+                <div>
+                    <a href="#" class="">
+                        <i class="fab fa-instagram"></i>  {{school.name}}
+                    </a>
+                </div>
+                <div>
+                    <a href="#" class="">
+                        <i class="fab fa-google"></i>  {{school.name}}
+                    </a>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
 
-  <div id="fotos" class="collapse">
+    <div id="fotos" class="collapse">
       <div class="card card-body bg-warning text-white py-5">
           <h2>Fotos</h2>
-      </div>
-      <div class="card card-body py-5">
-          <!-- <h3>Fotos</h3> -->
+        </div>
+        <div class="card card-body py-5">
+            <!-- <h3>Fotos</h3> -->
           <h1 class="text-center">Proximamente</h1>
           <!-- <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, pariatur dolorem dolor blanditiis voluptatum ab.</p> -->
           <!-- <div class="row no-gutters">
@@ -224,17 +287,17 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="inscribirseModalLabel">{{school.titulo}}</h5>
+          <h5 class="modal-title" id="inscribirseModalLabel">{{school.name}}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
             <p>Precios:</p>
-            <div class="form-check" *ngFor="let precio of school.precios">
-                <input class="form-check-input" name="pricesRadios" type="radio"[value]="precio.precio" checked>
+            <div class="form-check" *ngFor="let precio of school.pay">
+                <input class="form-check-input" name="pricesRadios" type="radio"[value]="precio.cost" checked>
                 <label class="form-check-label">
-                    {{precio.precio}} Bs.
+                    {{precio.cost}} Bs.
                 </label>
             </div>
             <P>Elija forma de pago:</P>
