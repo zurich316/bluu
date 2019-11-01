@@ -33,7 +33,7 @@ export class SchoolNewComponent implements OnInit {
   daysList:string[]=dayList;
   socialLst:string[]= socialList;
 
-  coords:any={lng:0,lat:0};
+  coords:any={lng: -66.157990, lat: -17.385018} ;
 
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
@@ -43,6 +43,7 @@ export class SchoolNewComponent implements OnInit {
 
   ngOnInit() { 
     this.getPosition().then((resp:any)=>{
+      console.log(resp)
       this.coords = resp;
     });
 
@@ -281,7 +282,8 @@ export class SchoolNewComponent implements OnInit {
           resolve({lng: resp.coords.longitude, lat: resp.coords.latitude});
         },
         err => {
-          reject({lng: "-66.157990", lat: "-17.385018"} );
+          console.error("Geolocalitation fail");
+          reject(null)
         });
     });
 
@@ -316,7 +318,7 @@ export class SchoolNewComponent implements OnInit {
     this.addPay();
   }
 
-  preview($event){
+  changePhoto($event){
 
     if ($event.target.files.length === 0){
       Swal.fire({
