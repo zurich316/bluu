@@ -43,3 +43,13 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
+
+  .bg-facebook {
+    background: #3B5998;
+    color: white;
+  }
+
+  .bg-google {
+    background: #dd4b39;
+    color: white;
+  }

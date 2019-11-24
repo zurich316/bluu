@@ -104,7 +104,7 @@ export class SchoolViewComponent implements OnInit {
       return;
     }
 
-    this._schoolService.subcribe(this._auth.user.uid,this.schoolID);
+    this._schoolService.subcribe(this._auth.getUser().uid,this.schoolID);
   }
 
   cerrar(){

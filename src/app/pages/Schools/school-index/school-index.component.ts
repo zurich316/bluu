@@ -31,12 +31,7 @@ export class SchoolIndexComponent{
   }
 
   getListSchool(category:string){
-    this._schoolService.getListShool(category)
-                       .subscribe((data:any)=>{
-                        this.schoolList=data;
-                        this.loading = false;
-                        this.chose(this.disciplina); 
-                       });
+
   }
 
 

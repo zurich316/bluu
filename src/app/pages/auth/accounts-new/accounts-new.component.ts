@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup, Validators, FormArray, ValidatorFn, FormControl
 import { CustomValidators } from 'src/app/class/custom-validators';
 import { AccountService } from 'src/app/services/account.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { firebaseConfig } from './../../../config/firebase.config'
-// import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-accounts-new',
@@ -33,7 +31,7 @@ export class AccountsNewComponent implements OnInit {
     console.log(newUser)
     // const secondAurh = firebase.initializeApp(firebaseConfig,'secondary')
     // secondAurh.auth().createUserWithEmailAndPassword(newUser.name,newUser.password).then()
-    this._account.createAccount(newUser);
+    //this._account.createAccount(newUser);
   }
 
   initForm() {

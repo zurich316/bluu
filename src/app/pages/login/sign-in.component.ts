@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CustomValidators } from 'src/app/class/custom-validators';
 import { AccountService } from 'src/app/services/account.service';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-sign-in',
@@ -20,10 +21,10 @@ export class SignInComponent implements OnInit {
   constructor(private toastr: ToastrService,
               public  router:  Router,
               private fb: FormBuilder,
+              private titleService:Title,
               private _auth:AuthService,
               private _account:AccountService) {
-    
-   
+                this.titleService.setTitle("Registrarse");
    }
 
   ngOnInit() {
@@ -31,34 +32,40 @@ export class SignInComponent implements OnInit {
   }
 
   signin(){
+
     if(!this.siginForm.valid){
       this.toastr.error("Error: completar campos");
       console.log(this.siginForm);
       return;
     }
-    console.log(this.siginForm.value);
-    Swal.fire({
-          allowOutsideClick:false,
-          type:'info',
-          text:"Creando cuenta"
-        });
-        Swal.showLoading();
-        this._account.createAccount(this.siginForm.value).then(value => {
-          console.log(value);
-          Swal.close();
-          console.log('Nice, it worked!');
-          this.router.navigate(['/escuelas']);
-        })
-        .catch(err => {
-          Swal.fire({
-            type:'error',
-            title:'Error',
-            text: err.message
-          });
-          console.log('Something went wrong:',err.message);
-        });
 
-    
+    let newUser = this.siginForm.value;
+
+    this.ShowLoading();
+
+    this.CreateUser(newUser);   
+  }
+
+  private CreateUser(newUser: any) {
+    this._auth.registerStudent(newUser)
+      .then((resp) => {
+        Swal.close();
+      }).catch(err => {
+        Swal.fire({
+          type: 'error',
+          title: 'Error',
+          text: err.message
+        });
+      });
+  }
+
+  private ShowLoading() {
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: "Creando cuenta"
+    });
+    Swal.showLoading();
   }
 
   initForm() {
@@ -94,13 +101,4 @@ export class SignInComponent implements OnInit {
       validator: CustomValidators.passwordMatchValidator
     })
   }
-
-  signGoogle(){
-    this._auth.loginWithGoogle()
-              .then((value)=>{
-                console.log(value)
-              })
-  }
-
-
 }

@@ -2,25 +2,23 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument  } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User } from '../model/user';
-import { AuthService } from './auth.service';
+import { UserModel } from '../model/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  private schoolCollection: AngularFirestoreCollection<User>;
+  private schoolCollection: AngularFirestoreCollection<UserModel>;
   accountList:Observable<UserID[]>;
   
-  private schoolDoc: AngularFirestoreDocument<User>;
+  private schoolDoc: AngularFirestoreDocument<UserModel>;
   school: Observable<UserID>;
 
-  constructor(private _angularFire:AngularFirestore,
-              private _auth:AuthService) { 
+  constructor(private _angularFire:AngularFirestore) { 
   }
 
   getLisAcconts(){
-    return this.accountList =this._angularFire.collection<User>(`/users`)
+    return this.accountList =this._angularFire.collection<UserModel>(`/users`)
                .snapshotChanges()
                .pipe( map(actions => actions.map(a => {
                 const data = a.payload.doc.data() as UserID;
@@ -32,18 +30,25 @@ export class AccountService {
   }
 
   findAccount(email:string){
-    return this._angularFire.collection<User>('users',ref => ref.where('email', '==', email))
+    return this._angularFire.collection<UserModel>('users',ref => ref.where('email', '==', email))
   }
 
-  createAccount(account:any){
-   return this._auth.register(account.email,account.password)
-              .then((result:any)=>{
-                account.uid = result.user.uid
-                this.SetUserData(account);
-
-    }).catch(err=>{console.log(err)})
-    
+  getAccoundByID(id:any){
+    return this._angularFire.doc<UserModel>(`users/${id}`);
   }
+
+  createAccount(id:string, account:any){
+    return this._angularFire.collection('users')
+                            .doc(id)
+                            .set(account);
+  }
+
+  updateAccount(id:string, account:any){
+    return this._angularFire.collection('users')
+                            .doc(id)
+                            .update(account);
+  }
+  
 
   SetUserData(user){
     
@@ -63,4 +68,4 @@ export class AccountService {
 
 }
 
-export interface UserID extends User { id: string; }
+export interface UserID extends UserModel { id: string; }

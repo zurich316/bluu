@@ -13,7 +13,7 @@
       <li class="nav-item">
         <div class="dropdown show" *ngIf="authService.isUserLoggedIn()">
           <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-           {{authService.user.email}}
+           {{authService.getUser().email}}
           </a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <!-- <a class="dropdown-item">Action</a> -->

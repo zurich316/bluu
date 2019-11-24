@@ -22,18 +22,6 @@ export class SchoolsService {
               private _angularFire:AngularFirestore,
               private storage: AngularFireStorage) { 
   }
-  
-  getListShool(word){
-      return this.schoolList =this._angularFire.collection<School>(`/categorias/${word}/escuelas`)
-      .snapshotChanges()
-      .pipe( map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as SchoolID;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-        })
-      ));
-
-  }
 
   getListShools(){
     return this.schoolList =this._angularFire.collection<School>(`schools`,ref=>ref.orderBy('createAt','desc'))
@@ -44,9 +32,7 @@ export class SchoolsService {
       return { id, ...data };
       })
     ));
-
-}
-
+  }
 
   getSchool(categoryName:string, schoolID:string){
     this.schoolDoc =  this._angularFire.doc<School>(`categorias/${categoryName}/escuelas/${schoolID}`);
@@ -73,20 +59,20 @@ export class SchoolsService {
     });
     Swal.showLoading();
     this._angularFire.collection(`schools`).doc(id)
-                    .set(newSchool).then(()=>{
-                      Swal.fire({
-                        type:'success',
-                        title:'Exito',
-                        text: "Escuela creada"
+                     .set(newSchool).then(()=>{
+                        Swal.fire({
+                          type:'success',
+                          title:'Exito',
+                          text: "Escuela creada"
+                        });
+                        this.router.navigate([`../`]);
+                      }).catch(()=>{
+                        Swal.fire({
+                          type:'error',
+                          title:'Error',
+                          text: "No se pudo guardar los datos"
+                        });
                       });
-                      this.router.navigate([`../`]);
-                     }).catch(()=>{
-                      Swal.fire({
-                        type:'error',
-                        title:'Error',
-                        text: "No se pudo guardar los datos"
-                      });
-                     });
   }
 
   getSchoolInfo(schoolID:string){

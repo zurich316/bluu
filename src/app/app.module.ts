@@ -17,6 +17,7 @@ import { MaterialModule, providerMaterials } from './materials.module';
 import { SchoolHomeComponent } from './pages/schools/school-home.component';
 import { SchoolsControlComponent } from './pages/auth/schools-control/schools-control.component';
 import { AuthComponent } from './pages/auth/auth.component';
+import { RememberPasswordComponent } from './pages/login/remember-password.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { AuthComponent } from './pages/auth/auth.component';
     APP_ROUTES_COMPONENTS,
     SchoolHomeComponent,
     SchoolsControlComponent,
-    AuthComponent
+    AuthComponent,
+    RememberPasswordComponent
   ],
   imports: [
     APP_MODULE_IMPORTS,

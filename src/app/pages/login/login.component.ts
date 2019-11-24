@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -16,9 +17,9 @@ export class LoginComponent implements OnInit {
 
   constructor(private toastr: ToastrService,
               public  router:  Router,
-              private authService: AuthService) {
-    
-    
+              private titleService:Title,
+              private _authService: AuthService) {
+                this.titleService.setTitle("Login");
    }
 
   ngOnInit() {
@@ -44,32 +45,35 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-   
+    this.showMessage();
 
+    this._authService.login(this.loginForm.value.email,this.loginForm.value.password).then(value => {
+      this.saveEmail();
+                         Swal.close();
+      // this._authService.getFbUser()
+      //                  .then((resp)=>{
+      //                    this.router.navigate(['/']);
+      //                  })
+    })
+    .catch(err => {
+      Swal.fire({
+        type:'error',
+        title:'Error',
+        text: err.message
+      });
+      console.log('Something went wrong:',err.message);
+    });
+
+    
+  }
+
+  private showMessage() {
     Swal.fire({
-          allowOutsideClick:false,
-          type:'info',
-          text:"Iniciando session"
-        });
-        Swal.showLoading();
-    
-        this.authService.login(this.loginForm.value.email,this.loginForm.value.password).then(value => {
-          this.saveEmail();
-          console.log(value);
-          Swal.close();
-          console.log('Nice, it worked!');
-          this.router.navigate(['/escuelas']);
-        })
-        .catch(err => {
-          Swal.fire({
-            type:'error',
-            title:'Error',
-            text: err.message
-          });
-          console.log('Something went wrong:',err.message);
-        });
-
-    
+      allowOutsideClick: false,
+      type: 'info',
+      text: "Iniciando session"
+    });
+    Swal.showLoading();
   }
 
   saveEmail(){
@@ -79,6 +83,20 @@ export class LoginComponent implements OnInit {
     }else{
       localStorage.removeItem('recordar');
     }
+  }
+
+  signGoogle(){
+    this._authService.loginWithGoogle()
+              .then((value)=>{
+                console.log(value)
+              })
+  }
+
+  signFacebook(){
+    this._authService.loginWitFacebook()
+              .then((value)=>{
+                console.log(value)
+              })
   }
 
 }

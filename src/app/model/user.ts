@@ -4,10 +4,11 @@ export interface Roles {
     admin?: boolean;
  }
 
-export interface User {
+export interface UserModel {
     uid: string;
     name:string
     active:boolean
     email: string;
     roles: Roles;
+    emailVerified:boolean;
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
-import { User } from 'src/app/model/user';
+import { UserModel } from 'src/app/model/user';
 
 @Component({
   selector: 'app-accounts-index',
@@ -9,7 +9,7 @@ import { User } from 'src/app/model/user';
 })
 export class AccountsIndexComponent implements OnInit {
 
-  accontsList:User[]=[]
+  accontsList:UserModel[]=[]
   constructor(private _account:AccountService) { }
 
   ngOnInit() {
@@ -17,7 +17,7 @@ export class AccountsIndexComponent implements OnInit {
   }
 
   getAccounts(){
-    this._account.getLisAcconts().subscribe((data:User[])=>{
+    this._account.getLisAcconts().subscribe((data:any)=>{
       this.accontsList = data;   
       console.log(this.accontsList)
     })
