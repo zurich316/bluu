@@ -15,23 +15,26 @@ export class NoLoginAuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot):boolean {
 
 
-      let user:UserModel=this._auth.userFb;
+      let user:UserModel=this._auth.getUser();
 
 
      
       if (this._auth.isUserLoggedIn()==false) {
        return true;
       } else {
-        // console.log("Login in")
-        // if(user.roles.admin){
-        //   this.router.navigateByUrl('/admin');
-        // }if (user.roles.profesor) {
-        //   this.router.navigateByUrl('/admin');
-        // } else {
-        //   this.router.navigateByUrl('/escuelas');
-        // }
-
-        this.router.navigateByUrl('/admin');
+        console.log("Login in");
+        console.log(user);
+        
+        if(user.roles.admin){
+          console.log("admi");
+          this.router.navigateByUrl('/admin');
+        }else if (user.roles.profesor) {
+          console.log("pro");
+          this.router.navigateByUrl('/admin');
+        } else {
+          console.log("est");
+          this.router.navigateByUrl('/escuelas');
+        }
         return false;
       }
     }

@@ -6,7 +6,6 @@ import { AngularFireAuth } from  "@angular/fire/auth";
 import { Router } from '@angular/router';
 import { AccountService } from './account.service';
 import { UserModel } from '../model/user';
-import { resolve } from 'url';
 
 @Injectable({
   providedIn: 'root'
@@ -21,26 +20,16 @@ export class AuthService {
               public router: Router,
               public ngZone: NgZone) { 
     this.initAuth();
-    console.log("AUTH SER");
+
   }
 
-  private initAuth() {
+  initAuth() {
     
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userAuth = user;
         localStorage.setItem('user', JSON.stringify(this.userAuth));
-        
-        this.getUserFB(user.uid).then((resp:any)=>{
-          this.userFb = resp
-          console.log(this.userFb);
-          console.log(this.userAuth);
-          if( this.userAuth.emailVerified && this.userFb.emailVerified == false || this.userFb.emailVerified == null){
-            this.userFb.emailVerified = this.userAuth.emailVerified;
-            this._account.updateAccount(this.userAuth.uid ,this.userFb)
-          }
-          localStorage.setItem('user', JSON.stringify(this.userFb));          
-        });
+        this.getUserFB(user.uid)
       }
       else {
         this.userAuth = null;
@@ -53,6 +42,12 @@ export class AuthService {
   getUserFB(id:string){
    return new Promise((resolve,reject)=>{
       this._account.getAccoundByID(id).valueChanges().subscribe((resp)=>{
+        this.userFb = resp
+        if( this.userAuth.emailVerified && this.userFb.emailVerified == false || this.userFb.emailVerified == null){
+          this.userFb.emailVerified = this.userAuth.emailVerified;
+          this._account.updateAccount(this.userAuth.uid ,this.userFb)
+        }
+        localStorage.setItem('user', JSON.stringify(this.userFb));    
         resolve(resp)
       })
     })
@@ -127,7 +122,7 @@ export class AuthService {
     return this.afAuth.auth.signInWithPopup(provider)
     .then((result) => {
        this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
+          window.location.reload()
         })
         this.setUserData(result);
     }).catch((error) => {

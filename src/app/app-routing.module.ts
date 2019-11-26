@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 //Guards
-import { AuthGuard } from './guard/auth.guard';
+import { LoggedUserGuard } from './guard/loggedUser.guard';
 import { NoLoginAuthGuard } from './guard/noLogin.guard';
 
 import { HomeComponent } from './pages/home/home.component';
@@ -20,6 +20,7 @@ import { PagesComponent } from './pages/pages.component';
 import { AuthComponent } from './pages/auth/auth.component';
 import { SchoolsControlComponent } from './pages/auth/schools-control/schools-control.component';
 import { RememberPasswordComponent } from './pages/login/remember-password.component';
+import { RolesGuard } from './guard/roles.guard';
 
 const routes: Routes = [
   {path: 'proximamente', component: InformationComponent,canActivate:[NoLoginAuthGuard] },
@@ -37,7 +38,7 @@ const routes: Routes = [
       {path: 'disciplina/:name/detalles/:id/editar', component: SchoolEditComponent},
       {path: '', pathMatch: 'full', redirectTo:'escuelas'}
     ],
-    //canActivate:[AuthGuard],
+    canActivate:[LoggedUserGuard,RolesGuard],
     data: { 
       expectedRole: 'estudiante'
     } 
@@ -52,7 +53,8 @@ const routes: Routes = [
       {path: 'escuelas/:id', component: SchoolNewComponent },
       {path: 'escuelas/:id/ver', component: SchoolViewComponent },
       {path: '', pathMatch:'full', redirectTo:'cuentas'}
-    ],//canActivate:[AuthGuard],
+    ],
+    canActivate:[LoggedUserGuard,RolesGuard],
     data: { 
       expectedRole: 'admin'
     } 

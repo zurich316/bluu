@@ -47,13 +47,14 @@ export class LoginComponent implements OnInit {
 
     this.showMessage();
 
-    this._authService.login(this.loginForm.value.email,this.loginForm.value.password).then(value => {
+    this._authService.login(this.loginForm.value.email,this.loginForm.value.password).then(resp => {
       this.saveEmail();
-                         Swal.close();
-      // this._authService.getFbUser()
-      //                  .then((resp)=>{
-      //                    this.router.navigate(['/']);
-      //                  })
+      Swal.close();
+      this._authService.getUserFB(resp.user.uid)
+                       .then((resp)=>{
+                        
+                         this.router.navigate(['/']);
+      })
     })
     .catch(err => {
       Swal.fire({
