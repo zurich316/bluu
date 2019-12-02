@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { UserModel } from '../model/user';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -12,30 +13,48 @@ export class NoLoginAuthGuard implements CanActivate {
 
     
 
-    canActivate(route: ActivatedRouteSnapshot):boolean {
+    canActivate(route: ActivatedRouteSnapshot):boolean|Promise<boolean> {
 
 
       let user:UserModel=this._auth.getUser();
 
-
-     
-      if (this._auth.isUserLoggedIn()==false) {
-       return true;
-      } else {
-        console.log("Login in");
-        console.log(user);
-        
-        if(user.roles.admin){
-          console.log("admi");
-          this.router.navigateByUrl('/admin');
-        }else if (user.roles.profesor) {
-          console.log("pro");
-          this.router.navigateByUrl('/admin');
+      return new Promise((resolve)=>{
+        if (this._auth.isUserLoggedIn()==false) {
+         resolve (true);
         } else {
-          console.log("est");
-          this.router.navigateByUrl('/escuelas');
+          if(!user.roles){
+            Swal.fire({
+              allowOutsideClick:false,
+              type:'info',
+              text:`Cargando datos`
+            });
+            Swal.showLoading();
+            this._auth.getUserFB(user.uid).then(((resp:any)=>{
+              Swal.close();
+              this.changeRoute(resp);
+              resolve(false);
+            }))
+          }else{
+            this.changeRoute(user);
+            resolve(false);
+          }
         }
-        return false;
-      }
+      })
+     
     }
+
+  private changeRoute(user: UserModel) {
+    if (user.roles.admin) {
+      this.router.navigateByUrl('/admin');
+    }
+    else if (user.roles.profesor) {
+      this.router.navigateByUrl('/admin');
+    }
+    else if (user.roles.estudiante) {
+      this.router.navigateByUrl('/escuelas');
+    }
+    else {
+      this.router.navigateByUrl('/');
+    }
+  }
 }

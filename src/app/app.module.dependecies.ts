@@ -1,5 +1,5 @@
 // Header y Home
-import { HomeComponent } from './pages/home/home.component';
+import { SchoolHomeComponent } from './pages/schools/school-home/school-home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { InformationComponent } from './pages/information/information.component';
 
@@ -8,7 +8,7 @@ import { AccountsIndexComponent } from './pages/auth/accounts-index/accounts-ind
 import { AccountsNewComponent } from './pages/auth/accounts-new/accounts-new.component';
 
 // Schools
-import { SchoolIndexComponent } from './pages/schools/school-index/school-index.component';
+import { SchoolCategoryComponent } from './pages/schools/school-category/school-category.component';
 import { SchoolCardComponent } from './pages/schools/school-card/school-card.component';
 import { SchoolViewComponent } from './pages/schools/school-view/school-view.component';
 import { SchoolNewComponent } from './pages/schools/school-new/school-new.component';
@@ -44,7 +44,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from "@angular/fire/auth";
 
 export const APP_ROUTES_SCHOOLS = [
-    SchoolIndexComponent,
+    SchoolCategoryComponent,
     SchoolCardComponent,
     SchoolViewComponent,
     SchoolNewComponent,
@@ -53,7 +53,7 @@ export const APP_ROUTES_SCHOOLS = [
 ];
 
 export const APP_MODULE_DECLARATIONS = [   
-    HomeComponent,
+    SchoolHomeComponent,
     LoginComponent,
     AccountsIndexComponent,
     AccountsNewComponent,

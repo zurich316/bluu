@@ -7,6 +7,7 @@ import { map, finalize } from 'rxjs/operators';
 
 import { School } from "../model/school"
 import Swal from 'sweetalert2';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,6 +33,23 @@ export class SchoolsService {
       return { id, ...data };
       })
     ));
+  }
+
+  getSchoolsBySbuCategory(category:string,sub:string){
+    return new Promise((resolve,reject)=>{
+     let schools = this._angularFire.collection<School>(`schools`,ref=>ref.where('sub_cat','==',sub)  
+                                                                         .where('sub_cat','==',sub)
+                                                                          .orderBy('createAt','desc'))
+                                    .snapshotChanges()
+                                    .pipe( map(actions => actions.map(a => {
+                                      const data = a.payload.doc.data() as SchoolID;
+                                      const id = a.payload.doc.id;
+                                      return { id, ...data };
+                                      })
+                                    )).subscribe((resp=>{
+                                      resolve(resp)
+                                    }));                            
+    })
   }
 
   getSchool(categoryName:string, schoolID:string){

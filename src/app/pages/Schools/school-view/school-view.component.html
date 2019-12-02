@@ -13,11 +13,13 @@
                             <h1 class="display-4">
                               {{school.name}}
                             </h1>
-                            <div class="d-none d-md-block" *ngIf="_auth.isUserLoggedIn()">
+                            
+                            <!-- <div class="d-none d-md-block" *ngIf="_auth.isUserLoggedIn()">
                                 <button type="button" (click)="generarNuevoCodigo()"  data-toggle="modal" data-target="#inscribirseModal" class="btn btn-outline-info btn-sm">
                                     Inscribirse
                                 </button>
-                            </div>
+                            </div> -->
+                            
                             <!-- <div class="d-none d-md-block">
                                 <a href="#" class="text-white">
                                     <i class="fab fa-twitter"></i>
@@ -93,7 +95,7 @@
                     </button>
                 </div>
             </div>
-            <div  class="media text-muted pt-3" *ngIf="  !school.reviews || school.revs.length ===0"  >
+            <div  class="media text-muted pt-3" *ngIf="  !school.revs || school.revs.length ===0"  >
                 <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                 <strong class="d-block text-gray-dark">Ninguna reseña por el momento</strong>
                 </p>

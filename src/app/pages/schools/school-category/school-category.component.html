@@ -1,0 +1,24 @@
+<div class="container mt-3 bg-light" > 
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item"  *ngFor="let category of listCategories">
+                <a class="nav-link" [routerLink]="['../', category ]" routerLinkActive="active">
+                    {{category | uppercase}}
+                </a>
+            </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="card-columns">
+                <div class="card" *ngFor="let sub of listSubCategories">
+                    <div class="card-body">
+                        <a class="card-title" [routerLink]="[ sub ]">{{sub}}</a>                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

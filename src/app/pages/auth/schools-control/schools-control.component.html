@@ -20,11 +20,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let accont of schoolList; let i =index">
+        <tr *ngFor="let account of schoolList; let i=index">
           <th scope="row">{{i+1}}</th>
-          <td>{{accont.name}}</td>
-          <td>{{accont.category | titlecase}}</td>
-          <ng-container *ngIf="accont.active; else deactive">
+          <td>{{account.name}}</td>
+          <td>{{account.category | titlecase}}</td>
+          <ng-container *ngIf="account.active; else deactive">
             <td>Activado</td>
           </ng-container>
           <ng-template #deactive>
@@ -32,11 +32,11 @@
           </ng-template>
           <td>
             <div class="btn-group" role="group" aria-label="Basic example">
-              <a [routerLink]="[ './', accont.id ]"
+              <a [routerLink]="[ './', account.id ]"
                       class="btn btn-success">
                 Editar
               </a>
-              <a [routerLink]="[ './', accont.id,'ver' ]"
+              <a [routerLink]="[ './', account.id,'ver' ]"
                       class="btn btn-info">
                 Ver
               </a>

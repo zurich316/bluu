@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryService, Category } from '../../services/category.service'
+import { CategoryService, Category } from '../../../services/category.service'
 import { EventsService, Event } from 'src/app/services/events.service';
-
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './school-home.component.html',
+  styleUrls: ['./school-home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class SchoolHomeComponent implements OnInit {
   
   categoryList:Category[]=[];
-  eventList:Event[]=[];
+  eventList:any[]=[];
 
   constructor(public _info:CategoryService, public _event:EventsService) { 
    this.getAllCategories();
@@ -31,13 +30,8 @@ export class HomeComponent implements OnInit {
 
   getAllEvents(){
     this._event.getListEvent().subscribe((data:Event[])=>{
-      console.log(data);
       this.eventList = data.filter(event=> event.estado);
-
     })
   }
-
-
-  
 
 }

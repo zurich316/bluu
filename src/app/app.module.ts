@@ -14,10 +14,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Materials module
 import { MaterialModule, providerMaterials } from './materials.module';
-import { SchoolHomeComponent } from './pages/schools/school-home.component';
+import { SchoolComponent } from './pages/schools/school.component';
 import { SchoolsControlComponent } from './pages/auth/schools-control/schools-control.component';
 import { AuthComponent } from './pages/auth/auth.component';
 import { RememberPasswordComponent } from './pages/login/remember-password.component';
+import { SchoolSubcategoryComponent } from './pages/schools/school-subcategory/school-subcategory.component';
+import { SchoolCategoryComponent } from './pages/schools/school-category/school-category.component';
 
 
 @NgModule({
@@ -26,10 +28,12 @@ import { RememberPasswordComponent } from './pages/login/remember-password.compo
     APP_ROUTES_SCHOOLS,
     APP_MODULE_DECLARATIONS,
     APP_ROUTES_COMPONENTS,
-    SchoolHomeComponent,
+    SchoolComponent,
     SchoolsControlComponent,
     AuthComponent,
-    RememberPasswordComponent
+    RememberPasswordComponent,
+    SchoolSubcategoryComponent,
+    SchoolCategoryComponent
   ],
   imports: [
     APP_MODULE_IMPORTS,

@@ -6,6 +6,7 @@ import { AngularFireAuth } from  "@angular/fire/auth";
 import { Router } from '@angular/router';
 import { AccountService } from './account.service';
 import { UserModel } from '../model/user';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -121,10 +122,16 @@ export class AuthService {
   AuthLogin(provider) {
     return this.afAuth.auth.signInWithPopup(provider)
     .then((result) => {
-       this.ngZone.run(() => {
-          window.location.reload()
-        })
-        this.setUserData(result);
+      Swal.fire({
+        allowOutsideClick: false,
+        type: 'info',
+        text: "Cargando datos"
+      });
+      Swal.showLoading();
+      this.setUserData(result);
+      this.ngZone.run(() => {
+        window.location.reload()
+      })
     }).catch((error) => {
       window.alert(error)
     })

@@ -1,0 +1,9 @@
+<div class="container  mt-3 bg">
+    <div class="list-group">
+        <li class="list-group-item list-group-item-action" *ngFor="let school of schoolList">
+            <p>{{school.name}}</p>
+            <button type="button" [routerLink]="[ school.uid ]" class="btn btn-outline-primary">Ver</button>
+            <span class="rig-overlay"></span>
+        </li>
+    </div>    
+</div>
