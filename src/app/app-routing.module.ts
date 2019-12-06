@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoggedUserGuard } from './guard/loggedUser.guard';
 import { RolesGuard } from './guard/roles.guard';
 import { NoLoginAuthGuard } from './guard/noLogin.guard';
-import { VerifyEmailGuard } from './guard/verify-email.guard';
 
 import { PagesComponent } from './pages/pages.component';
 import { AuthComponent } from './pages/auth/auth.component';
