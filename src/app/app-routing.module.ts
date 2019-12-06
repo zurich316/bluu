@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoggedUserGuard } from './guard/loggedUser.guard';
 import { RolesGuard } from './guard/roles.guard';
 import { NoLoginAuthGuard } from './guard/noLogin.guard';
+import { VerifyEmailGuard } from './guard/verify-email.guard';
 
 import { PagesComponent } from './pages/pages.component';
 import { AuthComponent } from './pages/auth/auth.component';
@@ -24,8 +25,8 @@ import { SchoolCategoryComponent } from './pages/schools/school-category/school-
 const routes: Routes = [
   {path: 'proximamente', component: InformationComponent,canActivate:[NoLoginAuthGuard] },
   {path: 'login', component: LoginComponent,canActivate:[NoLoginAuthGuard] },
-  {path: 'sign-in', component: SignInComponent },
-  {path: 'recordar', component: RememberPasswordComponent },
+  {path: 'sign-in', component: SignInComponent,canActivate:[NoLoginAuthGuard] },
+  {path: 'recordar', component: RememberPasswordComponent,canActivate:[NoLoginAuthGuard] },
   {
     path:'escuelas', 
     component:PagesComponent,

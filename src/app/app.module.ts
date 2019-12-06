@@ -21,7 +21,6 @@ import { RememberPasswordComponent } from './pages/login/remember-password.compo
 import { SchoolSubcategoryComponent } from './pages/schools/school-subcategory/school-subcategory.component';
 import { SchoolCategoryComponent } from './pages/schools/school-category/school-category.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +32,7 @@ import { SchoolCategoryComponent } from './pages/schools/school-category/school-
     AuthComponent,
     RememberPasswordComponent,
     SchoolSubcategoryComponent,
-    SchoolCategoryComponent
+    SchoolCategoryComponent,
   ],
   imports: [
     APP_MODULE_IMPORTS,

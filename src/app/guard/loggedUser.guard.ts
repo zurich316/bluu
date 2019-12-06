@@ -10,12 +10,11 @@ export class LoggedUserGuard implements CanActivate {
               private router:Router  ){
   } 
   canActivate():boolean {  
-    if (this._auth.isUserLoggedIn()==false) {
-      console.log("No logeado")
+    if (!this._auth.isUserLoggedIn()) {
       this.router.navigateByUrl('/login');
       return false;
     }
     return true;
-    
+
   }
 }

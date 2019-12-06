@@ -18,6 +18,11 @@
     src: url(/assets/fonts/calibrib.ttf) format('truetype');
 } 
 
+.bg-facebook {
+    background: #3B5998;
+    color: white;
+  }
+  
 img{
     width: 360px;
     height: 360px;

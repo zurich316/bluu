@@ -27,7 +27,14 @@ export class AuthService {
   initAuth() {
     
     this.afAuth.authState.subscribe(user => {
+      
+
       if (user) {
+
+        if(user.emailVerified==false){
+          this.sendEmailTo();
+          return
+        }
         this.userAuth = user;
         localStorage.setItem('user', JSON.stringify(this.userAuth));
         this.getUserFB(user.uid)
@@ -40,14 +47,19 @@ export class AuthService {
     });
   }
 
+  private sendEmailTo() {
+    Swal.fire({
+      type: 'warning',
+      text: "Verifique su dirección de correo electrónico"
+    });
+    this.sendEmailVerification();
+    this.logout();
+  }
+
   getUserFB(id:string){
    return new Promise((resolve,reject)=>{
       this._account.getAccoundByID(id).valueChanges().subscribe((resp)=>{
         this.userFb = resp
-        if( this.userAuth.emailVerified && this.userFb.emailVerified == false || this.userFb.emailVerified == null){
-          this.userFb.emailVerified = this.userAuth.emailVerified;
-          this._account.updateAccount(this.userAuth.uid ,this.userFb)
-        }
         localStorage.setItem('user', JSON.stringify(this.userFb));    
         resolve(resp)
       })
@@ -55,7 +67,23 @@ export class AuthService {
   }
   
   async login(email: string, password: string) {
-    return await this.afAuth.auth.signInWithEmailAndPassword(email, password);
+    return await this.afAuth.auth.signInWithEmailAndPassword(email, password)
+                                 .then((result)=>{
+                                   Swal.fire({
+                                      allowOutsideClick: false,
+                                      type: 'info',
+                                      text: "Cargando datos"
+                                   });
+                                   Swal.showLoading();
+                                   this._account.createAccount(result.user.uid,{emailVerified:result.user.emailVerified})
+                                                .then(()=>{
+                                                  this.ngZone.run(() => {  
+                                                    this.router.navigate(['/']);
+                                                    Swal.close();
+                                                  })
+                                                }).catch(err=>console.error(err))
+
+    });
   }
   
   async logout() {
@@ -63,7 +91,7 @@ export class AuthService {
       localStorage.removeItem('user');
       this.userFb = null;
       this.userAuth = null;
-      this.router.navigate(['login']);
+      this.router.navigate(['/login']);
     });
   }
   
@@ -108,9 +136,26 @@ export class AuthService {
     return JSON.parse(localStorage.getItem('user'));
   }
   
-  register(email: string, password: string) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password);
+  register(newUser:any,role:string) {
+    console.log(newUser)
+    return this.afAuth.auth.createUserWithEmailAndPassword(newUser.email, newUser.password)
+                            .then((result) => {
+                              result.user.updateProfile({
+                                displayName:newUser.name
+                              }).then(()=>{
+                                //this.sendEmailVerification();
+                                this.setUserData(result,role).then((resp)=>{
+                                  this.ngZone.run(() => {  
+                                    this.router.navigate(['/']);
+                                    Swal.close();
+                                  })
+                                });
+                              })
+                            }).catch((error) => {
+                              window.alert(error.message)
+                            })
   }
+
   async  loginWithGoogle() {
     return await this.AuthLogin(new auth.GoogleAuthProvider())
   }
@@ -121,55 +166,41 @@ export class AuthService {
 
   AuthLogin(provider) {
     return this.afAuth.auth.signInWithPopup(provider)
-    .then((result) => {
-      Swal.fire({
-        allowOutsideClick: false,
-        type: 'info',
-        text: "Cargando datos"
-      });
-      Swal.showLoading();
-      this.setUserData(result);
-      this.ngZone.run(() => {
-        window.location.reload()
-      })
-    }).catch((error) => {
-      window.alert(error)
-    })
+                            .then((result) => {
+                              Swal.fire({
+                                allowOutsideClick: false,
+                                type: 'info',
+                                text: "Cargando datos"
+                              });
+                              Swal.showLoading();
+                              this.setUserData(result,'estudiante').then((resp)=>{
+                                this.ngZone.run(() => {  
+                                  this.router.navigate(['/']);
+                                  Swal.close();
+                                })
+                              });
+                            }).catch((error) => {
+                              window.alert(error)
+                              Swal.close();
+                            })
   }
 
-  private setUserData(result: auth.UserCredential) {
-    this._account.getAccoundByID(result.user.uid).get().subscribe(resp => {
-      if (resp.exists) {
-        let user: UserModel = {
-          name: result.user.displayName,
-          active: true,
-          email: result.user.email,
-          uid: result.user.uid,
-          roles: {
-            estudiante: true,
-            admin: false,
-            profesor: false
-          },
-          emailVerified: null
-        };
-        this._account.createAccount(user.uid, user);
-      }
-    }).unsubscribe();
+  private setUserData(result: auth.UserCredential,role:string) {
+    
+    let userInfo: any = {
+      name: result.user.displayName,
+      active: true,
+      email: result.user.email,
+      roles: {
+        estudiante: false,
+        admin: false,
+        profesor: false
+      },
+      emailVerified: result.user.emailVerified
+    };
+
+    userInfo.roles[role] = true 
+    return this._account.createAccount(result.user.uid,userInfo)
   }
 
-  registerStudent(newUser:any){
-    return this.register(newUser.email,newUser.password).then((resp)=>{
-      let userResp:User = resp.user;
-      delete newUser.password;
-      delete newUser.passwordConfirm;
-      return this._account.createAccount(userResp.uid,newUser);   
-    })
-  }
-
-  // registerStudentGoogle(){
-  //   return this.loginWithGoogle().then((resp)=>{
-  //     let userResp:User = resp.user;
-  //     /eturn this._account.createAccount(userResp.uid);   
-  //   })
-  // }
 }

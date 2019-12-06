@@ -41,23 +41,23 @@ export class SignInComponent implements OnInit {
 
     let newUser = this.siginForm.value;
 
-    this.ShowLoading();
+    //this.ShowLoading();
 
-    this.CreateUser(newUser);   
+    this._auth.register(newUser,"estudiante");   
   }
 
-  private CreateUser(newUser: any) {
-    this._auth.registerStudent(newUser)
-      .then((resp) => {
-        Swal.close();
-      }).catch(err => {
-        Swal.fire({
-          type: 'error',
-          title: 'Error',
-          text: err.message
-        });
-      });
-  }
+  // private CreateUser(newUser: any) {
+  //   this._auth.registerStudent(newUser)
+  //     .then((resp) => {
+  //       Swal.close();
+  //     }).catch(err => {
+  //       Swal.fire({
+  //         type: 'error',
+  //         title: 'Error',
+  //         text: err.message
+  //       });
+  //     });
+  // }
 
   private ShowLoading() {
     Swal.fire({
@@ -86,7 +86,7 @@ export class SignInComponent implements OnInit {
       ]],
       active:true,
       roles: roles,
-      password: [null,[Validators.compose([
+      password: ["123456789",[Validators.compose([
         
         Validators.required,
         Validators.minLength(8),
@@ -95,7 +95,7 @@ export class SignInComponent implements OnInit {
         // CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
         //CustomValidators.patternValidator(/[ [!@#$%^&*()_+-=[]{};':"|,.<>/?]/](<mailto:!@#$%^&*()_+-=[]{};':"|,.<>/?]/>), { hasSpecialCharacters: true }),
       ])]],
-      passwordConfirm: [null, Validators.compose([Validators.required])]
+      passwordConfirm: ["123456789", Validators.compose([Validators.required])]
     },
     {
       validator: CustomValidators.passwordMatchValidator

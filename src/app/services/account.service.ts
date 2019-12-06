@@ -40,7 +40,7 @@ export class AccountService {
   createAccount(id:string, account:any){
     return this._angularFire.collection('users')
                             .doc(id)
-                            .set(account);
+                            .set(account,{merge:true});
   }
 
   updateAccount(id:string, account:any){

@@ -44,28 +44,8 @@ export class LoginComponent implements OnInit {
       this.toastr.error("Error: completar campos");
       return;
     }
-
     this.showMessage();
-
-    this._authService.login(this.loginForm.value.email,this.loginForm.value.password).then(resp => {
-      this.saveEmail();
-      Swal.close();
-      this._authService.getUserFB(resp.user.uid)
-                       .then((resp)=>{
-                        
-                         this.router.navigate(['/']);
-      })
-    })
-    .catch(err => {
-      Swal.fire({
-        type:'error',
-        title:'Error',
-        text: err.message
-      });
-      console.log('Something went wrong:',err.message);
-    });
-
-    
+    this._authService.login(this.loginForm.value.email,this.loginForm.value.password)
   }
 
   private showMessage() {
@@ -88,16 +68,10 @@ export class LoginComponent implements OnInit {
 
   signGoogle(){
     this._authService.loginWithGoogle()
-              .then((value)=>{
-                console.log(value)
-              })
   }
 
   signFacebook(){
     this._authService.loginWitFacebook()
-              .then((value)=>{
-                console.log(value)
-              })
   }
 
 }

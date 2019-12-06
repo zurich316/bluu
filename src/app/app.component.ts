@@ -14,7 +14,6 @@ export class AppComponent {
 
   ngOnInit(){
     this._authService.initAuth();
-    console.log("Init pagina")
   }
 
 }
