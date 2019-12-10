@@ -40,6 +40,7 @@ export class AuthService {
         this.getUserFB(user.uid)
       }
       else {
+        console.log("no hay user conectado")
         this.userAuth = null;
         localStorage.setItem('user', null);
         JSON.parse(localStorage.getItem('user'));

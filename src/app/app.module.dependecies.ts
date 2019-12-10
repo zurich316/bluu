@@ -12,8 +12,9 @@ import { SchoolCategoryComponent } from './pages/schools/school-category/school-
 import { SchoolCardComponent } from './pages/schools/school-card/school-card.component';
 import { SchoolViewComponent } from './pages/schools/school-view/school-view.component';
 import { SchoolNewComponent } from './pages/schools/school-new/school-new.component';
-import { SchoolFormComponent } from './pages/schools/school-form/school-form.component';
-import { SchoolEditComponent } from './pages/schools/school-edit/school-edit.component';
+import { SchoolComponent } from './pages/schools/school.component';
+import { SchoolSubcategoryComponent } from './pages/schools/school-subcategory/school-subcategory.component';
+import { SchoolsControlComponent } from './pages/auth/schools-control/schools-control.component';
 
 //Components
 import { PagesComponent } from './pages/pages.component';
@@ -23,7 +24,8 @@ import { HeaderComponent } from './components/header/header.component';import { 
 import { SignInComponent } from './pages/login/sign-in.component';
 import { PurchaseComponent } from './components/modals/purchase/purchase.component';
 import { PurchaseDoneComponent } from './components/modals/purchase-done/purchase-done.component';
-
+import { RememberPasswordComponent } from './pages/login/remember-password.component';
+import { AuthComponent } from './pages/auth/auth.component';
 
 // Imports
 import { BrowserModule } from '@angular/platform-browser';
@@ -39,17 +41,18 @@ import { AgmCoreModule } from '@agm/core';
 //Firebase
 import { AngularFireModule } from '@angular/fire';
 import { firebaseConfig } from './config/firebase.config'
-import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from "@angular/fire/auth";
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 export const APP_ROUTES_SCHOOLS = [
     SchoolCategoryComponent,
     SchoolCardComponent,
     SchoolViewComponent,
     SchoolNewComponent,
-    SchoolFormComponent,
-    SchoolEditComponent,
+    SchoolComponent,
+    SchoolSubcategoryComponent,
+    SchoolsControlComponent,
 ];
 
 export const APP_MODULE_DECLARATIONS = [   
@@ -61,7 +64,9 @@ export const APP_MODULE_DECLARATIONS = [
     PagesComponent,
     SignInComponent,
     PurchaseComponent,
-    PurchaseDoneComponent
+    PurchaseDoneComponent,
+    RememberPasswordComponent,
+    AuthComponent,
 ];
 
 export const APP_ROUTES_COMPONENTS = [

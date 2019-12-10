@@ -13,13 +13,8 @@ import { APP_ROUTES_SCHOOLS,
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Materials module
-import { MaterialModule, providerMaterials } from './materials.module';
-import { SchoolComponent } from './pages/schools/school.component';
-import { SchoolsControlComponent } from './pages/auth/schools-control/schools-control.component';
-import { AuthComponent } from './pages/auth/auth.component';
-import { RememberPasswordComponent } from './pages/login/remember-password.component';
-import { SchoolSubcategoryComponent } from './pages/schools/school-subcategory/school-subcategory.component';
-import { SchoolCategoryComponent } from './pages/schools/school-category/school-category.component';
+import { MaterialModule } from './materials.module';
+import { SchoolModule } from './pages/schools/school.module';
 
 @NgModule({
   declarations: [
@@ -27,17 +22,12 @@ import { SchoolCategoryComponent } from './pages/schools/school-category/school-
     APP_ROUTES_SCHOOLS,
     APP_MODULE_DECLARATIONS,
     APP_ROUTES_COMPONENTS,
-    SchoolComponent,
-    SchoolsControlComponent,
-    AuthComponent,
-    RememberPasswordComponent,
-    SchoolSubcategoryComponent,
-    SchoolCategoryComponent,
   ],
   imports: [
     APP_MODULE_IMPORTS,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    SchoolModule
   ],
   providers: [  
     { provide: LOCALE_ID, useValue:'es-Es' },

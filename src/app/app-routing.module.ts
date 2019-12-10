@@ -14,12 +14,13 @@ import { AccountsNewComponent } from './pages/auth/accounts-new/accounts-new.com
 import { InformationComponent } from './pages/information/information.component';
 import { RememberPasswordComponent } from './pages/login/remember-password.component';
 
-import { SchoolHomeComponent } from './pages/schools/school-home/school-home.component';
-import { SchoolViewComponent } from './pages/schools/school-view/school-view.component';
 import { SchoolNewComponent } from './pages/schools/school-new/school-new.component';
 import { SchoolsControlComponent } from './pages/auth/schools-control/schools-control.component';
+import { SchoolHomeComponent } from './pages/schools/school-home/school-home.component';
+import { SchoolViewComponent } from './pages/schools/school-view/school-view.component';
 import { SchoolSubcategoryComponent } from './pages/schools/school-subcategory/school-subcategory.component';
 import { SchoolCategoryComponent } from './pages/schools/school-category/school-category.component';
+import { SchoolComponent } from './pages/schools/school.component';
 
 const routes: Routes = [
   {path: 'proximamente', component: InformationComponent,canActivate:[NoLoginAuthGuard] },
@@ -28,7 +29,7 @@ const routes: Routes = [
   {path: 'recordar', component: RememberPasswordComponent,canActivate:[NoLoginAuthGuard] },
   {
     path:'escuelas', 
-    component:PagesComponent,
+    component:SchoolComponent,
     children:[
       {path: '', component: SchoolHomeComponent },
       {path: ':category', component: SchoolCategoryComponent },
