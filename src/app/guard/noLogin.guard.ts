@@ -29,9 +29,18 @@ export class NoLoginAuthGuard implements CanActivate {
               text:`Cargando datos`
             });
             Swal.showLoading();
+            console.log(user)
             this._auth.getUserFB(user.uid).then(((resp:any)=>{
-              Swal.close();
-              this.changeRoute(resp);
+              if(resp){  
+                Swal.close();
+                this.changeRoute(resp);
+              }else{
+                Swal.fire({
+                  allowOutsideClick:false,
+                  type:'warning',
+                  text:`Conexion lenta, intente mas tarde`
+                });
+              }
               resolve(false);
             }))
           }else{
