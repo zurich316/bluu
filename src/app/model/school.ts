@@ -38,6 +38,7 @@ export interface School{
     type:string
     body:string
   }]
+  obs:string
   active:boolean
   block:boolean
   img:string

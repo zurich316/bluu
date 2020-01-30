@@ -20,7 +20,9 @@ import { SchoolsControlComponent } from './pages/auth/schools-control/schools-co
 import { PagesComponent } from './pages/pages.component';
 import { MapsModuleComponent } from './components/maps-module/maps-module.component';
 import { SendMessagesComponent } from './components/send-messages/send-messages.component';
-import { HeaderComponent } from './components/header/header.component';import { LoadingComponent } from './components/loading/loading.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { LoadingComponent } from './components/loading/loading.component';
 import { SignInComponent } from './pages/login/sign-in.component';
 import { PurchaseComponent } from './components/modals/purchase/purchase.component';
 import { PurchaseDoneComponent } from './components/modals/purchase-done/purchase-done.component';
@@ -72,6 +74,7 @@ export const APP_MODULE_DECLARATIONS = [
 export const APP_ROUTES_COMPONENTS = [
     MapsModuleComponent,
     HeaderComponent,
+    FooterComponent,
     SendMessagesComponent,
     LoadingComponent,
 ];

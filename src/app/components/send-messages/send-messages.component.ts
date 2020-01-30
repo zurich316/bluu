@@ -9,36 +9,34 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SendMessagesComponent implements OnInit {
 
-  formMensaje:FormGroup
-  constructor(private toastr: ToastrService) { 
+  formMensaje: FormGroup;
+  constructor(private toastr: ToastrService) {
     this.defineForm();
   }
 
   ngOnInit() {
   }
 
-  defineForm(){
+  defineForm() {
     this.formMensaje = new FormGroup({
-      'nombre' : new FormControl('',[
+      'nombre' : new FormControl('', [
         Validators.required,
         Validators.minLength(10)
       ]),
-      'email': new FormControl('',[
+      'email': new FormControl('', [
         Validators.email,
         Validators.required
       ]),
-      'mensaje' : new FormControl('',[
+      'mensaje' : new FormControl('', [
           Validators.required,
           Validators.minLength(10)
       ])
-    })
-  }
-  
-  enviarFormulario(){
-    console.log(this.formMensaje)
-    this.toastr.success("Correo enviado");
-    this.formMensaje.reset();
+    });
   }
 
-  
+  enviarFormulario() {
+    console.log(this.formMensaje);
+    this.toastr.success('Correo enviado');
+    this.formMensaje.reset();
+  }
 }

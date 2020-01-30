@@ -14,11 +14,11 @@
                               {{school.name}}
                             </h1>
                             
-                            <!-- <div class="d-none d-md-block" *ngIf="_auth.isUserLoggedIn()">
+                            <div class="d-none d-md-block" *ngIf="_auth.isUserLoggedIn()">
                                 <button type="button" (click)="generarNuevoCodigo()"  data-toggle="modal" data-target="#inscribirseModal" class="btn btn-outline-info btn-sm">
                                     Inscribirse
                                 </button>
-                            </div> -->
+                            </div>
                             
                             <!-- <div class="d-none d-md-block">
                                 <a href="#" class="text-white">
@@ -74,10 +74,17 @@
           <h2>Bienvenido {{school.name}}</h2>
       </div>
       <div class="card card-body py-5">
+            
+            <div *ngIf="school.obs">
+                <strong> Observaciones</strong>
+                <p>{{school.obs}}</p>
+            </div>
+
             <div *ngFor="let description of school.bodies" >
                 <p>{{description}}</p>
                 <hr>
             </div>
+            
             <div *ngIf="school.phrases.length>0">
                 <div *ngFor="let frase of school.phrases" >
                     <p>"<i>{{frase.body}}</i>" - {{frase.auth}}</p>

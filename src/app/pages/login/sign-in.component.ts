@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CustomValidators } from 'src/app/class/custom-validators';
 import { AccountService } from 'src/app/services/account.service';
-import {Title} from "@angular/platform-browser";
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,90 +15,85 @@ import {Title} from "@angular/platform-browser";
 })
 export class SignInComponent implements OnInit {
 
-  siginForm:FormGroup;
-  recordar:boolean=false;
+  siginForm: FormGroup;
+  recordar = false;
 
   constructor(private toastr: ToastrService,
               public  router:  Router,
               private fb: FormBuilder,
-              private titleService:Title,
-              private _auth:AuthService,
-              private _account:AccountService) {
-                this.titleService.setTitle("Registrarse");
+              private titleService: Title,
+              private _auth: AuthService,
+              private _account: AccountService) {
+                this.titleService.setTitle('Registrarse');
    }
 
   ngOnInit() {
     this.initForm();
   }
 
-  signin(){
+  signin() {
+    const newUser = this.siginForm;
 
-    if(!this.siginForm.valid){
-      this.toastr.error("Error: completar campos");
+    if (!newUser.valid) {
+      this.toastr.error('Error: completar campos');
       console.log(this.siginForm);
       return;
     }
 
-    let newUser = this.siginForm.value;
-
-    //this.ShowLoading();
-
-    this._auth.register(newUser,"estudiante");   
+    this._auth.register(newUser.value, 'estudiante');
   }
 
-  // private CreateUser(newUser: any) {
-  //   this._auth.registerStudent(newUser)
-  //     .then((resp) => {
-  //       Swal.close();
-  //     }).catch(err => {
-  //       Swal.fire({
-  //         type: 'error',
-  //         title: 'Error',
-  //         text: err.message
-  //       });
-  //     });
-  // }
-
-  private ShowLoading() {
-    Swal.fire({
-      allowOutsideClick: false,
-      type: 'info',
-      text: "Creando cuenta"
-    });
-    Swal.showLoading();
-  }
 
   initForm() {
-    const roles = this.fb.group({ 
+    const roles = this.fb.group({
       estudiante: [true],
       profesor: [false],
       admin: [false]
-    })
+    });
 
     this.siginForm = this.fb.group({
       email: [null, [
-        Validators.email
-      ],[
+        Validators.email,
+        Validators.required
+      ], [
         CustomValidators.verifyEmail(this._account)
       ]],
       name: [null, [
         Validators.required,
       ]],
-      active:true,
+      active: true,
       roles: roles,
-      password: ["123456789",[Validators.compose([
-        
+      password: [null, [Validators.compose([
+
         Validators.required,
         Validators.minLength(8),
         // CustomValidators.patternValidator(/\d/, { hasNumber: true }),
         // CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
         // CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
-        //CustomValidators.patternValidator(/[ [!@#$%^&*()_+-=[]{};':"|,.<>/?]/](<mailto:!@#$%^&*()_+-=[]{};':"|,.<>/?]/>), { hasSpecialCharacters: true }),
+        // tslint:disable-next-line:max-line-length
+        // CustomValidators.patternValidator(/[ [!@#$%^&*()_+-=[]{};':"|,.<>/?]/](<mailto:!@#$%^&*()_+-=[]{};':"|,.<>/?]/>), { hasSpecialCharacters: true }),
       ])]],
-      passwordConfirm: ["123456789", Validators.compose([Validators.required])]
+      passwordConfirm: [null, Validators.compose([Validators.required])]
     },
     {
       validator: CustomValidators.passwordMatchValidator
-    })
+    });
   }
+
+  get email() {
+    return this.siginForm.get('email');
+  }
+
+  get name() {
+    return this.siginForm.get('name');
+  }
+
+  get password() {
+    return this.siginForm.get('password');
+  }
+
+  get passwordConfirm() {
+    return this.siginForm.get('passwordConfirm');
+  }
+
 }

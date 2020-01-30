@@ -6,12 +6,12 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./maps-module.component.css']
 })
 export class MapsModuleComponent implements OnInit {
-  @Input () direcctionList:any[]=[];
+  @Input () direcctionList: any[] = [];
 
-  marcador:any=null
+  marcador: any = null;
 
-  constructor() { 
-    
+  constructor() {
+
   }
 
   ngOnInit() {

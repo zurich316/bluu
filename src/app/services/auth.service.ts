@@ -27,10 +27,7 @@ export class AuthService {
   initAuth() {
     
     this.afAuth.authState.subscribe(user => {
-      
-
       if (user) {
-
         if(user.emailVerified==false){
           this.sendEmailTo();
           return
@@ -66,25 +63,40 @@ export class AuthService {
       })
     })
   }
+
+//  Swal.fire({
+//     allowOutsideClick: false,
+//     type: 'info',
+//     text: "Cargando datos"
+//  });
+// Swal.showLoading();
   
   async login(email: string, password: string) {
-    return await this.afAuth.auth.signInWithEmailAndPassword(email, password)
-                                 .then((result)=>{
-                                   Swal.fire({
-                                      allowOutsideClick: false,
-                                      type: 'info',
-                                      text: "Cargando datos"
-                                   });
-                                   Swal.showLoading();
-                                   this._account.createAccount(result.user.uid,{emailVerified:result.user.emailVerified})
-                                                .then(()=>{
-                                                  this.ngZone.run(() => {  
-                                                    this.router.navigate(['/']);
-                                                    Swal.close();
-                                                  })
-                                                }).catch(err=>console.error(err))
-
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: "Cargando"
     });
+    Swal.showLoading();
+    return  this.afAuth.auth.signInWithEmailAndPassword(email, password)
+                            .then(async (result)=>{                                        
+                              await this._account.createAccount(result.user.uid,{emailVerified:result.user.emailVerified});
+                              Swal.fire({
+                                type:'success',
+                                title: 'Exito',
+                                text:"Session exitosa"
+                              }).then(()=>{
+                                  this.ngZone.run(() => {  
+                                    this.router.navigate(['/']);
+                                  })
+                              });
+                            }).catch(err=>{
+                                Swal.fire({
+                                      type:'error',
+                                      title: 'Error',
+                                      text:"Verifique su correo y la contraseña"
+                                    });
+                            });
   }
   
   async logout() {

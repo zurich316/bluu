@@ -1,31 +1,37 @@
 <div class="form-body text-center ">
-  <div  class="form-signin">
-    <img class="mb-4" src="assets/imgs/logo2.png" alt="" width="100" height="100">
-    <h1 class="h3 mb-3 font-weight-normal">Registrarse</h1>
-    <form [formGroup]='siginForm' (ngSubmit)="signin()"> 
-      <label class="sr-only">Nombre</label>
-      <input type="text"  
-             class="form-control" 
-             placeholder="Nombre completo" 
-             formControlName="name">
-      <label class="sr-only">Email</label>
-      <input type="email" 
-             class="form-control" 
-             placeholder="Email address" 
-             formControlName="email">
-      <label class="sr-only">Contraseña</label>
-      <input type="password" 
-             class="form-control" 
-             placeholder="Contraseña"
-             formControlName="password" >
-      <label class="sr-only">Confirmar contraseña</label>
-      <input type="password" 
-             class="form-control" 
-             placeholder="Confirmar contraseña"
-             formControlName="passwordConfirm" >       
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Inscribirse</button>
-    </form>
-    <hr>
-    <p>¿Ya tienes una cuenta? <a [routerLink]="'/login'">Iniciar sesión</a> </p>
-  </div>  
+    <div class="form-signin">
+        <img class="mb-4" src="assets/imgs/logo2.png" alt="" width="100" height="100">
+        <h1 class="h3 mb-3 font-weight-normal">Registrarse</h1>
+        <form [formGroup]='siginForm' (ngSubmit)="signin()">
+            <label class="sr-only">Nombre</label>
+            <input type="text" class="form-control" placeholder="Nombre completo" [ngClass]="{
+              'is-valid': !name.errors,
+              'is-invalid': name.errors && ( name.touched ||  name.dirty )}" formControlName="name">
+            <label class="sr-only">Email</label>
+            <input type="email" class="form-control" placeholder="Email address" [ngClass]="{
+              'is-valid': !email.errors,
+              'is-invalid': email.errors && ( email.touched ||  email.dirty )}" formControlName="email">
+            <div class="invalid-feedback" *ngIf="email.errors">
+                <div *ngIf="email.errors.invalidUsername">
+                    {{email.value}} ya existe
+                </div>
+            </div>
+            <label class="sr-only">Contraseña</label>
+            <input type="password" class="form-control" placeholder="Contraseña" [ngClass]="{
+              'is-valid': !password.errors,
+              'is-invalid': password.errors && ( password.touched ||  password.dirty )}" formControlName="password">
+            <div class="invalid-feedback" *ngIf="password.errors && ( password.touched ||  password.dirty )">
+                <div *ngIf="password.errors.minlength">
+                    La contraseña minimo tiene que tener: {{password.errors.minlength.requiredLength}}
+                </div>
+            </div>
+            <label class="sr-only">Confirmar contraseña</label>
+            <input type="password" class="form-control" [ngClass]="{
+              'is-valid': !passwordConfirm.errors,
+              'is-invalid': passwordConfirm.errors.requiredLength && ( passwordConfirm.touched ||  passwordConfirm.dirty )}" placeholder="Confirmar contraseña" formControlName="passwordConfirm">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Inscribirse</button>
+        </form>
+        <hr>
+        <p>¿Ya tienes una cuenta? <a [routerLink]="'/login'">Iniciar sesión</a> </p>
+    </div>
 </div>

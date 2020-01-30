@@ -9,16 +9,16 @@ import { UserModel } from '../model/user';
 })
 export class AccountService {
   private schoolCollection: AngularFirestoreCollection<UserModel>;
-  accountList:Observable<UserID[]>;
-  
+  accountList: Observable<UserID[]>;
+
   private schoolDoc: AngularFirestoreDocument<UserModel>;
   school: Observable<UserID>;
 
-  constructor(private _angularFire:AngularFirestore) { 
+  constructor(private _angularFire: AngularFirestore) {
   }
 
-  getLisAcconts(){
-    return this.accountList =this._angularFire.collection<UserModel>(`/users`)
+  getLisAcconts() {
+    return this.accountList = this._angularFire.collection<UserModel>(`/users`)
                .snapshotChanges()
                .pipe( map(actions => actions.map(a => {
                 const data = a.payload.doc.data() as UserID;
@@ -29,39 +29,39 @@ export class AccountService {
 
   }
 
-  findAccount(email:string){
-    return this._angularFire.collection<UserModel>('users',ref => ref.where('email', '==', email))
+  findAccount(email: string) {
+    return this._angularFire.collection<UserModel>('users', ref => ref.where('email', '==', email));
   }
 
-  getAccoundByID(id:any){
+  getAccoundByID(id: any) {
     return this._angularFire.doc<UserModel>(`users/${id}`);
   }
 
-  createAccount(id:string, account:any){
+  createAccount(id: string, account: any) {
     return this._angularFire.collection('users')
                             .doc(id)
-                            .set(account,{merge:true});
+                            .set(account, {merge: true});
   }
 
-  updateAccount(id:string, account:any){
+  updateAccount(id: string, account: any) {
     return this._angularFire.collection('users')
                             .doc(id)
                             .update(account);
   }
-  
 
-  SetUserData(user){
-    
+
+  SetUserData(user) {
+
     const userData: any = {
       email: user.email,
       name: user.name,
       active: user.active,
-      roles:user.roles
-    }
+      roles: user.roles
+    };
     console.log(userData);
     return this._angularFire.collection(`users`)
                      .doc(user.uid)
-                     .set(userData,{merge:true})
+                     .set(userData, {merge: true});
   }
 
 
